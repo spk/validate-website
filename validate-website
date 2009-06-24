@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+require 'spkspider'
+require 'colorful_messages'
+require 'open-uri'
+require 'rubygems'
+require 'xml'
+
+include ColorfulMessages
+
+XML.default_validity_checking = true
+XML.default_load_external_dtd = true
+
+site = 'http://localhost:4567/'
+site = ARGV[0] if ARGV[0]
+spider = SpkSpider.new(site)
+spider.user_agent = ''
+spider.exclude = /redirect|news/
+
+#spider.basic_auth = ['user', 'pass']
+
+file = spider.site.host + '_not_well_formed_urls.txt'
+open(file, 'w').write('')
+
+spider.crawl do |url, document|
+  begin
+    xp = XML::Parser.string(document)
+    exception = nil
+    XML::Error.set_handler do |error|
+      exception = error
+    end
+
+    doc = xp.parse
+
+    msg = " well formed? %s" % xp.context.well_formed?
+    if xp.context.well_formed?
+      print success(msg)
+    else
+      print error(msg)
+      open(file, 'a').write(url+"\n")
+    end
+  rescue Exception => e
+    print error(' ' + e.to_s)
+    open(file, 'a').write(url+"\n")
+  end
+end
