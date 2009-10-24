@@ -4,25 +4,57 @@ require 'spkspider'
 require 'colorful_messages'
 require 'open-uri'
 require 'xml'
+require 'optparse'
 
 include ColorfulMessages
 
 XML.default_validity_checking = true
 XML.default_load_external_dtd = true
 
-site = 'http://localhost:4567/'
-site = ARGV[0] if ARGV[0]
-spider = SpkSpider.new(site)
-spider.user_agent = ''
-spider.exclude = /redirect|news/
+# default options
+OPTIONS = {
+  :site        => 'http://localhost:3000/',
+  :useragent   => '',
+  :exclude     => nil,
+  :file        => nil,
+  :auth        => nil,
+}
 
-#spider.basic_auth = ['user', 'pass']
+ARGV.options do |o|
+  script_name = File.basename($0)
+  o.set_summary_indent('  ')
+  o.banner =    "Usage: #{script_name} [OPTIONS]"
+  o.define_head "validate website"
+  o.separator   ""
 
-file = spider.site.host + '_not_well_formed_urls.txt'
-open(file, 'w').write('')
+  o.on("-s", "--site=val", String,
+       "Default: #{OPTIONS[:site]}") { |OPTIONS[:site]| }
+  o.on("-u", "--useragent=val", String,
+       "Default: #{OPTIONS[:useragent]}") { |OPTIONS[:useragent]| }
+  o.on("-e", "--exclude=val", String,
+       "Url to exclude") { |OPTIONS[:exclude]| }
+  o.on("-f", "--file=val", String,
+       "save not well formed urls") { |OPTIONS[:file]| }
+  o.on("--auth=[user,pass]", Array,
+       "Basic http authentification") { |OPTIONS[:auth]| }
+
+  o.separator ""
+  o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
+  o.parse!
+end
+
+spider = SpkSpider.new(OPTIONS[:site])
+spider.user_agent = OPTIONS[:useragent]
+spider.exclude = Regexp.new(OPTIONS[:exclude]) if OPTIONS[:exclude]
+spider.basic_auth = OPTIONS[:auth]
+
+if OPTIONS[:file]
+  file = OPTIONS[:file]
+  open(file, 'w').write('')
+end
 
 spider.crawl do |url, document|
-  if document
+  begin
     xp = XML::Parser.string(document)
     exception = nil
     XML::Error.set_handler do |error|
@@ -36,7 +68,10 @@ spider.crawl do |url, document|
       print success(msg)
     else
       print error(msg)
-      open(file, 'a').write(url+"\n")
+      open(file, 'a').write(url+"\n") if OPTIONS[:file]
     end
+  rescue
+    print error(msg)
+    open(file, 'a').write(url+"\n") if OPTIONS[:file]
   end
 end
