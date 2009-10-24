@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
+$:.unshift '../lib'
 require 'spkspider'
 require 'colorful_messages'
 require 'open-uri'
-require 'rubygems'
 require 'xml'
 
 include ColorfulMessages
@@ -22,7 +22,7 @@ file = spider.site.host + '_not_well_formed_urls.txt'
 open(file, 'w').write('')
 
 spider.crawl do |url, document|
-  begin
+  if document
     xp = XML::Parser.string(document)
     exception = nil
     XML::Error.set_handler do |error|
@@ -38,8 +38,5 @@ spider.crawl do |url, document|
       print error(msg)
       open(file, 'a').write(url+"\n")
     end
-  rescue Exception => e
-    print error(' ' + e.to_s)
-    open(file, 'a').write(url+"\n")
   end
 end

@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'rubygems'
 require 'open-uri'
 # SpkSpider is a ruby crawler
 
