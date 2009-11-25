@@ -4,6 +4,10 @@
 
   Web crawler for checking the validity of your documents.
 
+== INSTALLATION
+
+  gem install validate-website --source http://gemcutter.org
+
 == SYNOPSIS
 
   validate-website --help
