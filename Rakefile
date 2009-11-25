@@ -7,7 +7,7 @@ require 'find'
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.1'
+PKG_VERSION = '0.2'
 
 PKG_FILES = ['README', 'Rakefile']
 Find.find('lib/', 'bin/') do |f|
@@ -54,15 +54,17 @@ spec = Gem::Specification.new do |s|
   s.author = 'spk'
   s.email = 'spk@tuxfamily.org'
   s.platform = Gem::Platform::RUBY
-  s.summary = "Web crawler for testing webpage validity"
+  s.summary = 'Web crawler for checking the validity of your documents'
   s.name = PKG_NAME
   s.version = PKG_VERSION
-  s.requirements << 'libxml-ruby'
+  s.requirements << 'spk-anemone' << 'rainbow'
+  s.add_dependency('spk-anemone', '>= 0.2.4')
+  s.add_dependency('rainbow', '>= 1.0.4')
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
   s.files = PKG_FILES
-  s.description = "Web crawler that print if the page is valid with the dtd"
+  s.description = 'Web crawler for checking the validity of your documents'
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

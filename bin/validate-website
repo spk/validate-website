@@ -1,20 +1,21 @@
 #!/usr/bin/env ruby
-$:.unshift '../lib'
-require 'spkspider'
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+developer_mode = false
+developer_mode = true if __FILE__ == $0
+require 'rubygems' if developer_mode
+
+require 'validator'
+require 'anemone'
 require 'colorful_messages'
-require 'open-uri'
-require 'xml'
 require 'optparse'
 
 include ColorfulMessages
 
-XML.default_validity_checking = true
-XML.default_load_external_dtd = true
-
 # default options
 OPTIONS = {
   :site        => 'http://localhost:3000/',
-  :useragent   => '',
+  :useragent   => Anemone::Core::DEFAULT_OPTS[:user_agent],
   :exclude     => nil,
   :file        => nil,
   :auth        => nil,
@@ -43,35 +44,29 @@ ARGV.options do |o|
   o.parse!
 end
 
-spider = SpkSpider.new(OPTIONS[:site])
-spider.user_agent = OPTIONS[:useragent]
-spider.exclude = Regexp.new(OPTIONS[:exclude]) if OPTIONS[:exclude]
-spider.basic_auth = OPTIONS[:auth]
-
 if OPTIONS[:file]
   file = OPTIONS[:file]
   open(file, 'w').write('')
 end
 
-spider.crawl do |url, document|
-  begin
-    xp = XML::Parser.string(document)
-    exception = nil
-    XML::Error.set_handler do |error|
-      exception = error
-    end
+Anemone.crawl(OPTIONS[:site],
+              :user_agent => OPTIONS[:useragent],
+              :authorization => OPTIONS[:auth]) do |anemone|
 
-    doc = xp.parse
+  anemone.skip_links_like Regexp.new(OPTIONS[:exclude]) if OPTIONS[:exclude]
 
-    msg = " well formed? %s" % xp.context.well_formed?
-    if xp.context.well_formed?
-      print success(msg)
+  anemone.on_every_page { |page|
+
+    url = page.url.to_s
+    print info(url)
+
+    validator = Validator.new(page)
+    msg = " well formed? %s" % validator.valid?
+    if validator.valid?
+      puts success(msg)
     else
-      print error(msg)
-      open(file, 'a').write(url+"\n") if OPTIONS[:file]
+      puts error(msg)
+      open(file, 'a').write("#{url}\n") if OPTIONS[:file]
     end
-  rescue
-    print error(msg)
-    open(file, 'a').write(url+"\n") if OPTIONS[:file]
-  end
+  }
 end

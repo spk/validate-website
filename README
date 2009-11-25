@@ -2,17 +2,24 @@
 
 == DESCRIPTION
 
-  Web crawler that print if the page is valid with the dtd.
-  compatible ruby 1.9
+  Web crawler for checking the validity of your documents.
 
 == SYNOPSIS
 
   validate-website --help
-  validate-website -s "http://localhost:4567/" -u "Mozilla 5.0" -f not-well-formed.txt --auth=user,pass -e 'redirect|news'
+  validate-website -s "http://localhost:4567/" -u "Mozilla 5.0" \
+  -f not-well-formed.txt --auth=user,pass -e 'redirect|news'
 
 == REQUIREMENTS:
 
-  libxml-ruby >= 1.1.3
+  spk-anemone >= 0.2.4 (forked from chriskite/anemone,
+                        add auth support and html body)
+  rainbow >= 1.0.4 (for console color)
+
+== CREDITS:
+
+  Thanks tenderlove for Nokogiri,
+  this library is inspired from markup_validity
 
 == LICENSE
 (The MIT License)
