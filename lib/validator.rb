@@ -9,20 +9,26 @@ class Validator
 
   def initialize(page)
     @page = page
-    @dtd = URI.parse(@page.doc.internal_subset.system_id)
-    # http://www.w3.org/TR/xhtml1/#dtds
-    @namespace = File.basename(@dtd.path, '.dtd')
-    fixed_dtd = @page.body.sub(@dtd.to_s, @namespace + '.dtd')
-    doc = Dir.chdir(XHTML_PATH) do
-      Nokogiri::XML(fixed_dtd) { |cfg|
-        cfg.noent.dtdload.dtdvalid
-      }
+    if @page.doc.internal_subset.system_id
+      @dtd = URI.parse(@page.doc.internal_subset.system_id)
+      # http://www.w3.org/TR/xhtml1/#dtds
+      @namespace = File.basename(@dtd.path, '.dtd')
+      fixed_dtd = @page.body.sub(@dtd.to_s, @namespace + '.dtd')
+      doc = Dir.chdir(XHTML_PATH) do
+        Nokogiri::XML(fixed_dtd) { |cfg|
+          cfg.noent.dtdload.dtdvalid
+        }
+      end
+      # http://www.w3.org/TR/xhtml1-schema/
+      @xsd = Dir.chdir(XHTML_PATH) do
+        if File.exists?(@namespace + '.xsd')
+          Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
+        end
+      end
+      @errors = @xsd ? @xsd.validate(doc) : ["Don't have this xsd"]
+    else
+      @errors = ['No DTD set !']
     end
-    # http://www.w3.org/TR/xhtml1-schema/
-    @xsd = Dir.chdir(XHTML_PATH) do
-      Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
-    end
-    @errors = @xsd.validate(doc)
   end
 
   def valid?
