@@ -29,15 +29,16 @@ ARGV.options do |o|
   o.separator   ""
 
   o.on("-s", "--site=val", String,
-       "Default: #{OPTIONS[:site]}") { |OPTIONS[:site]| }
+       "Default: #{OPTIONS[:site]}") { |v| OPTIONS[:site] = v }
+
   o.on("-u", "--useragent=val", String,
-       "Default: #{OPTIONS[:useragent]}") { |OPTIONS[:useragent]| }
+       "Default: #{OPTIONS[:useragent]}") { |v| OPTIONS[:useragent] = v }
   o.on("-e", "--exclude=val", String,
-       "Url to exclude") { |OPTIONS[:exclude]| }
+       "Url to exclude") { |v| OPTIONS[:exclude] = v }
   o.on("-f", "--file=val", String,
-       "save not well formed urls") { |OPTIONS[:file]| }
+       "save not well formed urls") { |v| OPTIONS[:file] = v }
   o.on("--auth=[user,pass]", Array,
-       "Basic http authentification") { |OPTIONS[:auth]| }
+       "Basic http authentification") { |v| OPTIONS[:auth] = v }
 
   o.separator ""
   o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
