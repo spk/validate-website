@@ -25,7 +25,8 @@ ARGV.options do |o|
   script_name = File.basename($0)
   o.set_summary_indent('  ')
   o.banner =    "Usage: #{script_name} [OPTIONS]"
-  o.define_head "validate website"
+  o.define_head "#{script_name} -  Web crawler for checking the validity of " +
+    'your documents'
   o.separator   ""
 
   o.on("-s", "--site=val", String,
@@ -57,7 +58,7 @@ Anemone.crawl(OPTIONS[:site],
   anemone.skip_links_like Regexp.new(OPTIONS[:exclude]) if OPTIONS[:exclude]
 
   anemone.on_every_page { |page|
-
+    next unless page.html?
     url = page.url.to_s
     print info(url)
 
