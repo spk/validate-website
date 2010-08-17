@@ -51,6 +51,8 @@ if OPTIONS[:file]
   open(file, 'w').write('')
 end
 
+exit_code = 0
+
 Anemone.crawl(OPTIONS[:site],
               :user_agent => OPTIONS[:useragent],
               :authorization => OPTIONS[:auth]) do |anemone|
@@ -67,8 +69,11 @@ Anemone.crawl(OPTIONS[:site],
     if validator.valid?
       puts success(msg)
     else
+      exit_code = 1
       puts error(msg)
       open(file, 'a').write("#{url}\n") if OPTIONS[:file]
     end
   }
 end
+
+exit(exit_code)
