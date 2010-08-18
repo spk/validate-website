@@ -7,7 +7,7 @@ require 'find'
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.2'
+PKG_VERSION = '0.3'
 
 PKG_FILES = ['README', 'Rakefile']
 Find.find('lib/', 'bin/') do |f|
@@ -58,8 +58,8 @@ spec = Gem::Specification.new do |s|
   s.name = PKG_NAME
   s.version = PKG_VERSION
   s.requirements << 'spk-anemone' << 'rainbow'
-  s.add_dependency('spk-anemone', '>= 0.2.4')
-  s.add_dependency('rainbow', '>= 1.0.4')
+  s.add_dependency('spk-anemone', '>= 0.4.0')
+  s.add_dependency('rainbow', '>= 1.1')
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
