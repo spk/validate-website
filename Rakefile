@@ -9,7 +9,7 @@ require 'find'
 PKG_NAME = 'validate-website'
 PKG_VERSION = '0.3.1'
 
-PKG_FILES = ['README', 'Rakefile']
+PKG_FILES = ['README.rdoc', 'Rakefile']
 Find.find('lib/', 'bin/') do |f|
   if FileTest.directory?(f) and f =~ /\.svn|\.git/
     Find.prune
