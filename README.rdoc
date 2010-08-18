@@ -6,13 +6,17 @@
 
 == INSTALLATION
 
-  gem install validate-website --source http://gemcutter.org
+  gem install validate-website
 
 == SYNOPSIS
 
   validate-website --help
-  validate-website -s "http://localhost:4567/" -u "Mozilla 5.0" \
-  -f not-well-formed.txt --auth=user,pass -e 'redirect|news'
+  validate-website -s "http://localhost:4567/"
+  -u "Mozilla 5.0" \ # user agent
+  -f not-well-formed.txt \ # log file
+  --auth=user,pass \ # http auth
+  -e 'redirect|news' \ # exclude regex
+  -n # log not found (404)
 
 == REQUIREMENTS:
 
@@ -28,7 +32,7 @@
 == LICENSE
 (The MIT License)
 
-Copyright (c) 2009 spk
+Copyright (c) 2009 Laurent Arnoud (spk)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

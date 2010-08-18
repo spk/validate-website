@@ -7,7 +7,7 @@ require 'find'
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.3'
+PKG_VERSION = '0.3.1'
 
 PKG_FILES = ['README', 'Rakefile']
 Find.find('lib/', 'bin/') do |f|
@@ -51,8 +51,9 @@ end
 require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |s|
-  s.author = 'spk'
-  s.email = 'spk@tuxfamily.org'
+  s.author = 'Laurent Arnoud'
+  s.email = 'laurent@spkdev.net'
+  s.homepage = 'http://github.com/spk/validate-website'
   s.platform = Gem::Platform::RUBY
   s.summary = 'Web crawler for checking the validity of your documents'
   s.name = PKG_NAME
