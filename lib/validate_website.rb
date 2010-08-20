@@ -57,7 +57,7 @@ class ValidateWebsite
     rescue
       abs = nil
     end
-    return abs if page.in_domain?(abs)
+    return abs if abs && page.in_domain?(abs)
   end
 
   def to_file(msg)

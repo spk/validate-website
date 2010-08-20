@@ -27,12 +27,12 @@ Anemone.crawl(options[:site],
     links = []
     if p.html?
       p.doc.css('img, script, iframe').each do |elem|
-        url = validate_website.get_url p, elem, "src"
-        links << url if not url.nil?
+        url = validate_website.get_url(p, elem, "src")
+        links << url unless url.nil?
       end
       p.doc.css('link').each do |link|
-        url = validate_website.get_url p, link, "href"
-        links << url if not url.nil?
+        url = validate_website.get_url(p, link, "href")
+        links << url unless url.nil?
       end
     end
     links.uniq!
