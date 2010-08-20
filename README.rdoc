@@ -17,6 +17,8 @@
   --auth=user,pass \ # http auth
   -e 'redirect|news' \ # exclude regex
   -n # log not found (404)
+  -c "name=val;name2=val2"
+  -v # verbose
 
 == REQUIREMENTS:
 
