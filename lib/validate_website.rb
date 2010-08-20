@@ -14,6 +14,7 @@ class ValidateWebsite
       :auth        => nil,
       # log not found url (404 status code)
       :not_found   => false,
+      :verbose     => false,
     }
     parse(args)
 
@@ -42,6 +43,7 @@ class ValidateWebsite
       o.on("--auth=[user,pass]", Array,
            "Basic http authentification") { |v| @options[:auth] = v }
       o.on("-n", "--not-found", "Log not found url") { |v| @options[:not_found] = v }
+      o.on("-v", "--verbose", "Verbose") { |v| @options[:verbose] = v }
 
       o.separator ""
       o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
