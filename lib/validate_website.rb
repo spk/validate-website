@@ -49,6 +49,17 @@ class ValidateWebsite
     opts.parse!(args)
   end
 
+  def get_url(page, elem, attrname)
+    u = elem.attributes[attrname] if elem.attributes[attrname]
+    return if u.nil?
+    begin
+      abs = page.to_absolute(URI(u))
+    rescue
+      abs = nil
+    end
+    return abs if page.in_domain?(abs)
+  end
+
   def to_file(msg)
     open(options[:file], 'a').write("#{msg}\n") if options[:file]
   end

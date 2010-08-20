@@ -23,12 +23,28 @@ Anemone.crawl(options[:site],
 
   anemone.skip_links_like Regexp.new(options[:exclude]) if options[:exclude]
 
+  anemone.focus_crawl { |p|
+    links = []
+    if p.html?
+      p.doc.css('img, script, iframe').each do |elem|
+        url = validate_website.get_url p, elem, "src"
+        links << url if not url.nil?
+      end
+      p.doc.css('link').each do |link|
+        url = validate_website.get_url p, link, "href"
+        links << url if not url.nil?
+      end
+    end
+    links.uniq!
+    p.links.concat(links)
+  }
+
   anemone.on_every_page { |page|
     url = page.url.to_s
-    print info(url)
 
     # validate html/html+xml
     if page.html? && page.fetched?
+      print info(url)
       validator = Validator.new(page)
       msg = " well formed? %s" % validator.valid?
       if validator.valid?
