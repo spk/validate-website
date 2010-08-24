@@ -61,6 +61,8 @@ spec = Gem::Specification.new do |s|
   s.requirements << 'spk-anemone' << 'rainbow'
   s.add_dependency('spk-anemone', '>= 0.4.0')
   s.add_dependency('rainbow', '>= 1.1')
+  s.add_development_dependency('rspec', '>= 1.3.0')
+  s.add_development_dependency('fakeweb', '>= 1.3.0')
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
