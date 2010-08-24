@@ -1,9 +1,16 @@
 require 'optparse'
 require 'open-uri'
+require 'validator'
+require 'anemone'
+require 'colorful_messages'
+
+include ColorfulMessages
 
 class ValidateWebsite
 
   attr_reader :options
+
+  attr_reader :anemone
 
   def initialize(args)
     @options = {
@@ -67,5 +74,62 @@ class ValidateWebsite
 
   def to_file(msg)
     open(options[:file], 'a').write("#{msg}\n") if options[:file]
+  end
+
+  def crawl(site, opts)
+    exit_code = 0
+
+    @anemone = Anemone.crawl site, opts do |anemone|
+      anemone.skip_links_like Regexp.new(options[:exclude]) if options[:exclude]
+
+      anemone.focus_crawl { |p|
+        links = []
+        if p.html?
+          p.doc.css('img, script, iframe').each do |elem|
+            url = get_url(p, elem, "src")
+            links << url unless url.nil?
+          end
+          p.doc.css('link').each do |link|
+            url = get_url(p, link, "href")
+            links << url unless url.nil?
+          end
+        end
+        if p.content_type == 'text/css'
+          p.body.scan(/url\((['".\/\w-]+)\)/).each do |url|
+            url = url.to_s.gsub("'", "").gsub('"', '')
+            abs = p.to_absolute(URI(url))
+            links << abs
+          end
+        end
+        links.uniq!
+        p.links.concat(links)
+      }
+
+      anemone.on_every_page { |page|
+        url = page.url.to_s
+
+        # validate html/html+xml
+        if page.html? && page.fetched?
+          print info(url)
+          validator = Validator.new(page)
+          msg = " well formed? %s" % validator.valid?
+          if validator.valid?
+            puts success(msg)
+          else
+            exit_code = 1
+            puts error(msg)
+            puts error(validator.errors)
+            to_file(url)
+          end
+        end
+
+        if options[:not_found] && page.not_found?
+          exit_code = 1
+          puts error("%s linked in %s but not exist" % [url, page.referer])
+          to_file(url)
+        end
+      }
+    end
+    exit_code
   end
 end
