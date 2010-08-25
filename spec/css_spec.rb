@@ -4,7 +4,6 @@ describe ValidateWebsite do
 
     before(:each) do
       FakeWeb.clean_registry
-      @opts = {}
     end
 
     it "should crawl css and extract url" do
@@ -23,8 +22,8 @@ describe ValidateWebsite do
                             :content_type => 'image/png')
       pages << FakePage.new('image/pouet_42.png',
                             :content_type => 'image/png')
-      validate_website = ValidateWebsite.new([])
-      validate_website.crawl(pages[0].url, @opts)
+      validate_website = ValidateWebsite.new
+      validate_website.crawl(pages[0].url)
       validate_website.anemone.should have(5).pages
   end
 
@@ -35,8 +34,8 @@ describe ValidateWebsite do
                           :content_type => 'text/css')
     pages << FakePage.new('pouet',
                           :content_type => 'image/png')
-    validate_website = ValidateWebsite.new([])
-    validate_website.crawl(pages[0].url, @opts)
+    validate_website = ValidateWebsite.new
+    validate_website.crawl(pages[0].url)
     validate_website.anemone.should have(2).pages
   end
 
@@ -47,8 +46,8 @@ describe ValidateWebsite do
                           :content_type => 'text/css')
     pages << FakePage.new('pouet',
                           :content_type => 'image/png')
-    validate_website = ValidateWebsite.new([])
-    validate_website.crawl(pages[0].url, @opts)
+    validate_website = ValidateWebsite.new
+    validate_website.crawl(pages[0].url)
     validate_website.anemone.should have(2).pages
   end
 end

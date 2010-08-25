@@ -1,4 +1,3 @@
-require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/rdoctask'
 require 'rake'
@@ -21,11 +20,6 @@ end
 # Tasks
 
 task :default => [:clean, :repackage]
-
-#Rake::TestTask.new do |t|
-  #t.libs << "test"
-  #t.test_files = FileList['test/tc_*.rb']
-#end
 
 Rake::RDocTask.new do |rd|
   f = []

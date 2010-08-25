@@ -12,7 +12,7 @@ class ValidateWebsite
 
   attr_reader :anemone
 
-  def initialize(args)
+  def initialize(args=[])
     @options = {
       :site        => 'http://localhost:3000/',
       :useragent   => Anemone::Core::DEFAULT_OPTS[:user_agent],
@@ -76,10 +76,10 @@ class ValidateWebsite
     open(options[:file], 'a').write("#{msg}\n") if options[:file]
   end
 
-  def crawl(site, opts)
+  def crawl(site, opts={})
     exit_code = 0
 
-    @anemone = Anemone.crawl site, opts do |anemone|
+    @anemone = Anemone.crawl(site, opts) do |anemone|
       anemone.skip_links_like Regexp.new(options[:exclude]) if options[:exclude]
 
       anemone.focus_crawl { |p|
@@ -118,7 +118,6 @@ class ValidateWebsite
           else
             exit_code = 1
             puts error(msg)
-            puts error(validator.errors)
             to_file(url)
           end
         end
