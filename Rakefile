@@ -6,10 +6,10 @@ require 'find'
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.3.1'
+PKG_VERSION = '0.3.5'
 
 PKG_FILES = ['README.rdoc', 'Rakefile']
-Find.find('lib/', 'bin/') do |f|
+Find.find('lib/', 'bin/', 'spec/') do |f|
   if FileTest.directory?(f) and f =~ /\.svn|\.git/
     Find.prune
   else
