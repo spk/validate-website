@@ -4,13 +4,11 @@ require 'validator'
 require 'anemone'
 require 'colorful_messages'
 
-include ColorfulMessages
-
 class ValidateWebsite
 
-  attr_reader :options
+  attr_reader :options, :anemone
 
-  attr_reader :anemone
+  include ColorfulMessages
 
   def initialize(args=[])
     @options = {
