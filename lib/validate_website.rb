@@ -22,6 +22,7 @@ class ValidateWebsite
       :cookies     => nil,
       :accept_cookies => true,
       :verbose     => false,
+      :debug       => false,
     }
     parse(args)
 
@@ -51,7 +52,8 @@ class ValidateWebsite
            "Basic http authentification") { |v| @options[:auth] = v }
       o.on("-n", "--not-found", "Log not found url") { |v| @options[:not_found] = v }
       o.on("-c", "--cookies=val", "Set defaults cookies") { |v| @options[:cookies] = v }
-      o.on("-v", "--verbose", "Verbose") { |v| @options[:verbose] = v }
+      o.on("-v", "--verbose", "show detail of validator errors") { |v| @options[:verbose] = v }
+      o.on("-d", "--debug", "show anemone log") { |v| @options[:debug] = v }
 
       o.separator ""
       o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
@@ -116,6 +118,7 @@ class ValidateWebsite
           else
             exit_code = 1
             puts error(msg)
+            puts error(validator.errors) if opts[:error_verbose]
             to_file(url)
           end
         end

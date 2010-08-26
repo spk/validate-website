@@ -16,6 +16,7 @@ exit_code = validate_website.crawl options[:site],
               :authorization  => options[:auth],
               :cookies        => options[:cookies],
               :accept_cookies => options[:accept_cookies],
-              :verbose        => options[:verbose]
+              :verbose        => options[:debug],
+              :error_verbose  => options[:verbose]
 
 exit(exit_code)
