@@ -47,13 +47,13 @@ class ValidateWebsite
       o.on("-e", "--exclude=val", String,
            "Url to exclude") { |v| @options[:exclude] = v }
       o.on("-f", "--file=val", String,
-           "save not well formed urls") { |v| @options[:file] = v }
+           "Save not well formed urls") { |v| @options[:file] = v }
       o.on("--auth=[user,pass]", Array,
            "Basic http authentification") { |v| @options[:auth] = v }
       o.on("-n", "--not-found", "Log not found url") { |v| @options[:not_found] = v }
       o.on("-c", "--cookies=val", "Set defaults cookies") { |v| @options[:cookies] = v }
-      o.on("-v", "--verbose", "show detail of validator errors") { |v| @options[:verbose] = v }
-      o.on("-d", "--debug", "show anemone log") { |v| @options[:debug] = v }
+      o.on("-v", "--verbose", "Show detail of validator errors") { |v| @options[:verbose] = v }
+      o.on("-d", "--debug", "Show anemone log") { |v| @options[:debug] = v }
 
       o.separator ""
       o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
