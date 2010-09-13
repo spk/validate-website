@@ -10,7 +10,6 @@ require 'validate_website'
 validate_website = ValidateWebsite.new(ARGV)
 options = validate_website.options
 
-
 exit_code = validate_website.crawl options[:site],
               :markup_validation => options[:markup_validation],
               :user_agent        => options[:useragent],
