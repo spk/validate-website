@@ -12,11 +12,12 @@ options = validate_website.options
 
 
 exit_code = validate_website.crawl options[:site],
-              :user_agent     => options[:useragent],
-              :authorization  => options[:auth],
-              :cookies        => options[:cookies],
-              :accept_cookies => options[:accept_cookies],
-              :verbose        => options[:debug],
-              :error_verbose  => options[:verbose]
+              :markup_validation => options[:markup_validation],
+              :user_agent        => options[:useragent],
+              :authorization     => options[:auth],
+              :cookies           => options[:cookies],
+              :accept_cookies    => options[:accept_cookies],
+              :verbose           => options[:debug],
+              :error_verbose     => options[:verbose]
 
 exit(exit_code)

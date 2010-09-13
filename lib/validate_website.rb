@@ -12,17 +12,18 @@ class ValidateWebsite
 
   def initialize(args=[])
     @options = {
-      :site        => 'http://localhost:3000/',
-      :useragent   => Anemone::Core::DEFAULT_OPTS[:user_agent],
-      :exclude     => nil,
-      :file        => nil,
-      :auth        => nil,
+      :markup_validation => true,
+      :site              => 'http://localhost:3000/',
+      :useragent         => Anemone::Core::DEFAULT_OPTS[:user_agent],
+      :exclude           => nil,
+      :file              => nil,
+      :auth              => nil,
       # log not found url (404 status code)
-      :not_found   => false,
-      :cookies     => nil,
-      :accept_cookies => true,
-      :verbose     => false,
-      :debug       => false,
+      :not_found         => false,
+      :cookies           => nil,
+      :accept_cookies    => true,
+      :verbose           => false,
+      :debug             => false,
     }
     parse(args)
 
@@ -41,7 +42,6 @@ class ValidateWebsite
 
       o.on("-s", "--site=val", String,
            "Default: #{@options[:site]}") { |v| @options[:site] = v }
-
       o.on("-u", "--useragent=val", String,
            "Default: #{@options[:useragent]}") { |v| @options[:useragent] = v }
       o.on("-e", "--exclude=val", String,
@@ -50,10 +50,16 @@ class ValidateWebsite
            "Save not well formed urls") { |v| @options[:file] = v }
       o.on("--auth=[user,pass]", Array,
            "Basic http authentification") { |v| @options[:auth] = v }
-      o.on("-n", "--not-found", "Log not found url") { |v| @options[:not_found] = v }
       o.on("-c", "--cookies=val", "Set defaults cookies") { |v| @options[:cookies] = v }
-      o.on("-v", "--verbose", "Show detail of validator errors") { |v| @options[:verbose] = v }
-      o.on("-d", "--debug", "Show anemone log") { |v| @options[:debug] = v }
+
+      o.on("-m", "--[no-]markup-validation",
+           "Markup validation (Default: #{@options[:markup_validation]})") { |v| @options[:markup_validation] = v }
+      o.on("-n", "--not-found",
+           "Log not found url (Default: #{@options[:not_found]})") { |v| @options[:not_found] = v }
+      o.on("-v", "--verbose",
+           "Show detail of validator errors (Default: #{@options[:verbose]})") { |v| @options[:verbose] = v }
+      o.on("-d", "--debug",
+           "Show anemone log (Default: #{@options[:debug]})") { |v| @options[:debug] = v }
 
       o.separator ""
       o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
@@ -80,7 +86,7 @@ class ValidateWebsite
     exit_code = 0
 
     @anemone = Anemone.crawl(site, opts) do |anemone|
-      anemone.skip_links_like Regexp.new(options[:exclude]) if options[:exclude]
+      anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
 
       anemone.focus_crawl { |p|
         links = []
@@ -108,22 +114,24 @@ class ValidateWebsite
       anemone.on_every_page { |page|
         url = page.url.to_s
 
-        # validate html/html+xml
-        if page.html? && page.fetched?
-          print info(url)
-          validator = Validator.new(page)
-          msg = " well formed? %s" % validator.valid?
-          if validator.valid?
-            puts success(msg)
-          else
-            exit_code = 1
-            puts error(msg)
-            puts error(validator.errors) if opts[:error_verbose]
-            to_file(url)
+        if opts[:markup_validation]
+          # validate html/html+xml
+          if page.html? && page.fetched?
+            print info(url)
+            validator = Validator.new(page)
+            msg = " well formed? %s" % validator.valid?
+            if validator.valid?
+              puts success(msg)
+            else
+              exit_code = 1
+              puts error(msg)
+              puts error(validator.errors) if opts[:error_verbose]
+              to_file(url)
+            end
           end
         end
 
-        if options[:not_found] && page.not_found?
+        if opts[:not_found] && page.not_found?
           exit_code = 1
           puts error("%s linked in %s but not exist" % [url, page.referer])
           to_file(url)
