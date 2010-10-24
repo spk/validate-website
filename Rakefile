@@ -6,7 +6,7 @@ require 'find'
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.4.0'
+PKG_VERSION = '0.4.1'
 
 PKG_FILES = ['README.rdoc', 'Rakefile']
 Find.find('lib/', 'bin/', 'spec/') do |f|
