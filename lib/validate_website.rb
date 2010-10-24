@@ -12,8 +12,8 @@ class ValidateWebsite
 
   def initialize(args=[])
     @options = {
-      :markup_validation => true,
       :site              => 'http://localhost:3000/',
+      :markup_validation => true,
       :useragent         => Anemone::Core::DEFAULT_OPTS[:user_agent],
       :exclude           => nil,
       :file              => nil,
@@ -78,10 +78,6 @@ class ValidateWebsite
     return abs if abs && page.in_domain?(abs)
   end
 
-  def to_file(msg)
-    open(options[:file], 'a').write("#{msg}\n") if options[:file]
-  end
-
   def crawl(site, opts={})
     exit_code = 0
 
@@ -139,5 +135,10 @@ class ValidateWebsite
       }
     end
     exit_code
+  end
+
+  private
+  def to_file(msg)
+    open(options[:file], 'a').write("#{msg}\n") if options[:file]
   end
 end
