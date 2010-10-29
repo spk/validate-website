@@ -53,9 +53,10 @@ spec = Gem::Specification.new do |s|
   s.summary = 'Web crawler for checking the validity of your documents'
   s.name = PKG_NAME
   s.version = PKG_VERSION
-  s.requirements << 'spk-anemone' << 'rainbow'
+  s.requirements << 'spk-anemone' << 'rainbow' << 'html5'
   s.add_dependency('spk-anemone', '>= 0.4.0')
   s.add_dependency('rainbow', '>= 1.1')
+  s.add_dependency('html5', '= 0.10.0')
   s.add_development_dependency('rspec', '>= 2.0.0')
   s.add_development_dependency('fakeweb', '>= 1.3.0')
   s.require_path = 'lib'

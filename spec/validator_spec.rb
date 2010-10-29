@@ -21,7 +21,6 @@ describe Validator do
     end
 
     it "html5 should be valid" do
-      pending("need to work on html5")
       name = 'html5'
       file = File.join('spec', 'data', "#{name}.html")
       page = FakePage.new(name,
