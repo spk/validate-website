@@ -121,7 +121,7 @@ class ValidateWebsite
             else
               exit_code = 1
               puts error(msg)
-              puts error(validator.errors) if opts[:error_verbose]
+              puts error(validator.errors.join(", ")) if opts[:error_verbose]
               to_file(url)
             end
           end
