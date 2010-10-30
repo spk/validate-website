@@ -40,26 +40,40 @@ class ValidateWebsite
       o.define_head "validate-website - Web crawler for checking the validity of your documents"
       o.separator   ""
 
-      o.on("-s", "--site=val", String,
-           "Default: #{@options[:site]}") { |v| @options[:site] = v }
-      o.on("-u", "--useragent=val", String,
-           "Default: #{@options[:useragent]}") { |v| @options[:useragent] = v }
-      o.on("-e", "--exclude=val", String,
-           "Url to exclude") { |v| @options[:exclude] = v }
-      o.on("-f", "--file=val", String,
-           "Save not well formed urls") { |v| @options[:file] = v }
-      o.on("--auth=[user,pass]", Array,
+      o.on("-s", "--site 'SITE'", String,
+           "Website to crawl (Default: #{@options[:site]})") { |v|
+        @options[:site] = v
+      }
+      o.on("-u", "--useragent 'USERAGENT'", String,
+           "Change user agent (Default: #{@options[:useragent]})") { |v|
+        @options[:useragent] = v
+      }
+      o.on("-e", "--exclude 'EXCLUDE'", String,
+           "Url to exclude (ex: 'redirect|news')") { |v|
+        @options[:exclude] = v
+      }
+      o.on("-f", "--file 'FILE'", String,
+           "Save not well formed or not found urls") { |v| @options[:file] = v }
+      o.on("-a", "--auth 'USER,PASS'", Array,
            "Basic http authentification") { |v| @options[:auth] = v }
-      o.on("-c", "--cookies=val", "Set defaults cookies") { |v| @options[:cookies] = v }
-
+      o.on("-c", "--cookies 'COOKIES'", String,
+           "Set defaults cookies") { |v| @options[:cookies] = v }
       o.on("-m", "--[no-]markup-validation",
-           "Markup validation (Default: #{@options[:markup_validation]})") { |v| @options[:markup_validation] = v }
+           "Markup validation (Default: #{@options[:markup_validation]})") { |v|
+        @options[:markup_validation] = v
+      }
       o.on("-n", "--not-found",
-           "Log not found url (Default: #{@options[:not_found]})") { |v| @options[:not_found] = v }
+           "Log not found url (Default: #{@options[:not_found]})") { |v|
+        @options[:not_found] = v
+      }
       o.on("-v", "--verbose",
-           "Show detail of validator errors (Default: #{@options[:verbose]})") { |v| @options[:verbose] = v }
+           "Show validator errors (Default: #{@options[:verbose]})") { |v|
+        @options[:verbose] = v
+      }
       o.on("-d", "--debug",
-           "Show anemone log (Default: #{@options[:debug]})") { |v| @options[:debug] = v }
+           "Show anemone log (Default: #{@options[:debug]})") { |v|
+        @options[:debug] = v
+      }
 
       o.separator ""
       o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }

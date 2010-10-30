@@ -1,8 +1,4 @@
-== validate-website
-
-== DESCRIPTION
-
-  Web crawler for checking the validity of your documents.
+= validate-website - Web crawler for checking the validity of your documents
 
 == INSTALLATION
 
@@ -10,48 +6,56 @@
 
 == SYNOPSIS
 
-  validate-website --help
-  validate-website -s "http://localhost:4567/"
-  -u "Mozilla 5.0" \ # user agent
-  -f not-well-formed.txt \ # log file
-  --auth=user,pass \ # http auth
-  -e 'redirect|news' \ # exclude regex
-  -n # log not found (404)
-  -c "name=val;name2=val2"
-  -v # verbose: show detail of validator errors
-  -d # debug: show anemone log
+validate-website [OPTIONS]
 
-== REQUIREMENTS:
+== DESCRIPTION
 
-  spk-anemone >= 0.2.4 (forked from chriskite/anemone,
-                        add auth support and html body)
-  rainbow >= 1.0.4 (for console color)
+validate-website is a web crawler for checking the markup validity and not
+found urls.
 
-== CREDITS:
+== OPTIONS
 
-  Thanks tenderlove for Nokogiri,
-  this library is inspired from markup_validity
+  -s, --site SITE
+      Website to crawl (Default: http://localhost:3000/)
+  -u, --useragent USERAGENT
+      Change user agent (Default: Anemone/VERSION)
+  -e, --exclude EXCLUDE
+      Url to exclude (ex: redirect|news)
+  -f, --file FILE
+      Save not well formed or not found (with -n used) urls
+  -a, --auth USER,PASS
+      Basic http authentification
+  -c, --cookies COOKIES
+      Set defaults cookies
+  -m, --[no-]markup-validation
+      Markup validation (Default: true)
+  -n, --not-found
+      Log not found url (Default: false)
+  -v, --verbose
+      Show detail of validator errors (Default: false).
+  -d, --debug
+      Show anemone log (Default: false)
+  -h, --help
+      Show help message and exit.
+
+== EXIT STATUS
+0::
+  Markup is valid and no 404 found.
+1::
+  Markup not valid or not found urls.
+
+== REQUIREMENTS
+
+* spk-anemone, '>= 0.4.0'
+* rainbow, '>= 1.1'
+* html5, '= 0.10.0'
+
+== CREDITS
+
+* Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
+* And Chris Kite for Anemone web-spider framework.
 
 == LICENSE
-(The MIT License)
+The MIT License
 
-Copyright (c) 2009 Laurent Arnoud (spk)
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Copyright (c) 2009-2010 Laurent Arnoud <laurent@spkdev.net>

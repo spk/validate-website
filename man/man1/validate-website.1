@@ -1,0 +1,114 @@
+'\" t
+.\"     Title: validate-website
+.\"    Author: [see the "AUTHOR" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 10/30/2010
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "VALIDATE\-WEBSITE" "1" "10/30/2010" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+validate-website \- Web crawler for checking the validity of your documents
+.SH "SYNOPSIS"
+.sp
+\fBvalidate\-website\fR [\fIOPTIONS\fR]
+.SH "DESCRIPTION"
+.sp
+validate\-website is a web crawler for checking the markup validity and not found urls\&.
+.SH "OPTIONS"
+.PP
+\fB\-s\fR, \fB\-\-site\fR \fISITE\fR
+.RS 4
+Website to crawl (Default:
+http://localhost:3000/)
+.RE
+.PP
+\fB\-u\fR, \fB\-\-useragent\fR \fIUSERAGENT\fR
+.RS 4
+Change user agent (Default: Anemone/VERSION)
+.RE
+.PP
+\fB\-e\fR, \fB\-\-exclude\fR \fIEXCLUDE\fR
+.RS 4
+Url to exclude (ex:
+\fIredirect|news\fR)
+.RE
+.PP
+\fB\-f\fR, \fB\-\-file\fR \fIFILE\fR
+.RS 4
+Save not well formed or not found (with \-n used) urls
+.RE
+.PP
+\fB\-a\fR, \fB\-\-auth\fR \fIUSER,PASS\fR
+.RS 4
+Basic http authentification
+.RE
+.PP
+\fB\-c\fR, \fB\-\-cookies\fR \fICOOKIES\fR
+.RS 4
+Set defaults cookies
+.RE
+.PP
+\fB\-m\fR, \fB\-\-[no\-]markup\-validation\fR
+.RS 4
+Markup validation (Default: true)
+.RE
+.PP
+\fB\-n\fR, \fB\-\-not\-found\fR
+.RS 4
+Log not found url (Default: false)
+.RE
+.PP
+\fB\-v\fR, \fB\-\-verbose\fR
+.RS 4
+Show detail of validator errors (Default: false)\&.
+.RE
+.PP
+\fB\-d\fR, \fB\-\-debug\fR
+.RS 4
+Show anemone log (Default: false)
+.RE
+.PP
+\fB\-h\fR, \fB\-\-help\fR
+.RS 4
+Show help message and exit\&.
+.RE
+.SH "EXIT STATUS"
+.PP
+0
+.RS 4
+Markup is valid and no 404 found\&.
+.RE
+.PP
+1
+.RS 4
+Markup not valid or not found urls\&.
+.RE
+.SH "AUTHOR"
+.sp
+Laurent Arnoud <laurent@spkdev\&.net>
+.SH "LICENSE"
+.sp
+The MIT License
+.sp
+Copyright (c) 2009\-2010 Laurent Arnoud <laurent@spkdev\&.net>

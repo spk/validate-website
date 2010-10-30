@@ -9,8 +9,8 @@ require "rspec/core/rake_task" # RSpec 2.0
 PKG_NAME = 'validate-website'
 PKG_VERSION = '0.4.1'
 
-PKG_FILES = ['README.rdoc', 'Rakefile']
-Find.find('lib/', 'bin/', 'spec/') do |f|
+PKG_FILES = ['README.rdoc', 'Rakefile', 'LICENSE']
+Find.find('bin/', 'lib/', 'man/', 'spec/') do |f|
   if FileTest.directory?(f) and f =~ /\.svn|\.git/
     Find.prune
   else
@@ -63,12 +63,18 @@ spec = Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables << 'validate-website'
   s.files = PKG_FILES
-  s.description = 'Web crawler for checking the validity of your documents'
+  s.description = 'validate-website is a web crawler for checking the markup' +
+    'validity and not found urls.'
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
   pkg.need_zip = true
   pkg.need_tar = true
+end
+
+desc 'Update manpage from asciidoc file'
+task :manpage do
+  system('a2x -f manpage -D man/man1 doc/validate-website.txt')
 end
 
 # RSpec 2.0

@@ -1,0 +1,59 @@
+validate-website(1)
+===================
+
+NAME
+----
+validate-website - Web crawler for checking the validity of your documents
+
+SYNOPSIS
+--------
+*validate-website* ['OPTIONS']
+
+DESCRIPTION
+-----------
+validate-website is a web crawler for checking the markup validity and not
+found urls.
+
+OPTIONS
+-------
+*-s*, *--site* 'SITE'::
+  Website to crawl (Default: http://localhost:3000/)
+*-u*, *--useragent* 'USERAGENT'::
+  Change user agent (Default: Anemone/VERSION)
+*-e*, *--exclude* 'EXCLUDE'::
+  Url to exclude (ex: 'redirect|news')
+*-f*, *--file* 'FILE'::
+  Save not well formed or not found (with -n used) urls
+*-a*, *--auth* 'USER,PASS'::
+  Basic http authentification
+*-c*, *--cookies* 'COOKIES'::
+  Set defaults cookies
+*-m*, *--[no-]markup-validation*::
+  Markup validation (Default: true)
+*-n*, *--not-found*::
+  Log not found url (Default: false)
+*-v*, *--verbose*::
+  Show detail of validator errors (Default: false).
+*-d*, *--debug*::
+  Show anemone log (Default: false)
+*-h*, *--help*::
+  Show help message and exit.
+
+EXIT STATUS
+-----------
+0::
+  Markup is valid and no 404 found.
+1::
+  Markup not valid or not found urls.
+
+AUTHOR
+------
+Laurent Arnoud <laurent@spkdev.net>
+
+LICENSE
+-------
+The MIT License
+
+Copyright (c) 2009-2010 Laurent Arnoud <laurent@spkdev.net>
+
+// vim: set syntax=asciidoc:
