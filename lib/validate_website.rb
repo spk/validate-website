@@ -14,10 +14,10 @@ class ValidateWebsite
     @options = {
       :site              => 'http://localhost:3000/',
       :markup_validation => true,
-      :useragent         => Anemone::Core::DEFAULT_OPTS[:user_agent],
+      :user_agent        => Anemone::Core::DEFAULT_OPTS[:user_agent],
       :exclude           => nil,
       :file              => nil,
-      :auth              => nil,
+      :authorization     => nil,
       # log not found url (404 status code)
       :not_found         => false,
       :cookies           => nil,
@@ -36,17 +36,18 @@ class ValidateWebsite
   def parse(args)
     opts = OptionParser.new do |o|
       o.set_summary_indent('  ')
-      o.banner =    "Usage: validate-website [OPTIONS]"
-      o.define_head "validate-website - Web crawler for checking the validity of your documents"
-      o.separator   ""
+      o.banner =    'Usage: validate-website [OPTIONS]'
+      o.define_head 'validate-website - Web crawler for checking the validity'+
+        ' of your documents'
+      o.separator   ''
 
       o.on("-s", "--site 'SITE'", String,
            "Website to crawl (Default: #{@options[:site]})") { |v|
         @options[:site] = v
       }
-      o.on("-u", "--useragent 'USERAGENT'", String,
-           "Change user agent (Default: #{@options[:useragent]})") { |v|
-        @options[:useragent] = v
+      o.on("-u", "--user-agent 'USERAGENT'", String,
+           "Change user agent (Default: #{@options[:user_agent]})") { |v|
+        @options[:user_agent] = v
       }
       o.on("-e", "--exclude 'EXCLUDE'", String,
            "Url to exclude (ex: 'redirect|news')") { |v|
@@ -54,8 +55,10 @@ class ValidateWebsite
       }
       o.on("-f", "--file 'FILE'", String,
            "Save not well formed or not found urls") { |v| @options[:file] = v }
-      o.on("-a", "--auth 'USER,PASS'", Array,
-           "Basic http authentification") { |v| @options[:auth] = v }
+      o.on("-a", "--authorization 'USER,PASS'", Array,
+           "Basic http authentification") { |v|
+        @options[:authorization] = v
+      }
       o.on("-c", "--cookies 'COOKIES'", String,
            "Set defaults cookies") { |v| @options[:cookies] = v }
       o.on("-m", "--[no-]markup-validation",
