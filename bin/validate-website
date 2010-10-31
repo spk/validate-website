@@ -10,16 +10,16 @@ require 'validate_website'
 validate_website = ValidateWebsite.new(ARGV)
 options = validate_website.options
 
-exit_code = validate_website.crawl options[:site],
-              :markup_validation => options[:markup_validation],
-              :user_agent        => options[:user_agent],
-              :exclude           => options[:exclude],
-              :file              => options[:file],
-              :authorization     => options[:authorization],
-              :not_found         => options[:not_found],
-              :cookies           => options[:cookies],
-              :accept_cookies    => options[:accept_cookies],
-              :verbose           => options[:debug],
-              :error_verbose     => options[:verbose]
+validate_website.crawl options[:site],
+  :markup_validation => options[:markup_validation],
+  :user_agent        => options[:user_agent],
+  :exclude           => options[:exclude],
+  :file              => options[:file],
+  :authorization     => options[:authorization],
+  :not_found         => options[:not_found],
+  :cookies           => options[:cookies],
+  :accept_cookies    => options[:accept_cookies],
+  :verbose           => options[:debug],
+  :error_verbose     => options[:verbose]
 
-exit(exit_code)
+exit(validate_website.exit_status)

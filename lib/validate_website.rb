@@ -10,7 +10,15 @@ class ValidateWebsite
 
   include ColorfulMessages
 
+  EXIT_SUCCESS = 0
+  EXIT_FAILURE_MARKUP = 64
+  EXIT_FAILURE_NOT_FOUND = 65
+  EXIT_FAILURE_MARKUP_NOT_FOUND = 66
+
   def initialize(args=[])
+    @markup_error = nil
+    @not_found_error = nil
+
     @options = {
       :site              => 'http://localhost:3000/',
       :markup_validation => true,
@@ -96,8 +104,6 @@ class ValidateWebsite
   end
 
   def crawl(site, opts={})
-    exit_code = 0
-
     @anemone = Anemone.crawl(site, opts) do |anemone|
       anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
 
@@ -136,7 +142,7 @@ class ValidateWebsite
             if validator.valid?
               puts success(msg)
             else
-              exit_code = 1
+              @markup_error = true
               puts error(msg)
               puts error(validator.errors.join(", ")) if opts[:error_verbose]
               to_file(url)
@@ -145,13 +151,24 @@ class ValidateWebsite
         end
 
         if opts[:not_found] && page.not_found?
-          exit_code = 1
+          @not_found_error = true
           puts error("%s linked in %s but not exist" % [url, page.referer])
           to_file(url)
         end
       }
     end
-    exit_code
+  end
+
+  def exit_status
+    if @markup_error && @not_found_error
+      EXIT_FAILURE_MARKUP_NOT_FOUND
+    elsif @markup_error
+      EXIT_FAILURE_MARKUP
+    elsif @not_found_error
+      EXIT_FAILURE_NOT_FOUND
+    else
+      EXIT_SUCCESS
+    end
   end
 
   private

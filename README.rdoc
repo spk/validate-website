@@ -41,8 +41,12 @@ found urls.
 == EXIT STATUS
 0::
   Markup is valid and no 404 found.
-1::
-  Markup not valid or not found urls.
+64::
+  Not valid markup found.
+65::
+  There are pages not found.
+66::
+  There are not valid markup and pages not found.
 
 == REQUIREMENTS
 
