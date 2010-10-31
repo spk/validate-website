@@ -17,13 +17,13 @@ found urls.
 
   -s, --site SITE
       Website to crawl (Default: http://localhost:3000/)
-  -u, --useragent USERAGENT
+  -u, --user-agent USERAGENT
       Change user agent (Default: Anemone/VERSION)
   -e, --exclude EXCLUDE
       Url to exclude (ex: redirect|news)
   -f, --file FILE
       Save not well formed or not found (with -n used) urls
-  -a, --auth USER,PASS
+  -a, --authorization USER,PASS
       Basic http authentification
   -c, --cookies COOKIES
       Set defaults cookies
