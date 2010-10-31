@@ -7,15 +7,16 @@ class Validator
     @page = page
     @dtd = @page.doc.internal_subset
     init_namespace(@dtd)
+    @errors = []
 
     if @namespace
       if @dtd_uri && @page.body.match(@dtd_uri.to_s)
-        fixed_dtd = @page.body.sub(@dtd_uri.to_s, @namespace + '.dtd')
+        document = @page.body.sub(@dtd_uri.to_s, @namespace + '.dtd')
       else
-        fixed_dtd = @page.body
+        document = @page.body
       end
       @doc = Dir.chdir(XHTML_PATH) do
-        Nokogiri::XML(fixed_dtd) { |cfg|
+        Nokogiri::XML(document) { |cfg|
           cfg.noent.dtdload.dtdvalid
         }
       end
@@ -26,7 +27,17 @@ class Validator
           Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
         end
       end
-      @errors = @xsd ? @xsd.validate(@doc) : ["XSD unknown"]
+
+      if @xsd
+        # have the xsd so use it
+        @errors = @xsd.validate(@doc)
+      else
+        # dont have xsd fall back to dtd
+        @doc = Dir.chdir(XHTML_PATH) do
+          Nokogiri::HTML.parse(document)
+        end
+        @errors = @doc.errors
+      end
     elsif @page.body =~ /^\<!DOCTYPE html\>/i
       # html5 doctype
       # http://dev.w3.org/html5/spec/Overview.html#the-doctype
@@ -36,10 +47,11 @@ class Validator
       html5_parser.parse(@page.body)
       @errors = html5_parser.errors.collect{|e| e[1] }
     else
-      @errors = ['Unknown Document']
+      @errors << 'Unknown Document'
     end
   rescue Nokogiri::XML::SyntaxError => e
-    @errors = [e]
+    # http://nokogiri.org/tutorials/ensuring_well_formed_markup.html
+    @errors << e
   end
 
   def valid?
