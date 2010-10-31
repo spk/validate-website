@@ -30,4 +30,15 @@ describe Validator do
       validator = Validator.new(@html5_page)
       validator.should be_valid
     end
+
+    it 'should validate html4' do
+      name = 'html4-strict'
+      file = File.join('spec', 'data', "#{name}.html")
+      page = FakePage.new(name,
+                          :body => open(file).read,
+                          :content_type => 'text/html')
+      @html4_strict_page = @http.fetch_page(page.url)
+      validator = Validator.new(@html4_strict_page)
+      validator.should be_valid
+    end
 end
