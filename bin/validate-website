@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+lib_dir = File.join(File.dirname(__FILE__), '..', 'lib')
+$:.unshift(File.expand_path(lib_dir))
 
 developer_mode = false
 developer_mode = true if __FILE__ == $0
