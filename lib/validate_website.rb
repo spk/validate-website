@@ -92,17 +92,6 @@ class ValidateWebsite
     opts.parse!(args)
   end
 
-  def get_url(page, elem, attrname)
-    u = elem.attributes[attrname] if elem.attributes[attrname]
-    return if u.nil?
-    begin
-      abs = page.to_absolute(URI(u))
-    rescue
-      abs = nil
-    end
-    return abs if abs && page.in_domain?(abs)
-  end
-
   def crawl(site, opts={})
     @anemone = Anemone.crawl(site, opts) do |anemone|
       anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
@@ -174,5 +163,16 @@ class ValidateWebsite
   private
   def to_file(msg)
     open(options[:file], 'a').write("#{msg}\n") if options[:file]
+  end
+
+  def get_url(page, elem, attrname)
+    u = elem.attributes[attrname] if elem.attributes[attrname]
+    return if u.nil?
+    begin
+      abs = page.to_absolute(URI(u))
+    rescue
+      abs = nil
+    end
+    return abs if abs && page.in_domain?(abs)
   end
 end
