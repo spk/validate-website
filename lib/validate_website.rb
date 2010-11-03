@@ -110,7 +110,7 @@ class ValidateWebsite
         end
         if p.content_type == 'text/css'
           p.body.scan(/url\((['".\/\w-]+)\)/).each do |url|
-            url = url.to_s.gsub("'", "").gsub('"', '')
+            url = url.first.gsub("'", "").gsub('"', '')
             abs = p.to_absolute(URI(url))
             links << abs
           end
