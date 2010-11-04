@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'optparse'
 require 'open-uri'
 require 'validator'

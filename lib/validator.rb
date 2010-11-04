@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Validator
   XHTML_PATH = File.join(File.dirname(__FILE__), '..', 'lib', 'xhtml')
 
@@ -45,7 +47,9 @@ class Validator
       require 'html5/filters/validator'
       html5_parser = HTML5::HTMLParser.new(:tokenizer => HTMLConformanceChecker)
       html5_parser.parse(@page.body)
-      @errors = html5_parser.errors.collect{|e| e[1] }
+      @errors = html5_parser.errors.collect do |er|
+        "#{er[1]} line #{er[0][0]}"
+      end
     else
       @errors << 'Unknown Document'
     end
