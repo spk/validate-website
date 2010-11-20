@@ -135,7 +135,7 @@ class ValidateWebsite
             else
               @markup_error = true
               puts error(msg)
-              puts error(validator.errors.join(", ")) if opts[:error_verbose]
+              puts error(validator.errors.join(", ")) if opts[:validate_verbose]
               to_file(url)
             end
           end
