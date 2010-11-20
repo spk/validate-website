@@ -95,6 +95,8 @@ class ValidateWebsite
   end
 
   def crawl(site, opts={})
+    puts note("Validating #{site}") if opts[:validate_verbose]
+
     @anemone = Anemone.crawl(site, opts) do |anemone|
       anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
 
