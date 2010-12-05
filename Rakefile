@@ -23,18 +23,8 @@ end
 task :default => [:clean, :repackage]
 
 Rake::RDocTask.new do |rd|
-  f = []
-  require 'find'
-  Find.find('lib/') do |file|
-    # Skip hidden files (.svn/ directories and Vim swapfiles)
-    if file.split(/\//).last =~ /^\./
-      Find.prune
-    else
-      f << file if not FileTest.directory?(file)
-    end
-  end
-  rd.rdoc_files.include(f)
-  rd.options << '--all'
+  rd.main = "README.rdoc"
+  rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
 end
 
 Rake::PackageTask.new(PKG_NAME, PKG_VERSION) do |p|

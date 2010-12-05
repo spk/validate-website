@@ -2,6 +2,12 @@
 
 == INSTALLATION
 
+=== Debian
+
+  aptitude install rubygems ruby1.8-dev libxslt-dev libxml2-dev
+
+=== RubyGems
+
   gem install validate-website
 
 == SYNOPSIS
