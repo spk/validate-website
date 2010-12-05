@@ -23,6 +23,7 @@ validate_website.crawl options[:site],
   :cookies           => options[:cookies],
   :accept_cookies    => options[:accept_cookies],
   :verbose           => options[:debug],
-  :validate_verbose  => options[:verbose]
+  :validate_verbose  => options[:verbose],
+  :quiet             => options[:quiet]
 
 exit(validate_website.exit_status)

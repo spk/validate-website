@@ -34,6 +34,7 @@ class ValidateWebsite
       :accept_cookies    => true,
       :verbose           => false,
       :debug             => false,
+      :quiet             => false,
     }
     parse(args)
 
@@ -83,6 +84,10 @@ class ValidateWebsite
            "Show validator errors (Default: #{@options[:verbose]})") { |v|
         @options[:verbose] = v
       }
+      o.on("-q", "--quiet",
+           "Only report errors (Default: #{@options[:quiet]})") { |v|
+        @options[:quiet] = v
+      }
       o.on("-d", "--debug",
            "Show anemone log (Default: #{@options[:debug]})") { |v|
         @options[:debug] = v
@@ -129,13 +134,16 @@ class ValidateWebsite
         if opts[:markup_validation]
           # validate html/html+xml
           if page.html? && page.fetched?
-            print info(url)
             validator = Validator.new(page)
             msg = " well formed? %s" % validator.valid?
             if validator.valid?
-              puts success(msg)
+              unless opts[:quiet]
+                print info(url)
+                puts success(msg)
+              end
             else
               @markup_error = true
+              print info(url)
               puts error(msg)
               puts error(validator.errors.join(", ")) if opts[:validate_verbose]
               to_file(url)

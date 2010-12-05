@@ -39,6 +39,8 @@ found urls.
       Log not found url (Default: false)
   -v, --verbose
       Show detail of validator errors (Default: false).
+  -q, --quiet
+      Only report errors (Default: false).
   -d, --debug
       Show anemone log (Default: false)
   -h, --help
