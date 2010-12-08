@@ -134,7 +134,7 @@ class ValidateWebsite
         if opts[:markup_validation]
           # validate html/html+xml
           if page.html? && page.fetched?
-            validator = Validator.new(page)
+            validator = Validator.new(page.doc, page.body)
             msg = " well formed? %s" % validator.valid?
             if validator.valid?
               unless opts[:quiet]

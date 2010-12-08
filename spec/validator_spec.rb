@@ -15,7 +15,7 @@ describe Validator do
                             :body => open(file).read,
                             :content_type => 'text/html')
         @xhtml1_page = @http.fetch_page(page.url)
-        validator = Validator.new(@xhtml1_page)
+        validator = Validator.new(@xhtml1_page.doc, @xhtml1_page.body)
         validator.dtd.system_id.should == dtd_uri
         validator.namespace.should == name
         validator.should be_valid
@@ -31,7 +31,7 @@ describe Validator do
                               :body => open(file).read,
                               :content_type => 'text/html')
           @html5_page = @http.fetch_page(page.url)
-          validator = Validator.new(@html5_page)
+          validator = Validator.new(@html5_page.doc, @html5_page.body)
           validator.should be_valid
         end
       end
@@ -44,7 +44,7 @@ describe Validator do
                               :body => open(file).read,
                               :content_type => 'text/html')
           @html5_page = @http.fetch_page(page.url)
-          validator = Validator.new(@html5_page)
+          validator = Validator.new(@html5_page.doc, @html5_page.body)
           validator.should be_valid
         end
       end
@@ -58,7 +58,7 @@ describe Validator do
                             :body => open(file).read,
                             :content_type => 'text/html')
         @html4_strict_page = @http.fetch_page(page.url)
-        validator = Validator.new(@html4_strict_page)
+        validator = Validator.new(@html4_strict_page.doc, @html4_strict_page.body)
         validator.should be_valid
       end
     end
