@@ -8,6 +8,7 @@ require 'colorful_messages'
 
 class ValidateWebsite
 
+  attr_accessor :site
   attr_reader :options, :anemone
 
   include ColorfulMessages
@@ -17,34 +18,42 @@ class ValidateWebsite
   EXIT_FAILURE_NOT_FOUND = 65
   EXIT_FAILURE_MARKUP_NOT_FOUND = 66
 
-  def initialize(args=[])
+  def initialize(args=[], validation_type = :crawl)
     @markup_error = nil
     @not_found_error = nil
 
-    @options = {
+    @options_crawl = {
       :site              => 'http://localhost:3000/',
       :markup_validation => true,
-      :user_agent        => Anemone::Core::DEFAULT_OPTS[:user_agent],
       :exclude           => nil,
       :file              => nil,
-      :authorization     => nil,
       # log not found url (404 status code)
       :not_found         => false,
+      # internal verbose for ValidateWebsite
+      :validate_verbose  => false,
+      :quiet             => false,
+
+      # Anemone options see anemone/lib/anemone/core.rb
+      :verbose           => false,
+      :user_agent        => Anemone::Core::DEFAULT_OPTS[:user_agent],
+      :authorization     => nil,
       :cookies           => nil,
       :accept_cookies    => true,
-      :verbose           => false,
-      :debug             => false,
-      :quiet             => false,
+      :redirect_limit    => 0,
     }
-    parse(args)
+    send("parse_#{validation_type}_options", args)
 
     # truncate file
     if options[:file]
       open(options[:file], 'w').write('')
     end
+
+    @site = @options[:site]
   end
 
-  def parse(args)
+  def parse_crawl_options(args)
+    @options = @options_crawl
+
     opts = OptionParser.new do |o|
       o.set_summary_indent('  ')
       o.banner =    'Usage: validate-website [OPTIONS]'
@@ -81,16 +90,16 @@ class ValidateWebsite
         @options[:not_found] = v
       }
       o.on("-v", "--verbose",
-           "Show validator errors (Default: #{@options[:verbose]})") { |v|
-        @options[:verbose] = v
+           "Show validator errors (Default: #{@options[:validate_verbose]})") { |v|
+        @options[:validate_verbose] = v
       }
       o.on("-q", "--quiet",
            "Only report errors (Default: #{@options[:quiet]})") { |v|
         @options[:quiet] = v
       }
       o.on("-d", "--debug",
-           "Show anemone log (Default: #{@options[:debug]})") { |v|
-        @options[:debug] = v
+           "Show anemone log (Default: #{@options[:verbose]})") { |v|
+        @options[:verbose] = v
       }
 
       o.separator ""
@@ -99,12 +108,32 @@ class ValidateWebsite
     opts.parse!(args)
   end
 
-  def crawl(site, opts={})
-    puts note("Validating #{site}") if opts[:validate_verbose]
+  def validate(doc, body, url, opts={})
+    opts = @options.merge(opts)
+    validator = Validator.new(doc, body)
+    msg = " well formed? %s" % validator.valid?
+    if validator.valid?
+      unless opts[:quiet]
+        print info(url)
+        puts success(msg)
+      end
+    else
+      @markup_error = true
+      print info(url)
+      puts error(msg)
+      puts error(validator.errors.join(", ")) if opts[:validate_verbose]
+      to_file(url)
+    end
+  end
 
-    @anemone = Anemone.crawl(site, opts) do |anemone|
+  def crawl(opts={})
+    opts = @options.merge(opts)
+    puts note("Validating #{@site}") if opts[:validate_verbose]
+
+    @anemone = Anemone.crawl(@site, opts) do |anemone|
       anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
 
+      # select the links on each page to follow (iframe, link, css url)
       anemone.focus_crawl { |p|
         links = []
         if p.html?
@@ -134,20 +163,7 @@ class ValidateWebsite
         if opts[:markup_validation]
           # validate html/html+xml
           if page.html? && page.fetched?
-            validator = Validator.new(page.doc, page.body)
-            msg = " well formed? %s" % validator.valid?
-            if validator.valid?
-              unless opts[:quiet]
-                print info(url)
-                puts success(msg)
-              end
-            else
-              @markup_error = true
-              print info(url)
-              puts error(msg)
-              puts error(validator.errors.join(", ")) if opts[:validate_verbose]
-              to_file(url)
-            end
+            validate(page.doc, page.body, url, opts)
           end
         end
 
@@ -156,6 +172,9 @@ class ValidateWebsite
           puts error("%s linked in %s but not exist" % [url, page.referer])
           to_file(url)
         end
+
+        # throw away the page (hope this saves memory)
+        page = nil
       }
     end
   end

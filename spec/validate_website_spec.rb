@@ -14,7 +14,8 @@ describe ValidateWebsite do
       page = FakePage.new(name,
                           :body => open(file).read,
                           :content_type => 'text/html')
-      @validate_website.crawl(page.url)
+      @validate_website.site = page.url
+      @validate_website.crawl(:quiet => true)
       @validate_website.anemone.should have(3).pages
     end
   end
@@ -27,7 +28,8 @@ describe ValidateWebsite do
                                     .tests {background-image: url(/image/pouet_42.png)}
                                     .tests {background-image: url(/image/pouet)}",
                           :content_type => 'text/css')
-      @validate_website.crawl(page.url)
+      @validate_website.site = page.url
+      @validate_website.crawl
       @validate_website.anemone.should have(5).pages
     end
 
@@ -35,7 +37,8 @@ describe ValidateWebsite do
       page = FakePage.new('test.css',
                             :body => ".test {background-image: url('pouet');}",
                             :content_type => 'text/css')
-      @validate_website.crawl(page.url)
+      @validate_website.site = page.url
+      @validate_website.crawl
       @validate_website.anemone.should have(2).pages
     end
 
@@ -43,7 +46,8 @@ describe ValidateWebsite do
       page = FakePage.new('test.css',
                           :body => ".test {background-image: url(\"pouet\");}",
                           :content_type => 'text/css')
-      @validate_website.crawl(page.url)
+      @validate_website.site = page.url
+      @validate_website.crawl
       @validate_website.anemone.should have(2).pages
     end
   end

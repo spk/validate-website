@@ -11,19 +11,6 @@ require 'rubygems' if developer_mode
 require 'validate_website'
 
 validate_website = ValidateWebsite.new(ARGV)
-options = validate_website.options
-
-validate_website.crawl options[:site],
-  :markup_validation => options[:markup_validation],
-  :user_agent        => options[:user_agent],
-  :exclude           => options[:exclude],
-  :file              => options[:file],
-  :authorization     => options[:authorization],
-  :not_found         => options[:not_found],
-  :cookies           => options[:cookies],
-  :accept_cookies    => options[:accept_cookies],
-  :verbose           => options[:debug],
-  :validate_verbose  => options[:verbose],
-  :quiet             => options[:quiet]
+validate_website.crawl
 
 exit(validate_website.exit_status)
