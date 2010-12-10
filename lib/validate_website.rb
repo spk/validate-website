@@ -44,9 +44,10 @@ class ValidateWebsite
     }
     send("parse_#{validation_type}_options", args)
 
-    # truncate file
-    if options[:file]
-      open(options[:file], 'w').write('')
+    @file = @options[:file]
+    if @file
+      # truncate file
+      open(@file, 'w').write('')
     end
 
     @site = @options[:site]
@@ -192,7 +193,9 @@ class ValidateWebsite
 
   private
   def to_file(msg)
-    open(options[:file], 'a').write("#{msg}\n") if options[:file]
+    if @file && File.exist?(@file)
+      open(@file, 'a').write("#{msg}\n")
+    end
   end
 
   def get_url(page, elem, attrname)

@@ -7,7 +7,7 @@ require "rspec/core/rake_task" # RSpec 2.0
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.5.3'
+PKG_VERSION = '0.5.7'
 
 PKG_FILES = ['README.rdoc', 'Rakefile', 'LICENSE']
 Find.find('bin/', 'lib/', 'man/', 'spec/') do |f|
@@ -51,6 +51,7 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
+  s.executables << 'validate-website-static'
   s.files = PKG_FILES
   s.description = 'validate-website is a web crawler for checking the markup' +
     'validity and not found urls.'

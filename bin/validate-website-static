@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+lib_dir = File.join(File.dirname(__FILE__), '..', 'lib')
+$:.unshift(File.expand_path(lib_dir))
+
+developer_mode = false
+developer_mode = true if __FILE__ == $0
+require 'rubygems' if developer_mode
+
+require 'validate_website'
+
+validate_website = ValidateWebsite.new(ARGV)
+
+files = Dir.glob(File.join("**", "*.html"))
+files.each do |f|
+  next unless File.file?(f)
+
+  body = open(f).read
+  doc = Nokogiri::HTML(body)
+
+  validate_website.validate(doc, body, f)
+end
+
+exit(validate_website.exit_status)
