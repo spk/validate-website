@@ -2,9 +2,11 @@
 
 require 'optparse'
 require 'open-uri'
+
 require 'validator'
-require 'anemone'
 require 'colorful_messages'
+
+require 'anemone'
 
 class ValidateWebsite
 
@@ -36,7 +38,6 @@ class ValidateWebsite
       # Anemone options see anemone/lib/anemone/core.rb
       :verbose           => false,
       :user_agent        => Anemone::Core::DEFAULT_OPTS[:user_agent],
-      :authorization     => nil,
       :cookies           => nil,
       :accept_cookies    => true,
       :redirect_limit    => 0,
@@ -75,12 +76,10 @@ class ValidateWebsite
       }
       o.on("-f", "--file 'FILE'", String,
            "Save not well formed or not found urls") { |v| @options[:file] = v }
-      o.on("-a", "--authorization 'USER,PASS'", Array,
-           "Basic http authentification") { |v|
-        @options[:authorization] = v
-      }
+
       o.on("-c", "--cookies 'COOKIES'", String,
            "Set defaults cookies") { |v| @options[:cookies] = v }
+
       o.on("-m", "--[no-]markup-validation",
            "Markup validation (Default: #{@options[:markup_validation]})") { |v|
         @options[:markup_validation] = v

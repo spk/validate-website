@@ -11,8 +11,9 @@ class Validator
     @dtd = @original_doc.internal_subset
     init_namespace(@dtd)
     @errors = []
+    @errors << 'Unknown document' if @namespace.nil?
 
-    if @namespace
+    if @errors.empty?
       if @dtd_uri && @body.match(@dtd_uri.to_s)
         document = @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
       else
@@ -41,19 +42,8 @@ class Validator
         end
         @errors = @doc.errors
       end
-    elsif @body =~ /^\<!DOCTYPE html\>/i
-      # html5 doctype
-      # http://dev.w3.org/html5/spec/Overview.html#the-doctype
-      require 'html5'
-      require 'html5/filters/validator'
-      html5_parser = HTML5::HTMLParser.new(:tokenizer => HTMLConformanceChecker)
-      html5_parser.parse(@body)
-      @errors = html5_parser.errors.collect do |er|
-        "#{er[1]} line #{er[0][0]}"
-      end
-    else
-      @errors << 'Unknown Document'
     end
+
   rescue Nokogiri::XML::SyntaxError => e
     # http://nokogiri.org/tutorials/ensuring_well_formed_markup.html
     @errors << e

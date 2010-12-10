@@ -24,8 +24,6 @@ OPTIONS
   Url to exclude (ex: 'redirect|news')
 *-f*, *--file* 'FILE'::
   Save not well formed or not found (with -n used) urls
-*-a*, *--authorization* 'USER,PASS'::
-  Basic http authentification
 *-c*, *--cookies* 'COOKIES'::
   Set defaults cookies
 *-m*, *--[no-]markup-validation*::
