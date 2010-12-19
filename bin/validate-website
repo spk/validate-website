@@ -8,9 +8,9 @@ developer_mode = false
 developer_mode = true if __FILE__ == $0
 require 'rubygems' if developer_mode
 
-require 'validate_website'
+require 'validate_website/core'
 
-validate_website = ValidateWebsite.new(ARGV)
+validate_website = ValidateWebsite::Core.new(ARGV)
 validate_website.crawl
 
 exit(validate_website.exit_status)

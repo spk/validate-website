@@ -10,7 +10,7 @@ PKG_NAME = 'validate-website'
 PKG_VERSION = '0.5.7'
 
 PKG_FILES = ['README.rdoc', 'Rakefile', 'LICENSE']
-Find.find('bin/', 'lib/', 'man/', 'spec/') do |f|
+Find.find('bin/', 'lib/', 'man/', 'spec/', 'share/') do |f|
   if FileTest.directory?(f) and f =~ /\.svn|\.git/
     Find.prune
   else

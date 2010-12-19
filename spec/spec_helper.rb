@@ -4,6 +4,6 @@ require 'anemone'
 lib_dir = File.join(File.dirname(__FILE__), '..', 'lib')
 $:.unshift(File.expand_path(lib_dir))
 
-require 'validate_website'
+require 'validate_website/core'
 
 SPEC_DOMAIN = 'http://www.example.com/'

@@ -1,6 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper'))
 
-describe Validator do
+module ValidateWebsite
+  describe Validator do
     before(:each) do
       FakeWeb.clean_registry
       @http = Anemone::HTTP.new
@@ -63,4 +64,5 @@ describe Validator do
         validator.should be_valid
       end
     end
+  end
 end
