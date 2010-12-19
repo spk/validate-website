@@ -22,7 +22,7 @@ module ValidateWebsite
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
 
-    def initialize(args=[], validation_type = :crawl)
+    def initialize(options={}, validation_type = :crawl)
       @markup_error = nil
       @not_found_error = nil
 
@@ -44,7 +44,11 @@ module ValidateWebsite
         :accept_cookies    => true,
         :redirect_limit    => 0,
       }
-      send("parse_#{validation_type}_options", args)
+      if Array === options
+        send("parse_#{validation_type}_options", options)
+      else
+        @options = instance_variable_get("@options_#{validation_type}").merge(options)
+      end
 
       @file = @options[:file]
       if @file
