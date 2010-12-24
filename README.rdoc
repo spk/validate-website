@@ -12,14 +12,16 @@
 
 == SYNOPSIS
 
-validate-website [OPTIONS]
+  validate-website [OPTIONS]
+  validate-website-static [OPTIONS]
 
 == DESCRIPTION
 
 validate-website is a web crawler for checking the markup validity and not
 found urls.
+validate-website-static check the markup validity of your local documents.
 
-== OPTIONS
+== VALIDATE WEBSITE OPTIONS
 
   -s, --site SITE
       Website to crawl (Default: http://localhost:3000/)

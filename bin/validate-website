@@ -10,7 +10,7 @@ require 'rubygems' if developer_mode
 
 require 'validate_website/core'
 
-validate_website = ValidateWebsite::Core.new(ARGV)
+validate_website = ValidateWebsite::Core.new(ARGV, :crawl)
 validate_website.crawl
 
 exit(validate_website.exit_status)

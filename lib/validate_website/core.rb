@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'optparse'
 require 'open-uri'
 
+require 'validate_website/option_parser'
 require 'validate_website/validator'
 require 'validate_website/colorful_messages'
 
@@ -26,29 +26,7 @@ module ValidateWebsite
       @markup_error = nil
       @not_found_error = nil
 
-      @options_crawl = {
-        :site              => 'http://localhost:3000/',
-        :markup_validation => true,
-        :exclude           => nil,
-        :file              => nil,
-        # log not found url (404 status code)
-        :not_found         => false,
-        # internal verbose for ValidateWebsite
-        :validate_verbose  => false,
-        :quiet             => false,
-
-        # Anemone options see anemone/lib/anemone/core.rb
-        :verbose           => false,
-        :user_agent        => Anemone::Core::DEFAULT_OPTS[:user_agent],
-        :cookies           => nil,
-        :accept_cookies    => true,
-        :redirect_limit    => 0,
-      }
-      if Array === options
-        send("parse_#{validation_type}_options", options)
-      else
-        @options = instance_variable_get("@options_#{validation_type}").merge(options)
-      end
+      @options = Parser.parse(options, validation_type)
 
       @file = @options[:file]
       if @file
@@ -57,61 +35,6 @@ module ValidateWebsite
       end
 
       @site = @options[:site]
-    end
-
-    def parse_crawl_options(args)
-      @options = @options_crawl
-
-      opts = OptionParser.new do |o|
-        o.set_summary_indent('  ')
-        o.banner =    'Usage: validate-website [OPTIONS]'
-        o.define_head 'validate-website - Web crawler for checking the validity'+
-          ' of your documents'
-        o.separator   ''
-
-        o.on("-s", "--site 'SITE'", String,
-             "Website to crawl (Default: #{@options[:site]})") { |v|
-          @options[:site] = v
-        }
-        o.on("-u", "--user-agent 'USERAGENT'", String,
-             "Change user agent (Default: #{@options[:user_agent]})") { |v|
-          @options[:user_agent] = v
-        }
-        o.on("-e", "--exclude 'EXCLUDE'", String,
-             "Url to exclude (ex: 'redirect|news')") { |v|
-          @options[:exclude] = v
-        }
-        o.on("-f", "--file 'FILE'", String,
-             "Save not well formed or not found urls") { |v| @options[:file] = v }
-
-        o.on("-c", "--cookies 'COOKIES'", String,
-             "Set defaults cookies") { |v| @options[:cookies] = v }
-
-        o.on("-m", "--[no-]markup-validation",
-             "Markup validation (Default: #{@options[:markup_validation]})") { |v|
-          @options[:markup_validation] = v
-        }
-        o.on("-n", "--not-found",
-             "Log not found url (Default: #{@options[:not_found]})") { |v|
-          @options[:not_found] = v
-        }
-        o.on("-v", "--verbose",
-             "Show validator errors (Default: #{@options[:validate_verbose]})") { |v|
-          @options[:validate_verbose] = v
-        }
-        o.on("-q", "--quiet",
-             "Only report errors (Default: #{@options[:quiet]})") { |v|
-          @options[:quiet] = v
-        }
-        o.on("-d", "--debug",
-             "Show anemone log (Default: #{@options[:verbose]})") { |v|
-          @options[:verbose] = v
-        }
-
-        o.separator ""
-        o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
-      end
-      opts.parse!(args)
     end
 
     def validate(doc, body, url, opts={})

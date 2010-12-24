@@ -1,0 +1,46 @@
+validate-website-static(1)
+==========================
+
+NAME
+----
+validate-website-static - check the validity of your documents
+
+SYNOPSIS
+--------
+*validate-website-static* ['OPTIONS']
+
+DESCRIPTION
+-----------
+validate-website-static check the markup validity of your local documents.
+
+OPTIONS
+-------
+*-p*, *--pattern* 'PATTERN'::
+  Change filenames pattern (Default: \*\*/*.html)
+*-f*, *--file* 'FILE'::
+  Save not well formed urls
+*-v*, *--verbose*::
+  Show detail of validator errors (Default: false).
+*-q*, *--quiet*::
+  Only report errors (Default: false).
+*-h*, *--help*::
+  Show help message and exit.
+
+EXIT STATUS
+-----------
+0::
+  Markup is valid.
+64::
+  Not valid markup found.
+
+AUTHOR
+------
+Laurent Arnoud <laurent@spkdev.net>
+
+LICENSE
+-------
+The MIT License
+
+Copyright (c) 2009-2010 Laurent Arnoud <laurent@spkdev.net>
+
+// vim: set syntax=asciidoc:

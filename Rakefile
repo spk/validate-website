@@ -64,7 +64,7 @@ end
 
 desc 'Update manpage from asciidoc file'
 task :manpage do
-  system('a2x -f manpage -D man/man1 doc/validate-website.txt')
+  system('find doc/ -type f -exec a2x -f manpage -D man/man1 {} \;')
 end
 
 # RSpec 2.0
