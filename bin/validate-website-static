@@ -1,25 +1,14 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-lib_dir = File.join(File.dirname(__FILE__), '..', 'lib')
-$:.unshift(File.expand_path(lib_dir))
-
 developer_mode = false
 developer_mode = true if __FILE__ == $0
-require 'rubygems' if developer_mode
-
-require 'validate_website/core'
-
-validate_website = ValidateWebsite::Core.new(ARGV, :static)
-
-files = Dir.glob(validate_website.options[:pattern])
-files.each do |f|
-  next unless File.file?(f)
-
-  body = open(f).read
-  doc = Nokogiri::HTML(body)
-
-  validate_website.validate(doc, body, f)
+if developer_mode
+  lib_dir = File.join(File.dirname(__FILE__), '..', 'lib')
+  $:.unshift(File.expand_path(lib_dir))
+  require 'rubygems'
 end
 
-exit(validate_website.exit_status)
+require 'validate_website/runner'
+exit_status = ValidateWebsite::Runner.run_static(ARGV)
+exit(exit_status)
