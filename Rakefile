@@ -43,6 +43,7 @@ spec = Gem::Specification.new do |s|
   s.summary = 'Web crawler for checking the validity of your documents'
   s.name = PKG_NAME
   s.version = PKG_VERSION
+  s.license = 'MIT'
   s.requirements << 'anemone' << 'rainbow'
   s.add_dependency('anemone', '>= 0.5.0')
   s.add_dependency('rainbow', '>= 1.1')
