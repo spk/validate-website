@@ -2,7 +2,7 @@
 
 module ValidateWebsite
   class Validator
-    XHTML_PATH = File.join(File.dirname(__FILE__), '..', '..', 'share', 'schemas')
+    XHTML_PATH = File.join(File.dirname(__FILE__), '..', '..', 'data', 'schemas')
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
 
