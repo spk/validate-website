@@ -56,6 +56,7 @@ spec = Gem::Specification.new do |s|
   s.files = PKG_FILES
   s.description = 'validate-website is a web crawler for checking the markup' +
     'validity and not found urls.'
+  s.test_files = Dir.glob('spec/*_spec.rb')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
@@ -69,7 +70,7 @@ task :manpage do
 end
 
 # RSpec 2.0
-RSpec::Core::RakeTask.new(:spec) do |spec|
+RSpec::Core::RakeTask.new(:test) do |spec|
   spec.pattern = 'spec/*_spec.rb'
   spec.rspec_opts = ['--backtrace']
 end
