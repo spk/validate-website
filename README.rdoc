@@ -66,6 +66,10 @@ validate-website-static check the markup validity of your local documents.
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
 * And Chris Kite for Anemone web-spider framework.
 
+== CONTRIBUTORS
+
+* François de Metz (francois2metz)
+
 == LICENSE
 The MIT License
 
