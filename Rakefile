@@ -7,7 +7,7 @@ require "rspec/core/rake_task" # RSpec 2.0
 # Globals
 
 PKG_NAME = 'validate-website'
-PKG_VERSION = '0.6.0'
+PKG_VERSION = '0.6.1'
 
 PKG_FILES = ['README.rdoc', 'Rakefile', 'LICENSE']
 Find.find('bin/', 'lib/', 'man/', 'spec/', 'data/') do |f|
