@@ -22,7 +22,7 @@ module ValidateWebsite
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
 
-    def initialize(options={}, validation_type = :crawl)
+    def initialize(options={}, validation_type=:crawl)
       @markup_error = nil
       @not_found_error = nil
 
@@ -105,6 +105,21 @@ module ValidateWebsite
           # throw away the page (hope this saves memory)
           page = nil
         }
+      end
+    end
+
+    # check files linked on static document
+    # see lib/validate_website/runner.rb
+    def check_static_not_found(links, opts={})
+      opts = @options.merge(opts)
+      if opts[:not_found]
+        links.each do |l|
+          unless File.exists?(l.path)
+            @not_found_error = true
+            puts error("%s linked but not exist" % l)
+            to_file(l)
+          end
+        end
       end
     end
 

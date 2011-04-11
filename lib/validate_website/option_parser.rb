@@ -26,6 +26,9 @@ module ValidateWebsite
       :file              => nil,
       :validate_verbose  => false,
       :quiet             => false,
+      :markup_validation => true,
+      # log not found url (not on filesystem, pwd considered as root « / »)
+      :not_found         => false,
     }
 
     def self.parse(options, type)
@@ -116,6 +119,14 @@ module ValidateWebsite
         o.on("-f", "--file 'FILE'", String,
              "Save not well formed urls") { |v|
           options[:file] = v
+        }
+        o.on("-m", "--[no-]markup-validation",
+             "Markup validation (Default: #{@@default_opts[:markup_validation]})") { |v|
+          options[:markup_validation] = v
+        }
+        o.on("-n", "--not-found",
+             "Log files not on filesystem, pwd considered as root « / » (Default: #{@@default_opts[:not_found]})") { |v|
+          options[:not_found] = v
         }
         o.on("-v", "--verbose",
              "Show validator errors (Default: #{@@default_opts[:validate_verbose]})") { |v|
