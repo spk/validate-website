@@ -18,8 +18,10 @@
 == DESCRIPTION
 
 validate-website is a web crawler for checking the markup validity and not
-found urls.
-validate-website-static check the markup validity of your local documents.
+found urls (more info doc/validate-website.txt).
+
+validate-website-static check the markup validity of your local documents
+(more info doc/validate-website-static.txt).
 
 == VALIDATE WEBSITE OPTIONS
 

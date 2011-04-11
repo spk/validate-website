@@ -19,6 +19,10 @@ OPTIONS
   Change filenames pattern (Default: \*\*/*.html)
 *-f*, *--file* 'FILE'::
   Save not well formed urls
+*-m*, *--[no-]markup-validation*::
+  Markup validation (Default: true)
+*-n*, *--not-found*::
+  Log files not on filesystem, pwd considered as root « / » (Default: false)
 *-v*, *--verbose*::
   Show detail of validator errors (Default: false).
 *-q*, *--quiet*::
