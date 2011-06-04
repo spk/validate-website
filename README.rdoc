@@ -62,7 +62,7 @@ HTML5 support with Validator.nu Web Service.
 
 == REQUIREMENTS
 
-See Gemfile
+See validate-website.gemspec file.
 
 == CREDITS
 
