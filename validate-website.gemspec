@@ -8,11 +8,11 @@ Gem::Specification.new do |s|
   s.version = '0.6.1'
   s.license = 'MIT'
   s.requirements << 'anemone' << 'rainbow' << 'multipart_body'
-  s.add_dependency('anemone', '>= 0.5.0')
-  s.add_dependency('rainbow', '>= 1.1')
+  s.add_dependency('anemone', '>= 0.6.1')
+  s.add_dependency('rainbow', '>= 1.1.1')
   s.add_dependency('multipart_body', '>= 0.2.1')
   s.add_development_dependency('rake', '>= 0.8.7')
-  s.add_development_dependency('rspec', '>= 2.0.0')
+  s.add_development_dependency('rspec', '>= 2.6.0')
   s.add_development_dependency('fakeweb', '>= 1.3.0')
   s.require_path = 'lib'
   s.bindir = 'bin'
