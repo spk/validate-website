@@ -11,7 +11,9 @@ SYNOPSIS
 
 DESCRIPTION
 -----------
-validate-website-static check the markup validity of your local documents.
+validate-website-static check the markup validity of your local documents with
+XML Schema / DTD.
+HTML5 support with Validator.nu Web Service.
 
 OPTIONS
 -------
@@ -36,6 +38,10 @@ EXIT STATUS
   Markup is valid.
 64::
   Not valid markup found.
+65::
+  There are pages not found.
+66::
+  There are not valid markup and pages not found.
 
 AUTHOR
 ------

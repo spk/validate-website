@@ -47,6 +47,7 @@ spec = Gem::Specification.new do |s|
   s.requirements << 'anemone' << 'rainbow'
   s.add_dependency('anemone', '>= 0.5.0')
   s.add_dependency('rainbow', '>= 1.1')
+  s.add_dependency('multipart_body', '>= 0.2.1')
   s.add_development_dependency('rspec', '>= 2.0.0')
   s.add_development_dependency('fakeweb', '>= 1.3.0')
   s.require_path = 'lib'
