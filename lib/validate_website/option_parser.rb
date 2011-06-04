@@ -3,6 +3,7 @@ require 'optparse'
 
 module ValidateWebsite
   class Parser
+    # TODO: no color
     DEFAULT_OPTS_CRAWL = {
       :site              => 'http://localhost:3000/',
       :markup_validation => true,

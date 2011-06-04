@@ -36,6 +36,7 @@ module ValidateWebsite
           # have the xsd so use it
           @errors = @xsd.validate(@doc)
         elsif document =~ /^\<!DOCTYPE html\>/i
+          # TODO: use a local Java, Python parser... write a Ruby HTML5 parser ?
           require 'multipart_body'
           url = URI.parse('http://validator.nu/')
           multipart = MultipartBody.new(:content => document)
