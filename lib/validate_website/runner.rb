@@ -28,6 +28,7 @@ module ValidateWebsite
         body = open(f).read
         doc = Nokogiri::HTML(body)
 
+        # TODO: check css url for static files
         if opts[:not_found]
           doc.search("//a[@href]").each do |a|
             u = a['href']

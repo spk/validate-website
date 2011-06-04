@@ -17,11 +17,13 @@
 
 == DESCRIPTION
 
-validate-website is a web crawler for checking the markup validity and not
-found urls (more info doc/validate-website.txt).
+validate-website is a web crawler for checking the markup validity with XML
+Schema / DTD and not found urls (more info doc/validate-website.txt).
 
-validate-website-static check the markup validity of your local documents
-(more info doc/validate-website-static.txt).
+validate-website-static check the markup validity of your local documents with
+XML Schema / DTD (more info doc/validate-website-static.txt).
+
+HTML5 support with the Validator.nu Web Service.
 
 == VALIDATE WEBSITE OPTIONS
 
@@ -67,6 +69,15 @@ validate-website-static check the markup validity of your local documents
 
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
 * And Chris Kite for Anemone web-spider framework.
+
+== MORE INFO
+
+The HTML5 support is done by using the Validator.nu Web Service, so the content
+of your webpage is logged by a tier. It's not the case for other validation
+because validate-website use the XML Schema or DTD stored on the data/ directory.
+
+Please read http://about.validator.nu/#tos for more info on the HTML5
+validation service.
 
 == CONTRIBUTORS
 

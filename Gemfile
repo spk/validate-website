@@ -1,7 +1,8 @@
-source "http://rubygems.org"
+source :rubygems
 
 gem 'anemone', '>= 0.5.0'
 gem 'rainbow', '>= 1.1'
+gem 'multipart_body', '>= 0.2.1'
 
 group :development do
   gem 'rake', '~> 0.8.7'

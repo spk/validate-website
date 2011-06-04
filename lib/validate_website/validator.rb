@@ -12,7 +12,6 @@ module ValidateWebsite
       @dtd = @original_doc.internal_subset
       init_namespace(@dtd)
       @errors = []
-      @errors << 'Unknown document' if @namespace.nil?
 
       if @errors.empty?
         if @dtd_uri && @body.match(@dtd_uri.to_s)
@@ -28,7 +27,7 @@ module ValidateWebsite
 
         # http://www.w3.org/TR/xhtml1-schema/
         @xsd = Dir.chdir(XHTML_PATH) do
-          if File.exists?(@namespace + '.xsd')
+          if @namespace && File.exists?(@namespace + '.xsd')
             Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
           end
         end
@@ -36,6 +35,19 @@ module ValidateWebsite
         if @xsd
           # have the xsd so use it
           @errors = @xsd.validate(@doc)
+        elsif document =~ /^\<!DOCTYPE html\>/i
+          require 'multipart_body'
+          url = URI.parse('http://validator.nu/')
+          multipart = MultipartBody.new(:content => document)
+          http = Net::HTTP.new(url.host)
+          headers = {
+            'Content-Type' => "multipart/form-data; boundary=#{multipart.boundary}",
+            'Content-Length' => multipart.to_s.bytesize.to_s,
+          }
+          res = http.start {|con| con.post(url.path, multipart.to_s, headers) }
+          if (el = Nokogiri::XML.parse(res.body).at_css('body p.failure'))
+            @errors << "HTML5 validator.nu #{el.content}"
+          end
         else
           # dont have xsd fall back to dtd
           @doc = Dir.chdir(XHTML_PATH) do

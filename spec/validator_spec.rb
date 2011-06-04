@@ -25,8 +25,12 @@ module ValidateWebsite
 
     describe('html5') do
       context('when valid') do
+        before do
+          validator_res = File.join('spec', 'data', 'validator.nu-success.html')
+          FakeWeb.register_uri(:any, 'http://validator.nu/',
+                               :body => open(validator_res).read)
+        end
         it "html5 should be valid" do
-          pending("need update html5lib")
           name = 'html5'
           file = File.join('spec', 'data', "#{name}.html")
           page = FakePage.new(name,
@@ -36,10 +40,7 @@ module ValidateWebsite
           validator = Validator.new(@html5_page.doc, @html5_page.body)
           validator.should be_valid
         end
-      end
-      context('should be valid') do
         it "with DLFP" do
-          pending("update html5lib ruby ?")
           name = 'html5'
           file = File.join('spec', 'data', "#{name}-linuxfr.html")
           page = FakePage.new(name,
