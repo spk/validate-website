@@ -23,6 +23,7 @@ module ValidateWebsite
     }
 
     DEFAULT_OPTS_STATIC = {
+      :site              => 'http://www.example.com/',
       :pattern           => '**/*.html',
       :file              => nil,
       :validate_verbose  => false,
@@ -124,6 +125,10 @@ module ValidateWebsite
           'your documents'
         o.separator   ''
 
+        o.on("-s", "--site 'SITE'", String,
+             "Website to crawl (Default: #{@@default_opts[:site]})") { |v|
+          options[:site] = v
+        }
         o.on("-p", "--pattern 'PATTERN'", String,
              "Change filenames pattern (Default: #{@@default_opts[:pattern]})") { |v|
           options[:pattern] = v.strip

@@ -5,7 +5,7 @@ module ValidateWebsite
 
     before(:each) do
       FakeWeb.clean_registry
-      @validate_website = ValidateWebsite::Core.new
+      @validate_website = ValidateWebsite::Core.new(:color => false)
     end
 
     context('html') do
@@ -17,7 +17,7 @@ module ValidateWebsite
                             :content_type => 'text/html')
         @validate_website.site = page.url
         @validate_website.crawl(:quiet => true)
-        @validate_website.anemone.should have(3).pages
+        @validate_website.anemone.should have(5).pages
       end
     end
 

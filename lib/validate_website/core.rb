@@ -57,7 +57,7 @@ module ValidateWebsite
 
     def crawl(opts={})
       opts = @options.merge(opts)
-      puts color(:note, "Validating #{@site}", opts[:color]) if opts[:validate_verbose]
+      puts color(:note, "validating #{@site}", opts[:color])
 
       @anemone = Anemone.crawl(@site, opts) do |anemone|
         anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
@@ -66,14 +66,7 @@ module ValidateWebsite
         anemone.focus_crawl { |p|
           links = []
           if p.html?
-            p.doc.css('img, script, iframe').each do |elem|
-              url = get_url(p, elem, "src")
-              links << url unless url.nil?
-            end
-            p.doc.css('link').each do |link|
-              url = get_url(p, link, "href")
-              links << url unless url.nil?
-            end
+            links.concat extract_urls_from_img_script_iframe_link(p)
           end
           if p.content_type == 'text/css'
             p.body.scan(/url\((['".\/\w-]+)\)/).each do |url|
@@ -108,18 +101,63 @@ module ValidateWebsite
       end
     end
 
+    # Extract urls from img script iframe and link element
+    #
+    # @param [Anemone::Page] an Anemone::Page object
+    # @return [Array] Lists of urls
+    #
+    def extract_urls_from_img_script_iframe_link(p)
+      links = []
+      p.doc.css('img, script, iframe').each do |elem|
+        url = get_url(p, elem, "src")
+        links << url unless url.nil?
+      end
+      p.doc.css('link').each do |link|
+        url = get_url(p, link, "href")
+        links << url unless url.nil?
+      end
+      links
+    end
+
     # check files linked on static document
     # see lib/validate_website/runner.rb
     def check_static_not_found(links, opts={})
       opts = @options.merge(opts)
       if opts[:not_found]
         links.each do |l|
-          unless File.exists?(l.path)
+          file_location = URI.parse(File.join(Dir.getwd, l.path)).path
+          unless File.exists?(file_location)
             @not_found_error = true
-            puts color(:error, "%s linked but not exist" % l, opts[:color])
-            to_file(l)
+            puts color(:error, "%s linked but not exist" % file_location, opts[:color])
+            to_file(file_location)
           end
         end
+      end
+    end
+
+    def crawl_static(opts={})
+      opts = @options.merge(opts)
+      puts color(:note, "validating #{@site}", opts[:color])
+
+      files = Dir.glob(opts[:pattern])
+      files.each do |f|
+        next unless File.file?(f)
+
+        body = open(f).read
+        page = Anemone::Page.new(URI.parse(opts[:site] + f), :body => body,
+                                 :headers => {'content-type' =>
+                                   ['text/html', 'application/xhtml+xml']})
+
+        # TODO: check css url for static files
+        if opts[:not_found]
+          links = page.links
+          links.concat extract_urls_from_img_script_iframe_link(page)
+        end
+
+        if opts[:markup_validation]
+          validate(page.doc, page.body, f)
+        end
+        check_static_not_found(links.uniq)
       end
     end
 
@@ -143,14 +181,11 @@ module ValidateWebsite
     end
 
     def get_url(page, elem, attrname)
-      u = elem.attributes[attrname] if elem.attributes[attrname]
-      return if u.nil?
-      begin
-        abs = page.to_absolute(URI(u))
-      rescue
-        abs = nil
-      end
-      return abs if abs && page.in_domain?(abs)
+      u = elem.attributes[attrname].to_s
+      return if u.nil? || u.empty?
+      abs = page.to_absolute(u) rescue nil
+      abs if abs && page.in_domain?(abs)
     end
+
   end
 end
