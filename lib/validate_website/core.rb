@@ -95,16 +95,15 @@ module ValidateWebsite
         page = Anemone::Page.new(URI.parse(opts[:site] + f), :body => body,
                                  :headers => {'content-type' => ['text/html', 'application/xhtml+xml']})
 
+        if opts[:markup_validation]
+          validate(page.doc, page.body, f)
+        end
         # TODO: check css url for static files
         if opts[:not_found]
           links = page.links
           links.concat extract_urls_from_img_script_iframe_link(page)
+          check_static_not_found(links.uniq)
         end
-
-        if opts[:markup_validation]
-          validate(page.doc, page.body, f)
-        end
-        check_static_not_found(links.uniq)
       end
     end
 

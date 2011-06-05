@@ -106,14 +106,7 @@ module ValidateWebsite
         o.separator ""
         o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
       end
-      begin
-        opts.parse!(args)
-      rescue OptionParser::InvalidOption, OptionParser::MissingArgument
-        puts $!.to_s
-        puts opts
-        exit 128
-      end
-      @@default_opts.merge(options)
+      command_line_parse!(opts, args, options)
     end
 
     def self.command_line_parse_static(args)
@@ -154,7 +147,17 @@ module ValidateWebsite
           options[:quiet] = v
         }
       end
-      opts.parse!(args)
+      command_line_parse!(opts, args, options)
+    end
+
+    def self.command_line_parse!(opts, args, options)
+      begin
+        opts.parse!(args)
+      rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+        puts $!.to_s
+        puts opts
+        exit 128
+      end
       @@default_opts.merge(options)
     end
   end
