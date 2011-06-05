@@ -126,7 +126,7 @@ module ValidateWebsite
         o.separator   ''
 
         o.on("-s", "--site 'SITE'", String,
-             "Website to crawl (Default: #{@@default_opts[:site]})") { |v|
+             "Where static files will be hosted (Default: #{@@default_opts[:site]})") { |v|
           options[:site] = v
         }
         o.on("-p", "--pattern 'PATTERN'", String,

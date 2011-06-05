@@ -17,6 +17,8 @@ HTML5 support with Validator.nu Web Service.
 
 OPTIONS
 -------
+*-s*, *--site* 'SITE'::
+  Where static files will be hosted (Default: http://www.example.com/)
 *-p*, *--pattern* 'PATTERN'::
   Change filenames pattern (Default: \*\*/*.html)
 *-f*, *--file* 'FILE'::
