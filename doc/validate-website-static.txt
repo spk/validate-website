@@ -25,6 +25,8 @@ OPTIONS
   Markup validation (Default: true)
 *-n*, *--not-found*::
   Log files not on filesystem, pwd considered as root « / » (Default: false)
+*--[no-]color*::
+  Show colored output (Default: true)
 *-v*, *--verbose*::
   Show detail of validator errors (Default: false).
 *-q*, *--quiet*::

@@ -3,26 +3,31 @@ require 'rainbow'
 
 module ValidateWebsite
   module ColorfulMessages
+    def color(type, message, colored=true)
+      return message unless colored
+      send(type, message)
+    end
+
     def error(message)
-      message.to_s.foreground(:red)
+      message.foreground(:red)
     end
 
     def warning(message)
-      message.to_s.foreground(:yellow)
+      message.foreground(:yellow)
     end
 
     def success(message)
-      message.to_s.foreground(:green)
+      message.foreground(:green)
     end
 
     alias_method :message, :success
 
     def note(message)
-      message.to_s.foreground(:magenta)
+      message.foreground(:magenta)
     end
 
     def info(message)
-      message.to_s.foreground(:blue)
+      message.foreground(:blue)
     end
   end
 end

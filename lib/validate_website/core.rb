@@ -43,21 +43,21 @@ module ValidateWebsite
       msg = " well formed? %s" % validator.valid?
       if validator.valid?
         unless opts[:quiet]
-          print info(url)
-          puts success(msg)
+          print color(:info, url, opts[:color])
+          puts color(:success, msg, opts[:color])
         end
       else
         @markup_error = true
-        print info(url)
-        puts error(msg)
-        puts error(validator.errors.join(", ")) if opts[:validate_verbose]
+        print color(:info, url, opts[:color])
+        puts color(:error, msg, opts[:color])
+        puts color(:error, validator.errors.join(', '), opts[:color]) if opts[:validate_verbose]
         to_file(url)
       end
     end
 
     def crawl(opts={})
       opts = @options.merge(opts)
-      puts note("Validating #{@site}") if opts[:validate_verbose]
+      puts color(:note, "Validating #{@site}", opts[:color]) if opts[:validate_verbose]
 
       @anemone = Anemone.crawl(@site, opts) do |anemone|
         anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
@@ -98,7 +98,7 @@ module ValidateWebsite
 
           if opts[:not_found] && page.not_found?
             @not_found_error = true
-            puts error("%s linked in %s but not exist" % [url, page.referer])
+            puts color(:error, "%s linked in %s but not exist" % [url, page.referer], opts[:color])
             to_file(url)
           end
 
@@ -116,7 +116,7 @@ module ValidateWebsite
         links.each do |l|
           unless File.exists?(l.path)
             @not_found_error = true
-            puts error("%s linked but not exist" % l)
+            puts color(:error, "%s linked but not exist" % l, opts[:color])
             to_file(l)
           end
         end

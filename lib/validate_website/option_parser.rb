@@ -3,7 +3,6 @@ require 'optparse'
 
 module ValidateWebsite
   class Parser
-    # TODO: no color
     DEFAULT_OPTS_CRAWL = {
       :site              => 'http://localhost:3000/',
       :markup_validation => true,
@@ -20,6 +19,7 @@ module ValidateWebsite
       :cookies           => nil,
       :accept_cookies    => true,
       :redirect_limit    => 0,
+      :color             => true,
     }
 
     DEFAULT_OPTS_STATIC = {
@@ -30,6 +30,7 @@ module ValidateWebsite
       :markup_validation => true,
       # log not found url (not on filesystem, pwd considered as root « / »)
       :not_found         => false,
+      :color             => true,
     }
 
     def self.parse(options, type)
@@ -83,6 +84,10 @@ module ValidateWebsite
         o.on("-n", "--not-found",
              "Log not found url (Default: #{@@default_opts[:not_found]})") { |v|
           options[:not_found] = v
+        }
+        o.on("--[no-]color",
+             "Show colored output (Default: #{@@default_opts[:color]})") { |v|
+          options[:color] = v
         }
         o.on("-v", "--verbose",
              "Show validator errors (Default: #{@@default_opts[:validate_verbose]})") { |v|
