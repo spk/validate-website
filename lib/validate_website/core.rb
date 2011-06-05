@@ -37,24 +37,6 @@ module ValidateWebsite
       @site = @options[:site]
     end
 
-    def validate(doc, body, url, opts={})
-      opts = @options.merge(opts)
-      validator = Validator.new(doc, body)
-      msg = " well formed? %s" % validator.valid?
-      if validator.valid?
-        unless opts[:quiet]
-          print color(:info, url, opts[:color])
-          puts color(:success, msg, opts[:color])
-        end
-      else
-        @markup_error = true
-        print color(:info, url, opts[:color])
-        puts color(:error, msg, opts[:color])
-        puts color(:error, validator.errors.join(', '), opts[:color]) if opts[:validate_verbose]
-        to_file(url)
-      end
-    end
-
     def crawl(opts={})
       opts = @options.merge(opts)
       puts color(:note, "validating #{@site}", opts[:color])
@@ -101,40 +83,6 @@ module ValidateWebsite
       end
     end
 
-    # Extract urls from img script iframe and link element
-    #
-    # @param [Anemone::Page] an Anemone::Page object
-    # @return [Array] Lists of urls
-    #
-    def extract_urls_from_img_script_iframe_link(p)
-      links = []
-      p.doc.css('img, script, iframe').each do |elem|
-        url = get_url(p, elem, "src")
-        links << url unless url.nil?
-      end
-      p.doc.css('link').each do |link|
-        url = get_url(p, link, "href")
-        links << url unless url.nil?
-      end
-      links
-    end
-
-    # check files linked on static document
-    # see lib/validate_website/runner.rb
-    def check_static_not_found(links, opts={})
-      opts = @options.merge(opts)
-      if opts[:not_found]
-        links.each do |l|
-          file_location = URI.parse(File.join(Dir.getwd, l.path)).path
-          unless File.exists?(file_location)
-            @not_found_error = true
-            puts color(:error, "%s linked but not exist" % file_location, opts[:color])
-            to_file(file_location)
-          end
-        end
-      end
-    end
-
     def crawl_static(opts={})
       opts = @options.merge(opts)
       puts color(:note, "validating #{@site}", opts[:color])
@@ -145,8 +93,7 @@ module ValidateWebsite
 
         body = open(f).read
         page = Anemone::Page.new(URI.parse(opts[:site] + f), :body => body,
-                                 :headers => {'content-type' =>
-                                   ['text/html', 'application/xhtml+xml']})
+                                 :headers => {'content-type' => ['text/html', 'application/xhtml+xml']})
 
         # TODO: check css url for static files
         if opts[:not_found]
@@ -174,6 +121,7 @@ module ValidateWebsite
     end
 
     private
+
     def to_file(msg)
       if @file && File.exist?(@file)
         open(@file, 'a').write("#{msg}\n")
@@ -185,6 +133,58 @@ module ValidateWebsite
       return if u.nil? || u.empty?
       abs = page.to_absolute(u) rescue nil
       abs if abs && page.in_domain?(abs)
+    end
+
+    # check files linked on static document
+    # see lib/validate_website/runner.rb
+    def check_static_not_found(links, opts={})
+      opts = @options.merge(opts)
+      if opts[:not_found]
+        links.each do |l|
+          file_location = URI.parse(File.join(Dir.getwd, l.path)).path
+          unless File.exists?(file_location)
+            @not_found_error = true
+            puts color(:error, "%s linked but not exist" % file_location, opts[:color])
+            to_file(file_location)
+          end
+        end
+      end
+    end
+
+    # Extract urls from img script iframe and link element
+    #
+    # @param [Anemone::Page] an Anemone::Page object
+    # @return [Array] Lists of urls
+    #
+    def extract_urls_from_img_script_iframe_link(p)
+      links = []
+      p.doc.css('img, script, iframe').each do |elem|
+        url = get_url(p, elem, "src")
+        links << url unless url.nil?
+      end
+      p.doc.css('link').each do |link|
+        url = get_url(p, link, "href")
+        links << url unless url.nil?
+      end
+      links
+    end
+
+    def validate(doc, body, url, opts={})
+      opts = @options.merge(opts)
+      validator = Validator.new(doc, body)
+      msg = " well formed? %s" % validator.valid?
+      if validator.valid?
+        unless opts[:quiet]
+          print color(:info, url, opts[:color])
+          puts color(:success, msg, opts[:color])
+        end
+      else
+        @markup_error = true
+        print color(:info, url, opts[:color])
+        puts color(:error, msg, opts[:color])
+        puts color(:error, validator.errors.join(', '), opts[:color]) if opts[:validate_verbose]
+        to_file(url)
+      end
     end
 
   end
