@@ -100,7 +100,13 @@ module ValidateWebsite
         o.separator ""
         o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
       end
-      opts.parse!(args)
+      begin
+        opts.parse!(args)
+      rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+        puts $!.to_s
+        puts opts
+        exit 64
+      end
       @@default_opts.merge(options)
     end
 
