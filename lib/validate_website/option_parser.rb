@@ -110,7 +110,7 @@ module ValidateWebsite
       rescue OptionParser::InvalidOption, OptionParser::MissingArgument
         puts $!.to_s
         puts opts
-        exit 64
+        exit 128
       end
       @@default_opts.merge(options)
     end
