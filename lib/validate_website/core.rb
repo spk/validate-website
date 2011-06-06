@@ -91,8 +91,7 @@ module ValidateWebsite
       files.each do |f|
         next unless File.file?(f)
 
-        body = open(f).read
-        page = Anemone::Page.new(URI.parse(opts[:site] + f), :body => body,
+        page = Anemone::Page.new(URI.parse(opts[:site] + f), :body => open(f).read,
                                  :headers => {'content-type' => ['text/html', 'application/xhtml+xml']})
 
         if opts[:markup_validation]
@@ -138,14 +137,12 @@ module ValidateWebsite
     # see lib/validate_website/runner.rb
     def check_static_not_found(links, opts={})
       opts = @options.merge(opts)
-      if opts[:not_found]
-        links.each do |l|
-          file_location = URI.parse(File.join(Dir.getwd, l.path)).path
-          unless File.exists?(file_location)
-            @not_found_error = true
-            puts color(:error, "%s linked but not exist" % file_location, opts[:color])
-            to_file(file_location)
-          end
+      links.each do |l|
+        file_location = URI.parse(File.join(Dir.getwd, l.path)).path
+        unless File.exists?(file_location)
+          @not_found_error = true
+          puts color(:error, "%s linked but not exist" % file_location, opts[:color])
+          to_file(file_location)
         end
       end
     end
