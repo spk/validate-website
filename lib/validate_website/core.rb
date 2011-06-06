@@ -45,20 +45,16 @@ module ValidateWebsite
         anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
 
         # select the links on each page to follow (iframe, link, css url)
-        anemone.focus_crawl { |p|
+        anemone.focus_crawl { |page|
           links = []
-          if p.html?
-            links.concat extract_urls_from_img_script_iframe_link(p)
+          if page.html?
+            links.concat extract_urls_from_img_script_iframe_link(page)
           end
-          if p.content_type == 'text/css'
-            p.body.scan(/url\((['".\/\w-]+)\)/).each do |url|
-              url = url.first.gsub("'", "").gsub('"', '')
-              abs = p.to_absolute(URI(url))
-              links << abs
-            end
+          if page.content_type == 'text/css'
+            links.concat extract_urls_from_css(page)
           end
           links.uniq!
-          p.links.concat(links)
+          page.links.concat(links)
         }
 
         anemone.on_every_page { |page|
@@ -97,7 +93,6 @@ module ValidateWebsite
         if opts[:markup_validation]
           validate(page.doc, page.body, f)
         end
-        # TODO: check css url for static files
         if opts[:not_found]
           links = page.links
           links.concat extract_urls_from_img_script_iframe_link(page)
@@ -139,6 +134,13 @@ module ValidateWebsite
       opts = @options.merge(opts)
       links.each do |l|
         file_location = URI.parse(File.join(Dir.getwd, l.path)).path
+        # Check CSS url()
+        if File.exists?(file_location) && File.extname(file_location) == '.css'
+          css_page = Anemone::Page.new(l, :body => File.read(file_location),
+                                       :headers => {'content-type' => ['text/css']})
+          links.concat extract_urls_from_css(css_page)
+          links.uniq!
+        end
         unless File.exists?(file_location)
           @not_found_error = true
           puts color(:error, "%s linked but not exist" % file_location, opts[:color])
@@ -152,17 +154,30 @@ module ValidateWebsite
     # @param [Anemone::Page] an Anemone::Page object
     # @return [Array] Lists of urls
     #
-    def extract_urls_from_img_script_iframe_link(p)
+    def extract_urls_from_img_script_iframe_link(page)
       links = []
-      p.doc.css('img, script, iframe').each do |elem|
-        url = get_url(p, elem, "src")
-        links << url unless url.nil?
+      page.doc.css('img, script, iframe').each do |elem|
+        url = get_url(page, elem, "src")
+        links << url unless url.nil? || url.to_s.empty?
       end
-      p.doc.css('link').each do |link|
-        url = get_url(p, link, "href")
-        links << url unless url.nil?
+      page.doc.css('link').each do |link|
+        url = get_url(page, link, "href")
+        links << url unless url.nil? || url.to_s.empty?
       end
       links
+    end
+
+    # Extract urls from CSS page
+    #
+    # @param [Anemone::Page] an Anemone::Page object
+    # @return [Array] Lists of urls
+    #
+    def extract_urls_from_css(page)
+      page.body.scan(/url\((['".\/\w-]+)\)/).inject([]) do |result, url|
+        url = url.first.gsub("'", "").gsub('"', '')
+        abs = page.to_absolute(URI.parse(url))
+        result << abs
+      end
     end
 
     def validate(doc, body, url, opts={})
