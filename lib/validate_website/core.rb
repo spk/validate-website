@@ -180,6 +180,14 @@ module ValidateWebsite
       end
     end
 
+    ##
+    # @param [Nokogiri::HTML::Document] original_doc
+    # @param [String] The raw HTTP response body of the page
+    # @param [String] url
+    # @param [Hash] options
+    #   :quiet no output (true, false)
+    #   :color color output (true, false)
+    #
     def validate(doc, body, url, opts={})
       opts = @options.merge(opts)
       validator = Validator.new(doc, body)

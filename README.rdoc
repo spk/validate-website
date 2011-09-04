@@ -62,6 +62,13 @@ HTML5 support with Validator.nu Web Service.
 66::
   There are not valid markup and pages not found.
 
+== On your application ==
+
+  require 'validate_website/validator'
+  body = '<!DOCTYPE html><html></html>'
+  v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
+  v.valid? # => false
+
 == REQUIREMENTS
 
 See validate-website.gemspec file.

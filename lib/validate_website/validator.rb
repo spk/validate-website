@@ -1,4 +1,6 @@
 # encoding: utf-8
+require 'uri'
+require 'nokogiri'
 
 module ValidateWebsite
   class Validator
@@ -6,6 +8,9 @@ module ValidateWebsite
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
 
+    ##
+    # @param [Nokogiri::HTML::Document] original_doc
+    # @param [String] The raw HTTP response body of the page
     def initialize(original_doc, body)
       @original_doc = original_doc
       @body = body
@@ -37,6 +42,7 @@ module ValidateWebsite
           @errors = @xsd.validate(@doc)
         elsif document =~ /^\<!DOCTYPE html\>/i
           # TODO: use a local Java, Python parser... write a Ruby HTML5 parser ?
+          require 'net/http'
           require 'multipart_body'
           url = URI.parse('http://validator.nu/')
           multipart = MultipartBody.new(:content => document)
@@ -63,6 +69,8 @@ module ValidateWebsite
       @errors << e
     end
 
+    ##
+    # @return [Boolean]
     def valid?
       @errors.length == 0
     end
