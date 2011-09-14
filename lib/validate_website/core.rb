@@ -37,9 +37,18 @@ module ValidateWebsite
       @site = @options[:site]
     end
 
+    ##
+    #
+    # @param [Hash] options
+    #   :quiet [Boolean] no output (true, false)
+    #   :color [Boolean] color output (true, false)
+    #   :exclude [String] a String used by Regexp.new
+    #   :markup_validation [Boolean] Check the markup validity
+    #   :not_found [Boolean] Check for not found page (404)
+    #
     def crawl(opts={})
       opts = @options.merge(opts)
-      puts color(:note, "validating #{@site}", opts[:color])
+      puts color(:note, "validating #{@site}", opts[:color]) unless opts[:quiet]
 
       @anemone = Anemone.crawl(@site, opts) do |anemone|
         anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]

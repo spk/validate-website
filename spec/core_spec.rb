@@ -30,7 +30,7 @@ module ValidateWebsite
                                     .tests {background-image: url(/image/pouet)}",
                                     :content_type => 'text/css')
         @validate_website.site = page.url
-        @validate_website.crawl
+        @validate_website.crawl(:quiet => true)
         @validate_website.anemone.should have(5).pages
       end
 
@@ -39,7 +39,7 @@ module ValidateWebsite
                             :body => ".test {background-image: url('pouet');}",
                             :content_type => 'text/css')
         @validate_website.site = page.url
-        @validate_website.crawl
+        @validate_website.crawl(:quiet => true)
         @validate_website.anemone.should have(2).pages
       end
 
@@ -48,7 +48,7 @@ module ValidateWebsite
                             :body => ".test {background-image: url(\"pouet\");}",
                             :content_type => 'text/css')
         @validate_website.site = page.url
-        @validate_website.crawl
+        @validate_website.crawl(:quiet => true)
         @validate_website.anemone.should have(2).pages
       end
     end
