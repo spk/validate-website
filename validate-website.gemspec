@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.add_dependency('rainbow', '>= 1.1.1')
   s.add_dependency('multipart_body', '>= 0.2.1')
   s.add_development_dependency('rake', '>= 0.8.7')
-  s.add_development_dependency('rspec', '>= 2.6.0')
+  s.add_development_dependency('rspec', '>= 2.5.0')
   s.add_development_dependency('fakeweb', '>= 1.3.0')
   s.require_path = 'lib'
   s.bindir = 'bin'
@@ -22,8 +22,9 @@ Gem::Specification.new do |s|
     'bin',
     'lib/**/*.rb',
     'man/**/*',
+    'spec/**/*',
     'data/**/*']
   s.description = %Q{validate-website is a web crawler for checking the markup \
 validity with XML Schema / DTD and not found urls.}
-  s.test_files = Dir.glob('spec/**/*')
+  s.test_files = Dir.glob('spec/**/*_spec.rb')
 end
