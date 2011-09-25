@@ -1,9 +1,9 @@
-require 'rake/rdoctask'
-require "rspec/core/rake_task" # RSpec 2.0
+require 'rdoc/task'
+require 'rake/testtask'
 
 task :default => [:test]
 
-Rake::RDocTask.new do |rd|
+RDoc::Task.new do |rd|
   rd.main = "README.rdoc"
   rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
 end
@@ -13,9 +13,7 @@ task :manpage do
   system('find doc/ -type f -exec a2x -f manpage -D man/man1 {} \;')
 end
 
-# RSpec 2.0
-RSpec::Core::RakeTask.new(:test) do |spec|
-  spec.pattern = 'spec/*_spec.rb'
-  spec.rspec_opts = ['--backtrace']
+Rake::TestTask.new do |t|
+  t.pattern = "spec/*_spec.rb"
 end
 task :spec => :test

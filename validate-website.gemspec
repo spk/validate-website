@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.add_dependency('rainbow', '>= 1.1.1')
   s.add_dependency('multipart_body', '>= 0.2.1')
   s.add_development_dependency('rake', '>= 0.8.7')
-  s.add_development_dependency('rspec', '>= 2.5.0')
+  s.add_development_dependency('minitest', '>= 2.1.0')
   s.add_development_dependency('fakeweb', '>= 1.3.0')
   s.require_path = 'lib'
   s.bindir = 'bin'
