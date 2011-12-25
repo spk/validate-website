@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = 'Web crawler for checking the validity of your documents'
   s.name = 'validate-website'
-  s.version = '0.7.0'
+  s.version = '0.7.1'
   s.license = 'MIT'
   s.requirements << 'anemone' << 'rainbow' << 'multipart_body'
   s.add_dependency('anemone', '>= 0.6.1')
