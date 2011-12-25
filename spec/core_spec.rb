@@ -51,4 +51,15 @@ describe ValidateWebsite::Core do
       @validate_website.anemone.pages.size.must_equal 2
     end
   end
+
+  describe('static') do
+    it 'no space in directory name' do
+      pattern = File.join(File.dirname(__FILE__), 'example/**/*.html')
+      @validate_website.crawl_static(:pattern => pattern,
+                                     :site => 'http://dev.af83.com/',
+                                     :markup_validation => false,
+                                     :not_found => false,
+                                     :quiet => true)
+    end
+  end
 end
