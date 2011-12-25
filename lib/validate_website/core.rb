@@ -96,7 +96,8 @@ module ValidateWebsite
       files.each do |f|
         next unless File.file?(f)
 
-        page = Anemone::Page.new(URI.parse(opts[:site] + f), :body => open(f).read,
+        page = Anemone::Page.new(URI.parse(opts[:site] + URI.encode(f)),
+                                 :body => open(f).read,
                                  :headers => {'content-type' => ['text/html', 'application/xhtml+xml']})
 
         if opts[:markup_validation]
