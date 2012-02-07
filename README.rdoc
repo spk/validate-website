@@ -20,7 +20,7 @@
 validate-website is a web crawler for checking the markup validity with XML
 Schema / DTD and not found urls (more info doc/validate-website.txt).
 
-validate-website-static check the markup validity of your local documents with
+validate-website-static checks the markup validity of your local documents with
 XML Schema / DTD (more info doc/validate-website-static.txt).
 
 HTML5 support with Validator.nu Web Service.
@@ -62,7 +62,7 @@ HTML5 support with Validator.nu Web Service.
 66::
   There are not valid markup and pages not found.
 
-== On your application ==
+== On your application
 
   require 'validate_website/validator'
   body = '<!DOCTYPE html><html></html>'
