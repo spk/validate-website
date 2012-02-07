@@ -69,6 +69,19 @@ HTML5 support with Validator.nu Web Service.
   v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
   v.valid? # => false
 
+== With RSpec
+
+On spec/spec_helper.rb:
+
+  require 'validate_website/validator'
+  require 'validate_website/rspec'
+
+On your spec/controllers:
+
+  it 'should be valid' do
+    response.body.should be_w3c_valid
+  end
+
 == REQUIREMENTS
 
 See validate-website.gemspec file.
