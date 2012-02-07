@@ -52,9 +52,7 @@ module ValidateWebsite
             'Content-Length' => multipart.to_s.bytesize.to_s,
           }
           res = http.start {|con| con.post(url.path, multipart.to_s, headers) }
-          if (el = Nokogiri::XML.parse(res.body).at_css('body p.failure'))
-            @errors << "HTML5 validator.nu #{el.content}"
-          end
+          @errors = Nokogiri::XML.parse(res.body).css('ol li.error').map(&:content)
         else
           # dont have xsd fall back to dtd
           @doc = Dir.chdir(XHTML_PATH) do

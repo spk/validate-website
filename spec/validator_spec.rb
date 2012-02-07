@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require File.expand_path('../spec_helper', __FILE__)
 
 describe ValidateWebsite::Validator do
@@ -48,6 +49,24 @@ describe ValidateWebsite::Validator do
         @html5_page = @http.fetch_page(page.url)
         validator = ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body)
         validator.valid?.must_equal true
+      end
+    end
+    describe('when not valid') do
+      before do
+        validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
+        FakeWeb.register_uri(:any, 'http://validator.nu/',
+                             :body => open(validator_res).read)
+      end
+      it 'should have an array of errors' do
+        name = 'html5'
+        file = File.join('spec', 'data', "#{name}-linuxfr.html")
+        page = FakePage.new(name,
+                            :body => open(file).read,
+                            :content_type => 'text/html')
+        @html5_page = @http.fetch_page(page.url)
+        validator = ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body)
+        validator.valid?.must_equal false
+        validator.errors.size.must_equal 38
       end
     end
   end
