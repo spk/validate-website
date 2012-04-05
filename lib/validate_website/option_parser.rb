@@ -3,38 +3,34 @@ require 'optparse'
 
 module ValidateWebsite
   class Parser
-    DEFAULT_OPTS_CRAWL = {
-      :site              => 'http://localhost:3000/',
+    DEFAULT_OPTS_ALL = {
       :markup_validation => true,
-      :exclude           => nil,
-      :file              => nil,
-      # log not found url (404 status code)
+      # crawler: log not found url (404 status code)
+      # static: log not found url (not on filesystem, pwd considered as root « / »)
       :not_found         => false,
-      # internal verbose for ValidateWebsite
-      :validate_verbose  => false,
+      :quiet             => false,
+      :file              => nil,
       # regex to ignore certain validation errors
       :ignore_errors     => nil,
-      :quiet             => false,
-
+      :color             => true,
+      # internal verbose for ValidateWebsite
+      :validate_verbose  => false,
       # Anemone options see anemone/lib/anemone/core.rb
       :verbose           => false,
       :cookies           => nil,
       :accept_cookies    => true,
       :redirect_limit    => 0,
-      :color             => true,
     }
+
+    DEFAULT_OPTS_CRAWL = {
+      :site              => 'http://localhost:3000/',
+      :exclude           => nil,
+    }.merge(DEFAULT_OPTS_ALL)
 
     DEFAULT_OPTS_STATIC = {
       :site              => 'http://www.example.com/',
       :pattern           => '**/*.html',
-      :file              => nil,
-      :validate_verbose  => false,
-      :quiet             => false,
-      :markup_validation => true,
-      # log not found url (not on filesystem, pwd considered as root « / »)
-      :not_found         => false,
-      :color             => true,
-    }
+    }.merge(DEFAULT_OPTS_ALL)
 
     def self.parse(options, type)
       if const_defined?("DEFAULT_OPTS_#{type.to_s.upcase}")
