@@ -23,6 +23,8 @@ OPTIONS
   Change user agent (Default: Anemone/VERSION)
 *-e*, *--exclude* 'EXCLUDE'::
   Url to exclude (ex: 'redirect|news')
+*-i*, *--ignore-errors* 'IGNORE'::
+  Ignore certain validation errors (ex: 'autocorrect')
 *-f*, *--file* 'FILE'::
   Save not well formed or not found (with -n used) urls
 *-c*, *--cookies* 'COOKIES'::

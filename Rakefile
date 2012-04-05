@@ -8,6 +8,7 @@ RDoc::Task.new do |rd|
   rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
 end
 
+# install asciidoc libxml2-utils xmlto
 desc 'Update manpage from asciidoc file'
 task :manpage do
   system('find doc/ -type f -exec a2x -f manpage -D man/man1 {} \;')
