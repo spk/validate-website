@@ -12,6 +12,8 @@ module ValidateWebsite
       :not_found         => false,
       # internal verbose for ValidateWebsite
       :validate_verbose  => false,
+      # regex to ignore certain validation errors
+      :ignore_errors     => nil,
       :quiet             => false,
 
       # Anemone options see anemone/lib/anemone/core.rb
@@ -81,6 +83,10 @@ module ValidateWebsite
         o.on("-m", "--[no-]markup-validation",
              "Markup validation (Default: #{@@default_opts[:markup_validation]})") { |v|
           options[:markup_validation] = v
+        }
+        o.on("-i", "--ignore-errors 'IGNORE'", String,
+             "Validation errors to ignore (regex)") { |v|
+          options[:ignore_errors] = v
         }
         o.on("-n", "--not-found",
              "Log not found url (Default: #{@@default_opts[:not_found]})") { |v|

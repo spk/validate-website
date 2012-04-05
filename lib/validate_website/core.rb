@@ -200,7 +200,7 @@ module ValidateWebsite
     #
     def validate(doc, body, url, opts={})
       opts = @options.merge(opts)
-      validator = Validator.new(doc, body)
+      validator = Validator.new(doc, body, opts)
       msg = " well formed? %s" % validator.valid?
       if validator.valid?
         unless opts[:quiet]
