@@ -105,8 +105,10 @@ validation service.
 == CONTRIBUTORS
 
 * François de Metz (francois2metz)
+* Bruno Michel (nono)
+* Matt Brictson (mbrictson)
 
 == LICENSE
 The MIT License
 
-Copyright (c) 2009-2011 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2012 Laurent Arnoud <laurent@spkdev.net>
