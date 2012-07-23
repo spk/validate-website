@@ -132,6 +132,11 @@ module ValidateWebsite
              "Save not well formed urls") { |v|
           options[:file] = v
         }
+        o.on("-i", "--ignore-errors 'IGNORE'", String,
+             "Validation errors to ignore (regex)") { |v|
+          options[:ignore_errors] = v
+        }
+
         o.on("-m", "--[no-]markup-validation",
              "Markup validation (Default: #{@@default_opts[:markup_validation]})") { |v|
           options[:markup_validation] = v
