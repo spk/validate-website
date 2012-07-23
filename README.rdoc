@@ -4,7 +4,7 @@
 
 === Debian
 
-  aptitude install rubygems ruby1.8-dev libxslt-dev libxml2-dev
+  aptitude install rubygems ruby-dev libxslt-dev libxml2-dev
 
 === RubyGems
 
