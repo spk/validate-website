@@ -22,6 +22,8 @@ module ValidateWebsite
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
 
+    PING_URL = 'http://www.google.com/'
+
     def initialize(options={}, validation_type=:crawl)
       @markup_error = nil
       @not_found_error = nil
@@ -49,6 +51,8 @@ module ValidateWebsite
     def crawl(opts={})
       opts = @options.merge(opts)
       puts color(:note, "validating #{@site}", opts[:color]) unless opts[:quiet]
+
+      puts color(:warning, "No internet connection") unless internet_connection?
 
       @anemone = Anemone.crawl(@site, opts) do |anemone|
         anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
@@ -87,6 +91,15 @@ module ValidateWebsite
         }
       end
     end
+
+    def internet_connection?
+      begin
+        true if open(ValidateWebsite::Core::PING_URL)
+      rescue
+        false
+      end
+    end
+
 
     def crawl_static(opts={})
       opts = @options.merge(opts)

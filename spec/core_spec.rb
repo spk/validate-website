@@ -5,6 +5,7 @@ describe ValidateWebsite::Core do
 
   before do
     FakeWeb.clean_registry
+    FakeWeb.register_uri(:get, ValidateWebsite::Core::PING_URL, :status => [200, "OK"])
     @validate_website = ValidateWebsite::Core.new(:color => false)
   end
 
