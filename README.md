@@ -12,18 +12,24 @@ INSTALLATION
 Debian
 ------
 
+``` bash
   aptitude install rubygems ruby-dev libxslt-dev libxml2-dev
+```
 
 RubyGems
 --------
 
+``` bash
   gem install validate-website
+```
 
 SYNOPSIS
 ========
 
+``` bash
   validate-website [OPTIONS]
   validate-website-static [OPTIONS]
+```
 
 DESCRIPTION
 ===========
@@ -39,6 +45,7 @@ HTML5 support with Validator.nu Web Service.
 VALIDATE WEBSITE OPTIONS
 ========================
 
+``` bash
   -s, --site SITE
       Website to crawl (Default: http://localhost:3000/)
   -u, --user-agent USERAGENT
@@ -65,45 +72,48 @@ VALIDATE WEBSITE OPTIONS
       Show anemone log (Default: false)
   -h, --help
       Show help message and exit.
+```
 
 EXIT STATUS
 ===========
 
-0::
-  Markup is valid and no 404 found.
-64::
-  Not valid markup found.
-65::
-  There are pages not found.
-66::
-  There are not valid markup and pages not found.
+* 0: Markup is valid and no 404 found.
+* 64: Not valid markup found.
+* 65: There are pages not found.
+* 66: There are not valid markup and pages not found.
 
 On your application
 ===================
 
+``` ruby
   require 'validate_website/validator'
   body = '<!DOCTYPE html><html></html>'
   v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
   v.valid? # => false
+```
 
 With RSpec
 ==========
 
 On spec/spec_helper.rb:
 
+``` ruby
   require 'validate_website/validator'
   require 'validate_website/rspec'
+```
 
 On your spec/controllers:
 
+``` ruby
   it 'should be valid' do
     response.body.should be_w3c_valid
   end
+```
 
 REQUIREMENTS
 ============
 
-See validate-website.gemspec file.
+See `validate-website.gemspec` file.
 
 CREDITS
 =======
