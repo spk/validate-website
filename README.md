@@ -1,21 +1,32 @@
-= validate-website - Web crawler for checking the validity of your documents
+validate-website
+================
 
-== INSTALLATION
+Description
+===========
 
-=== Debian
+Web crawler for checking the validity of your documents
+
+INSTALLATION
+============
+
+Debian
+------
 
   aptitude install rubygems ruby-dev libxslt-dev libxml2-dev
 
-=== RubyGems
+RubyGems
+--------
 
   gem install validate-website
 
-== SYNOPSIS
+SYNOPSIS
+========
 
   validate-website [OPTIONS]
   validate-website-static [OPTIONS]
 
-== DESCRIPTION
+DESCRIPTION
+===========
 
 validate-website is a web crawler for checking the markup validity with XML
 Schema / DTD and not found urls (more info doc/validate-website.txt).
@@ -25,7 +36,8 @@ XML Schema / DTD (more info doc/validate-website-static.txt).
 
 HTML5 support with Validator.nu Web Service.
 
-== VALIDATE WEBSITE OPTIONS
+VALIDATE WEBSITE OPTIONS
+========================
 
   -s, --site SITE
       Website to crawl (Default: http://localhost:3000/)
@@ -54,7 +66,9 @@ HTML5 support with Validator.nu Web Service.
   -h, --help
       Show help message and exit.
 
-== EXIT STATUS
+EXIT STATUS
+===========
+
 0::
   Markup is valid and no 404 found.
 64::
@@ -64,14 +78,16 @@ HTML5 support with Validator.nu Web Service.
 66::
   There are not valid markup and pages not found.
 
-== On your application
+On your application
+===================
 
   require 'validate_website/validator'
   body = '<!DOCTYPE html><html></html>'
   v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
   v.valid? # => false
 
-== With RSpec
+With RSpec
+==========
 
 On spec/spec_helper.rb:
 
@@ -84,16 +100,19 @@ On your spec/controllers:
     response.body.should be_w3c_valid
   end
 
-== REQUIREMENTS
+REQUIREMENTS
+============
 
 See validate-website.gemspec file.
 
-== CREDITS
+CREDITS
+=======
 
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
 * And Chris Kite for Anemone web-spider framework.
 
-== MORE INFO
+MORE INFO
+=========
 
 The HTML5 support is done by using the Validator.nu Web Service, so the content
 of your webpage is logged by a tier. It's not the case for other validation
@@ -102,13 +121,16 @@ because validate-website use the XML Schema or DTD stored on the data/ directory
 Please read http://about.validator.nu/#tos for more info on the HTML5
 validation service.
 
-== CONTRIBUTORS
+CONTRIBUTORS
+============
 
 * François de Metz (francois2metz)
 * Bruno Michel (nono)
 * Matt Brictson (mbrictson)
 
-== LICENSE
+LICENSE
+=======
+
 The MIT License
 
-Copyright (c) 2009-2012 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2013 Laurent Arnoud <laurent@spkdev.net>
