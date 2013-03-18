@@ -45,7 +45,7 @@ module ValidateWebsite
           # TODO: use a local Java, Python parser... write a Ruby HTML5 parser ?
           require 'net/http'
           require 'multipart_body'
-          url = URI.parse('http://validator.nu/')
+          url = URI.parse('http://html5.validator.nu/')
           multipart = MultipartBody.new(:content => document)
           http = Net::HTTP.new(url.host)
           headers = {
