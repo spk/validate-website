@@ -12,6 +12,7 @@ module ValidateWebsite
     # @param [Nokogiri::HTML::Document] original_doc
     # @param [String] The raw HTTP response body of the page
     def initialize(original_doc, body, opts={})
+      # TODO: write better code
       @original_doc = original_doc
       @body = body
       @options = opts
@@ -19,6 +20,7 @@ module ValidateWebsite
       init_namespace(@dtd)
       @errors = []
 
+      # XXX: euh? of course its empty...
       if @errors.empty?
         if @dtd_uri && @body.match(@dtd_uri.to_s)
           document = @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
@@ -39,10 +41,11 @@ module ValidateWebsite
         end
 
         if @xsd
-          # have the xsd so use it
           @errors = @xsd.validate(@doc)
         elsif document =~ /^\<!DOCTYPE html\>/i
           # TODO: use a local Java, Python parser... write a Ruby HTML5 parser ?
+          # https://bitbucket.org/validator/syntax/src
+          # + http://nokogiri.org/Nokogiri/XML/RelaxNG.html ???
           require 'net/http'
           require 'multipart_body'
           url = URI.parse('http://html5.validator.nu/')
