@@ -13,7 +13,7 @@ Debian
 ------
 
 ``` bash
-  aptitude install rubygems ruby-dev libxslt-dev libxml2-dev
+  aptitude install ruby-dev libxslt-dev libxml2-dev
 ```
 
 RubyGems
