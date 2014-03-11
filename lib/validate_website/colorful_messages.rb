@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'rainbow'
+require 'paint'
 
 module ValidateWebsite
   module ColorfulMessages
@@ -9,25 +9,25 @@ module ValidateWebsite
     end
 
     def error(message)
-      message.foreground(:red)
+      Paint[message, :red]
     end
 
     def warning(message)
-      message.foreground(:yellow)
+      Paint[message, :yellow]
     end
 
     def success(message)
-      message.foreground(:green)
+      Paint[message, :green]
     end
 
     alias_method :message, :success
 
     def note(message)
-      message.foreground(:magenta)
+      Paint[message, :magenta]
     end
 
     def info(message)
-      message.foreground(:blue)
+      Paint[message, :blue]
     end
   end
 end
