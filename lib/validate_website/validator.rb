@@ -5,6 +5,7 @@ require 'nokogiri'
 module ValidateWebsite
   class Validator
     XHTML_PATH = File.join(File.dirname(__FILE__), '..', '..', 'data', 'schemas')
+    HTML5_VALIDATOR_SERVICE = 'http://html5.validator.nu/'
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
 
@@ -48,7 +49,7 @@ module ValidateWebsite
           # + http://nokogiri.org/Nokogiri/XML/RelaxNG.html ???
           require 'net/http'
           require 'multipart_body'
-          url = URI.parse('http://html5.validator.nu/')
+          url = URI.parse(HTML5_VALIDATOR_SERVICE)
           multipart = MultipartBody.new(:content => document)
           http = Net::HTTP.new(url.host)
           headers = {

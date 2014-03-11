@@ -27,7 +27,7 @@ describe ValidateWebsite::Validator do
     describe('when valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-success.html')
-        FakeWeb.register_uri(:any, 'http://validator.nu/',
+        FakeWeb.register_uri(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE,
                              :body => open(validator_res).read)
       end
       it "html5 should be valid" do
@@ -54,7 +54,7 @@ describe ValidateWebsite::Validator do
     describe('when not valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
-        FakeWeb.register_uri(:any, 'http://validator.nu/',
+        FakeWeb.register_uri(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE,
                              :body => open(validator_res).read)
       end
       def html5_validator(options={})
