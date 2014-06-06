@@ -90,7 +90,7 @@ module ValidateWebsite
     def html5_validate(document)
       require 'net/http'
       require 'multipart_body'
-      url = URI.parse('http://html5.validator.nu/')
+      url = URI.parse(HTML5_VALIDATOR_SERVICE)
       multipart = MultipartBody.new(:content => document)
       http = Net::HTTP.new(url.host)
       headers = {
