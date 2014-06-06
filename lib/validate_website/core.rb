@@ -178,12 +178,12 @@ module ValidateWebsite
     #
     def extract_urls_from_img_script_iframe_link(page)
       links = []
-      page.doc.css('img, script, iframe').each do |elem|
-        url = get_url(page, elem, "src")
-        links << url unless url.nil? || url.to_s.empty?
-      end
-      page.doc.css('link').each do |link|
-        url = get_url(page, link, "href")
+      page.doc.css('img, script, iframe, link').each do |elem|
+        if elem.name == 'link'
+          url = get_url(page, elem, "href")
+        else
+          url = get_url(page, elem, "src")
+        end
         links << url unless url.nil? || url.to_s.empty?
       end
       links

@@ -20,6 +20,17 @@ describe ValidateWebsite::Core do
       @validate_website.crawl(:quiet => true)
       @validate_website.anemone.pages.size.must_equal 5
     end
+
+    it 'extract link' do
+      name = 'html4-strict'
+      file = File.join('spec', 'data', "#{name}.html")
+      page = FakePage.new(name,
+                          :body => open(file).read,
+                          :content_type => 'text/html')
+      @validate_website.site = page.url
+      @validate_website.crawl(:quiet => true)
+      @validate_website.anemone.pages.size.must_equal 98
+    end
   end
 
   describe('css') do
