@@ -2,6 +2,7 @@
 require 'optparse'
 
 module ValidateWebsite
+  # Internal class for parse command line args
   class Parser
     DEFAULT_OPTS_ALL = {
       :markup_validation => true,

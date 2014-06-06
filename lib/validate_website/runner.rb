@@ -1,6 +1,7 @@
 require 'validate_website/core'
 
 module ValidateWebsite
+  # Runner for command line use and clean exit on ctrl-c
   class Runner
     def self.trap_interrupt
       trap('INT') do

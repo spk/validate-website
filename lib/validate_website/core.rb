@@ -10,6 +10,7 @@ require 'anemone'
 
 module ValidateWebsite
 
+  # Core class for static or website validation
   class Core
 
     attr_accessor :site

@@ -3,6 +3,7 @@ require 'uri'
 require 'nokogiri'
 
 module ValidateWebsite
+  # Document validation from DTD or XSD (webservice for html5)
   class Validator
     XHTML_PATH = File.join(File.dirname(__FILE__), '..', '..', 'data', 'schemas')
     HTML5_VALIDATOR_SERVICE = 'http://html5.validator.nu/'
