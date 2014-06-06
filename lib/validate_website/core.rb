@@ -52,7 +52,6 @@ module ValidateWebsite
     def crawl(opts={})
       opts = @options.merge(opts)
       puts color(:note, "validating #{@site}", opts[:color]) unless opts[:quiet]
-
       puts color(:warning, "No internet connection") unless internet_connection?
 
       @anemone = Anemone.crawl(@site, opts) do |anemone|
@@ -60,25 +59,13 @@ module ValidateWebsite
 
         # select the links on each page to follow (iframe, link, css url)
         anemone.focus_crawl { |page|
-          links = []
-          if page.html?
-            links.concat extract_urls_from_img_script_iframe_link(page)
-          end
-          if page.content_type == 'text/css'
-            links.concat extract_urls_from_css(page)
-          end
-          links.uniq!
-          page.links.concat(links)
+          page.links.concat(extract_urls(page))
         }
 
         anemone.on_every_page { |page|
           url = page.url.to_s
-
-          if opts[:markup_validation]
-            # validate html/html+xml
-            if page.html? && page.fetched?
-              validate(page.doc, page.body, url, opts)
-            end
+          if opts[:markup_validation] && page.html? && page.fetched?
+            validate(page.doc, page.body, url, opts)
           end
 
           if opts[:not_found] && page.not_found?
@@ -86,9 +73,6 @@ module ValidateWebsite
             puts color(:error, "%s linked in %s but not exist" % [url, page.referer], opts[:color])
             to_file(url)
           end
-
-          # throw away the page (hope this saves memory)
-          page = nil
         }
       end
     end
@@ -200,6 +184,13 @@ module ValidateWebsite
         abs = page.to_absolute(URI.parse(url))
         result << abs
       end
+    end
+
+    def extract_urls(page)
+      links = []
+      links.concat extract_urls_from_img_script_iframe_link(page) if page.html?
+      links.concat extract_urls_from_css(page) if page.content_type == 'text/css'
+      links.uniq
     end
 
     ##
