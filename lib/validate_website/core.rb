@@ -94,11 +94,9 @@ module ValidateWebsite
     end
 
     def internet_connection?
-      begin
-        true if open(ValidateWebsite::Core::PING_URL)
-      rescue
-        false
-      end
+      true if open(ValidateWebsite::Core::PING_URL)
+    rescue
+      false
     end
 
 
