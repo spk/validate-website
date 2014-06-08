@@ -161,7 +161,7 @@ module ValidateWebsite
     # @return [Array] Lists of urls
     #
     def extract_urls_from_img_script_iframe_link(page)
-      links = []
+      links = Set.new
       page.doc.css('img, script, iframe, link').each do |elem|
         if elem.name == 'link'
           url = get_url(page, elem, "href")
@@ -187,10 +187,10 @@ module ValidateWebsite
     end
 
     def extract_urls(page)
-      links = []
-      links.concat extract_urls_from_img_script_iframe_link(page) if page.html?
-      links.concat extract_urls_from_css(page) if page.content_type == 'text/css'
-      links.uniq
+      links = Set.new
+      links.merge extract_urls_from_img_script_iframe_link(page) if page.html?
+      links.merge extract_urls_from_css(page) if page.content_type == 'text/css'
+      links.to_a
     end
 
     ##
