@@ -5,16 +5,16 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = 'Web crawler for checking the validity of your documents'
   s.name = 'validate-website'
-  s.version = '0.7.9'
+  s.version = '0.8.0'
   s.license = 'MIT'
   s.requirements << 'anemone' << 'rainbow' << 'multipart_body'
-  s.add_dependency('anemone', '>= 0.6.1')
-  s.add_dependency('paint', '>= 0.8.7')
-  s.add_dependency('multipart_body', '>= 0.2.1')
-  s.add_development_dependency('rake', '>= 0.8.7')
-  s.add_development_dependency('minitest', '>= 2.1.0')
-  s.add_development_dependency('webmock', '>= 1.18.0')
-  s.add_development_dependency('pry', '>= 0.9.12.6')
+  s.add_dependency('anemone', '~> 0.7')
+  s.add_dependency('paint', '~> 0.8')
+  s.add_dependency('multipart_body', '~> 0.2')
+  s.add_development_dependency('rake', '~> 10.3')
+  s.add_development_dependency('minitest', '~> 5.4.0')
+  s.add_development_dependency('webmock', '~> 1.18')
+  s.add_development_dependency('pry', '~> 0.9.12.6')
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
