@@ -6,7 +6,10 @@ Description
 
 Web crawler for checking the validity of your documents
 
-INSTALLATION
+![validate-website]()
+![validate website](https://raw.github.com/spk/validate-website/master/validate-website.png)
+
+Installation
 ============
 
 Debian
@@ -23,7 +26,7 @@ RubyGems
   gem install validate-website
 ```
 
-SYNOPSIS
+Synopsis
 ========
 
 ``` bash
@@ -31,7 +34,7 @@ SYNOPSIS
   validate-website-static [OPTIONS]
 ```
 
-DESCRIPTION
+Description
 ===========
 
 validate-website is a web crawler for checking the markup validity with XML
@@ -42,7 +45,7 @@ XML Schema / DTD (more info doc/validate-website-static.txt).
 
 HTML5 support with Validator.nu Web Service.
 
-VALIDATE WEBSITE OPTIONS
+Validate Website options
 ========================
 
 ``` bash
@@ -74,7 +77,7 @@ VALIDATE WEBSITE OPTIONS
       Show help message and exit.
 ```
 
-EXIT STATUS
+Exit status
 ===========
 
 * 0: Markup is valid and no 404 found.
@@ -110,18 +113,18 @@ On your spec/controllers:
   end
 ```
 
-REQUIREMENTS
+Requirements
 ============
 
 See `validate-website.gemspec` file.
 
-CREDITS
+Credits
 =======
 
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
 * And Chris Kite for Anemone web-spider framework.
 
-MORE INFO
+More info
 =========
 
 The HTML5 support is done by using the Validator.nu Web Service, so the content
@@ -131,16 +134,21 @@ because validate-website use the XML Schema or DTD stored on the data/ directory
 Please read http://about.validator.nu/#tos for more info on the HTML5
 validation service.
 
-CONTRIBUTORS
+Contributors
 ============
 
 * François de Metz (francois2metz)
 * Bruno Michel (nono)
 * Matt Brictson (mbrictson)
 
-LICENSE
+License
 =======
 
 The MIT License
 
-Copyright (c) 2009-2013 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2014 Laurent Arnoud <laurent@spkdev.net>
+
+---
+[![Gem Version](https://badge.fury.io/rb/validate-website.svg)](https://rubygems.org/gems/validate-website)
+[![Build Status](https://secure.travis-ci.org/spk/validate-website.svg?branch=master)](https://travis-ci.org/spk/validate-website)
+[![Code Climate](http://img.shields.io/codeclimate/github/spk/validate-website.svg)](https://codeclimate.com/github/spk/validate-website)
