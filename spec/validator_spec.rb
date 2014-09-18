@@ -3,7 +3,7 @@ require File.expand_path('../spec_helper', __FILE__)
 
 describe ValidateWebsite::Validator do
   before do
-    FakeWeb.clean_registry
+    WebMock.reset!
     @http = Anemone::HTTP.new
   end
 
@@ -27,8 +27,8 @@ describe ValidateWebsite::Validator do
     describe('when valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-success.html')
-        FakeWeb.register_uri(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE,
-                             :body => open(validator_res).read)
+        stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
+          .to_return(:body => open(validator_res).read)
       end
       it "html5 should be valid" do
         name = 'html5'
@@ -54,8 +54,8 @@ describe ValidateWebsite::Validator do
     describe('when not valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
-        FakeWeb.register_uri(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE,
-                             :body => open(validator_res).read)
+        stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
+          .to_return(:body => open(validator_res).read)
       end
       def html5_validator(options={})
         name = 'html5'
