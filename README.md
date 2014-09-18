@@ -6,7 +6,6 @@ Description
 
 Web crawler for checking the validity of your documents
 
-![validate-website]()
 ![validate website](https://raw.github.com/spk/validate-website/master/validate-website.png)
 
 Installation
