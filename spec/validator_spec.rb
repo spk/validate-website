@@ -56,23 +56,22 @@ describe ValidateWebsite::Validator do
         validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
         stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
           .to_return(:body => open(validator_res).read)
-      end
-      def html5_validator(options={})
         name = 'html5'
         file = File.join('spec', 'data', "#{name}-linuxfr.html")
         page = FakePage.new(name,
                             :body => open(file).read,
                             :content_type => 'text/html')
         @html5_page = @http.fetch_page(page.url)
-        ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body, options)
       end
+
       it 'should have an array of errors' do
-        validator = html5_validator
+        validator = ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body)
         validator.valid?.must_equal false
         validator.errors.size.must_equal 38
       end
+
       it 'should exclude errors ignored by :ignore_errors option' do
-        validator = html5_validator(:ignore_errors => "The nowrap attribute on the td element is obsolete")
+        validator = ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body, :ignore_errors => "The nowrap attribute on the td element is obsolete")
         validator.valid?.must_equal false
         validator.errors.size.must_equal 36
       end
