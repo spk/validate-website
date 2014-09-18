@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'set'
 require 'open-uri'
 
 require 'validate_website/option_parser'
