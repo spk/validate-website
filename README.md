@@ -1,40 +1,33 @@
-validate-website
-================
+# validate-website
 
-Description
-===========
+## Description
 
 Web crawler for checking the validity of your documents
 
 ![validate website](https://raw.github.com/spk/validate-website/master/validate-website.png)
 
-Installation
-============
+## Installation
 
-Debian
-------
+### Debian
 
 ``` bash
   aptitude install ruby-dev libxslt-dev libxml2-dev
 ```
 
-RubyGems
---------
+### RubyGems
 
 ``` bash
   gem install validate-website
 ```
 
-Synopsis
-========
+## Synopsis
 
 ``` bash
   validate-website [OPTIONS]
   validate-website-static [OPTIONS]
 ```
 
-Description
-===========
+## Description
 
 validate-website is a web crawler for checking the markup validity with XML
 Schema / DTD and not found urls (more info doc/validate-website.txt).
@@ -44,8 +37,7 @@ XML Schema / DTD (more info doc/validate-website-static.txt).
 
 HTML5 support with Validator.nu Web Service.
 
-Validate Website options
-========================
+## Validate Website options
 
 ``` bash
   -s, --site SITE
@@ -76,16 +68,14 @@ Validate Website options
       Show help message and exit.
 ```
 
-Exit status
-===========
+## Exit status
 
 * 0: Markup is valid and no 404 found.
 * 64: Not valid markup found.
 * 65: There are pages not found.
 * 66: There are not valid markup and pages not found.
 
-On your application
-===================
+## On your application
 
 ``` ruby
   require 'validate_website/validator'
@@ -94,8 +84,7 @@ On your application
   v.valid? # => false
 ```
 
-With RSpec
-==========
+## With RSpec
 
 On spec/spec_helper.rb:
 
@@ -112,36 +101,47 @@ On your spec/controllers:
   end
 ```
 
-Requirements
-============
+## Jekyll static site validation
+
+You can add this Rake task to validate a
+[jekyll](https://github.com/jekyll/jekyll) site:
+
+~~~ ruby
+desc 'validate _site with validate website'
+task :validate => :build do
+  Dir.chdir('_site') do
+    system("validate-website-static --site '<CONFIG_URL>' --quiet")
+    exit($?.exitstatus)
+  end
+end
+~~~
+
+
+## Requirements
 
 See `validate-website.gemspec` file.
 
-Credits
-=======
+## Credits
 
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
 * And Chris Kite for Anemone web-spider framework.
 
-More info
-=========
+## More info
 
 The HTML5 support is done by using the Validator.nu Web Service, so the content
 of your webpage is logged by a tier. It's not the case for other validation
 because validate-website use the XML Schema or DTD stored on the data/ directory.
 
-Please read http://about.validator.nu/#tos for more info on the HTML5
+Please read <http://about.validator.nu/#tos> for more info on the HTML5
 validation service.
 
-Contributors
-============
+## Contributors
 
 * François de Metz (francois2metz)
 * Bruno Michel (nono)
 * Matt Brictson (mbrictson)
 
-License
-=======
+## License
 
 The MIT License
 
