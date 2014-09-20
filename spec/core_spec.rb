@@ -5,7 +5,8 @@ describe ValidateWebsite::Core do
 
   before do
     WebMock.reset!
-    stub_request(:get, ValidateWebsite::Core::PING_URL).with(:status => 200)
+    stub_request(:get, ValidateWebsite::Core::PING_URL).to_return(:status => 200)
+    stub_request(:get, /#{SPEC_DOMAIN}/).to_return(:status => 200)
     @validate_website = ValidateWebsite::Core.new(:color => false)
   end
 
@@ -18,7 +19,7 @@ describe ValidateWebsite::Core do
                           :content_type => 'text/html')
       @validate_website.site = page.url
       @validate_website.crawl(:quiet => true)
-      @validate_website.anemone.pages.size.must_equal 5
+      @validate_website.crawler.history.size.must_equal 5
     end
 
     it 'extract link' do
@@ -29,7 +30,7 @@ describe ValidateWebsite::Core do
                           :content_type => 'text/html')
       @validate_website.site = page.url
       @validate_website.crawl(:quiet => true)
-      @validate_website.anemone.pages.size.must_equal 98
+      @validate_website.crawler.history.size.must_equal 98
     end
   end
 
@@ -43,7 +44,7 @@ describe ValidateWebsite::Core do
                                     :content_type => 'text/css')
       @validate_website.site = page.url
       @validate_website.crawl(:quiet => true)
-      @validate_website.anemone.pages.size.must_equal 5
+      @validate_website.crawler.history.size.must_equal 5
     end
 
     it "should extract url with single quote" do
@@ -52,7 +53,7 @@ describe ValidateWebsite::Core do
                           :content_type => 'text/css')
       @validate_website.site = page.url
       @validate_website.crawl(:quiet => true)
-      @validate_website.anemone.pages.size.must_equal 2
+      @validate_website.crawler.history.size.must_equal 2
     end
 
     it "should extract url with double quote" do
@@ -61,7 +62,7 @@ describe ValidateWebsite::Core do
                           :content_type => 'text/css')
       @validate_website.site = page.url
       @validate_website.crawl(:quiet => true)
-      @validate_website.anemone.pages.size.must_equal 2
+      @validate_website.crawler.history.size.must_equal 2
     end
   end
 

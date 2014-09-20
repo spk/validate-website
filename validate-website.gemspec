@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.name = 'validate-website'
   s.version = '0.8.1'
   s.license = 'MIT'
-  s.requirements << 'anemone' << 'rainbow' << 'multipart_body'
-  s.add_dependency('anemone', '~> 0.7')
+  s.requirements << 'spidr' << 'rainbow' << 'multipart_body'
+  s.add_dependency('spidr', '~> 0.4')
   s.add_dependency('paint', '~> 0.8')
   s.add_dependency('multipart_body', '~> 0.2')
   s.add_development_dependency('rake', '~> 10.3')

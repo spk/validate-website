@@ -7,7 +7,7 @@ require 'validate_website/option_parser'
 require 'validate_website/validator'
 require 'validate_website/colorful_messages'
 
-require 'anemone'
+require 'spidr'
 
 module ValidateWebsite
 
@@ -15,7 +15,7 @@ module ValidateWebsite
   class Core
 
     attr_accessor :site
-    attr_reader :options, :anemone
+    attr_reader :options, :crawler
 
     include ColorfulMessages
 
@@ -52,29 +52,35 @@ module ValidateWebsite
     #
     def crawl(opts={})
       opts = @options.merge(opts)
+      opts.merge!(:ignore_links => Regexp.new(opts[:exclude])) if opts[:exclude]
+
       puts color(:note, "validating #{@site}", opts[:color]) unless opts[:quiet]
       puts color(:warning, "No internet connection") unless internet_connection?
 
-      @anemone = Anemone.crawl(@site, opts) do |anemone|
-        anemone.skip_links_like Regexp.new(opts[:exclude]) if opts[:exclude]
+      @crawler = Spidr.site(@site, opts) do |crawler|
+        crawler.every_css_page do |page|
+          extract_urls_from_css(page).each do |u|
+            crawler.enqueue(u)
+          end
+        end
 
-        # select the links on each page to follow (iframe, link, css url)
-        anemone.focus_crawl { |page|
-          page.links.concat(extract_urls(page))
-        }
-
-        anemone.on_every_page { |page|
-          url = page.url.to_s
-          if opts[:markup_validation] && page.html? && page.fetched?
-            validate(page.doc, page.body, url, opts)
+        crawler.every_html_page do |page|
+          extract_imgs_from_page(page).each do |i|
+            crawler.enqueue(i)
           end
 
-          if opts[:not_found] && page.not_found?
+          if opts[:markup_validation] && page.html?
+            validate(page.doc, page.body, page.url, opts)
+          end
+        end
+
+        crawler.every_failed_url do |url|
+          if opts[:not_found]
             @not_found_error = true
-            puts color(:error, "%s linked in %s but not exist" % [url, page.referer], opts[:color])
+            puts color(:error, "%s linked but not exist" % [url], opts[:color])
             to_file(url)
           end
-        }
+        end
       end
     end
 
@@ -93,17 +99,14 @@ module ValidateWebsite
       files.each do |f|
         next unless File.file?(f)
 
-        page = Anemone::Page.new(URI.parse(opts[:site] + URI.encode(f)),
-                                 :body => open(f).read,
-                                 :headers => {'content-type' => ['text/html', 'application/xhtml+xml']})
+        response = fake_http_response(open(f).read)
+        page = Spidr::Page.new(URI.parse(opts[:site] + URI.encode(f)), response)
 
         if opts[:markup_validation]
           validate(page.doc, page.body, f)
         end
         if opts[:not_found]
-          links = page.links
-          links.concat extract_urls_from_img_script_iframe_link(page)
-          check_static_not_found(links.uniq)
+          check_static_not_found(page.links)
         end
       end
     end
@@ -128,13 +131,6 @@ module ValidateWebsite
       end
     end
 
-    def get_url(page, elem, attrname)
-      u = elem.attributes[attrname].to_s
-      return if u.nil? || u.empty?
-      abs = page.to_absolute(u) rescue nil
-      abs if abs && page.in_domain?(abs)
-    end
-
     # check files linked on static document
     # see lib/validate_website/runner.rb
     def check_static_not_found(links, opts={})
@@ -143,8 +139,8 @@ module ValidateWebsite
         file_location = URI.parse(File.join(Dir.getwd, l.path)).path
         # Check CSS url()
         if File.exists?(file_location) && File.extname(file_location) == '.css'
-          css_page = Anemone::Page.new(l, :body => File.read(file_location),
-                                       :headers => {'content-type' => ['text/css']})
+          response = fake_http_response(open(file_location).read, ['text/css'])
+          css_page = Spidr::Page.new(l, response)
           links.concat extract_urls_from_css(css_page)
           links.uniq!
         end
@@ -156,42 +152,29 @@ module ValidateWebsite
       end
     end
 
-    # Extract urls from img script iframe and link element
-    #
-    # @param [Anemone::Page] an Anemone::Page object
-    # @return [Array] Lists of urls
-    #
-    def extract_urls_from_img_script_iframe_link(page)
-      links = Set.new
-      page.doc.css('img, script, iframe, link').each do |elem|
-        if elem.name == 'link'
-          url = get_url(page, elem, "href")
-        else
-          url = get_url(page, elem, "src")
-        end
-        links << url unless url.nil? || url.to_s.empty?
-      end
-      links
-    end
-
     # Extract urls from CSS page
     #
-    # @param [Anemone::Page] an Anemone::Page object
+    # @param [Spidr::Page] an Spidr::Page object
     # @return [Array] Lists of urls
     #
     def extract_urls_from_css(page)
-      page.body.scan(/url\((['".\/\w-]+)\)/).inject([]) do |result, url|
+      page.body.scan(/url\((['".\/\w-]+)\)/).inject(Set[]) do |result, url|
         url = url.first.gsub("'", "").gsub('"', '')
         abs = page.to_absolute(URI.parse(url))
         result << abs
       end
     end
 
-    def extract_urls(page)
-      links = Set.new
-      links.merge extract_urls_from_img_script_iframe_link(page) if page.html?
-      links.merge extract_urls_from_css(page) if page.content_type == 'text/css'
-      links.to_a
+    # Extract imgs urls from page
+    #
+    # @param [Spidr::Page] an Spidr::Page object
+    # @return [Array] Lists of urls
+    #
+    def extract_imgs_from_page(page)
+      page.doc.search('//img[@src]').inject(Set[]) do |result, elem|
+        u = elem.attributes['src']
+        result << page.to_absolute(URI.parse(u))
+      end
     end
 
     ##
@@ -220,5 +203,20 @@ module ValidateWebsite
       end
     end
 
+    # Fake http response for Spidr static crawling
+    # see https://github.com/ruby/ruby/blob/trunk/lib/net/http/response.rb
+    #
+    # @param [String] response body
+    # @param [Array] content types
+    # @return [Net::HTTPResponse] fake http response
+    def fake_http_response(body, content_types=['text/html', 'text/xhtml+xml'])
+      response = Net::HTTPResponse.new '1.1', 200, 'OK'
+      response.instance_variable_set(:@read, true)
+      response.body = body
+      content_types.each do |c|
+        response.add_field('content-type', c)
+      end
+      response
+    end
   end
 end

@@ -4,7 +4,7 @@ require File.expand_path('../spec_helper', __FILE__)
 describe ValidateWebsite::Validator do
   before do
     WebMock.reset!
-    @http = Anemone::HTTP.new
+    @http = Spidr::Agent.new
   end
 
   describe("xhtml1") do
@@ -15,7 +15,7 @@ describe ValidateWebsite::Validator do
       page = FakePage.new(name,
                           :body => open(file).read,
                           :content_type => 'text/html')
-      @xhtml1_page = @http.fetch_page(page.url)
+      @xhtml1_page = @http.get_page(page.url)
       validator = ValidateWebsite::Validator.new(@xhtml1_page.doc, @xhtml1_page.body)
       validator.dtd.system_id.must_equal dtd_uri
       validator.namespace.must_equal name
@@ -36,7 +36,7 @@ describe ValidateWebsite::Validator do
         page = FakePage.new(name,
                             :body => open(file).read,
                             :content_type => 'text/html')
-        @html5_page = @http.fetch_page(page.url)
+        @html5_page = @http.get_page(page.url)
         validator = ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body)
         validator.valid?.must_equal true
       end
@@ -46,7 +46,7 @@ describe ValidateWebsite::Validator do
         page = FakePage.new(name,
                             :body => open(file).read,
                             :content_type => 'text/html')
-        @html5_page = @http.fetch_page(page.url)
+        @html5_page = @http.get_page(page.url)
         validator = ValidateWebsite::Validator.new(@html5_page.doc, @html5_page.body)
         validator.valid?.must_equal true
       end
@@ -61,7 +61,7 @@ describe ValidateWebsite::Validator do
         page = FakePage.new(name,
                             :body => open(file).read,
                             :content_type => 'text/html')
-        @html5_page = @http.fetch_page(page.url)
+        @html5_page = @http.get_page(page.url)
       end
 
       it 'should have an array of errors' do
@@ -85,7 +85,7 @@ describe ValidateWebsite::Validator do
       page = FakePage.new(name,
                           :body => open(file).read,
                           :content_type => 'text/html')
-      @html4_strict_page = @http.fetch_page(page.url)
+      @html4_strict_page = @http.get_page(page.url)
       validator = ValidateWebsite::Validator.new(@html4_strict_page.doc, @html4_strict_page.body)
       validator.valid?.must_equal true
     end
