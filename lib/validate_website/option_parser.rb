@@ -47,9 +47,9 @@ module ValidateWebsite
       opts = OptionParser.new do |o|
         o.set_summary_indent('  ')
         o.banner =    'Usage: validate-website [OPTIONS]'
-        o.define_head 'validate-website - Web crawler for checking the ' +
-          'validity of your documents'
-        o.separator   ''
+        o.define_head %(validate-website - Web crawler for checking the \
+validity of your documents)
+        o.separator ''
 
         o.on("-s", "--site 'SITE'", String,
              "Website to crawl (Default: #{@default_opts[:site]})") { |v|
@@ -75,7 +75,7 @@ module ValidateWebsite
 
         o.on("-m", "--[no-]markup-validation",
              %(Markup validation \
-(Default: #{@default_opts[:markup_validation]})")) { |v|
+(Default: #{@default_opts[:markup_validation]}))) { |v|
           options[:markup_validation] = v
         }
         o.on("-i", "--ignore-errors 'IGNORE'", String,
@@ -91,8 +91,8 @@ module ValidateWebsite
           options[:color] = v
         }
         o.on("-v", "--verbose",
-             %("Show validator errors \
-(Default: #{@default_opts[:validate_verbose]})")) { |v|
+             %(Show validator errors \
+(Default: #{@default_opts[:validate_verbose]}))) { |v|
           options[:validate_verbose] = v
         }
         o.on("-q", "--quiet",
@@ -116,16 +116,16 @@ module ValidateWebsite
         o.banner =    'Usage: validate-website-static [OPTIONS]'
         o.define_head %(validate-website-static - check the validity of \
           your documents)
-        o.separator   ''
+        o.separator ''
 
         o.on("-s", "--site 'SITE'", String,
-             %("Where static files will be hosted \
-(Default: #{@default_opts[:site]})")) { |v|
+             %(Where static files will be hosted \
+(Default: #{@default_opts[:site]}))) { |v|
           options[:site] = v
         }
         o.on("-p", "--pattern 'PATTERN'", String,
-             %("Change filenames pattern \
-(Default: #{@default_opts[:pattern]})")) { |v|
+             %(Change filenames pattern \
+(Default: #{@default_opts[:pattern]}))) { |v|
           options[:pattern] = v.strip
         }
         o.on("-f", "--file 'FILE'", String,
@@ -138,18 +138,18 @@ module ValidateWebsite
         }
 
         o.on("-m", "--[no-]markup-validation",
-             %("Markup validation \
-(Default: #{@default_opts[:markup_validation]})")) { |v|
+             %(Markup validation \
+(Default: #{@default_opts[:markup_validation]}))) { |v|
           options[:markup_validation] = v
         }
         o.on("-n", "--not-found",
-             %("Log files not on filesystem, pwd considered as root « / » \
-(Default: #{@default_opts[:not_found]})")) { |v|
+             %(Log files not on filesystem, pwd considered as root « / » \
+(Default: #{@default_opts[:not_found]}))) { |v|
           options[:not_found] = v
         }
         o.on("-v", "--verbose",
-             %("Show validator errors \
-(Default: #{@default_opts[:validate_verbose]})")) { |v|
+             %(Show validator errors \
+(Default: #{@default_opts[:validate_verbose]}))) { |v|
           options[:validate_verbose] = v
         }
         o.on("-q", "--quiet",
