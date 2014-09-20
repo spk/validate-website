@@ -7,7 +7,8 @@ module ValidateWebsite
     DEFAULT_OPTS_ALL = {
       markup_validation: true,
       # crawler: log not found url (404 status code)
-      # static: log not found url (not on filesystem, pwd considered as root « / »)
+      # static: log not found url (not on filesystem, `pwd` considered
+      # as root « / »)
       not_found: false,
       quiet: false,
       file: nil,
@@ -73,7 +74,8 @@ module ValidateWebsite
         }
 
         o.on("-m", "--[no-]markup-validation",
-             "Markup validation (Default: #{@default_opts[:markup_validation]})") { |v|
+             %(Markup validation \
+(Default: #{@default_opts[:markup_validation]})")) { |v|
           options[:markup_validation] = v
         }
         o.on("-i", "--ignore-errors 'IGNORE'", String,
@@ -89,7 +91,8 @@ module ValidateWebsite
           options[:color] = v
         }
         o.on("-v", "--verbose",
-             "Show validator errors (Default: #{@default_opts[:validate_verbose]})") { |v|
+             %("Show validator errors \
+(Default: #{@default_opts[:validate_verbose]})")) { |v|
           options[:validate_verbose] = v
         }
         o.on("-q", "--quiet",
@@ -116,11 +119,13 @@ module ValidateWebsite
         o.separator   ''
 
         o.on("-s", "--site 'SITE'", String,
-             "Where static files will be hosted (Default: #{@default_opts[:site]})") { |v|
+             %("Where static files will be hosted \
+(Default: #{@default_opts[:site]})")) { |v|
           options[:site] = v
         }
         o.on("-p", "--pattern 'PATTERN'", String,
-             "Change filenames pattern (Default: #{@default_opts[:pattern]})") { |v|
+             %("Change filenames pattern \
+(Default: #{@default_opts[:pattern]})")) { |v|
           options[:pattern] = v.strip
         }
         o.on("-f", "--file 'FILE'", String,
@@ -133,15 +138,18 @@ module ValidateWebsite
         }
 
         o.on("-m", "--[no-]markup-validation",
-             "Markup validation (Default: #{@default_opts[:markup_validation]})") { |v|
+             %("Markup validation \
+(Default: #{@default_opts[:markup_validation]})")) { |v|
           options[:markup_validation] = v
         }
         o.on("-n", "--not-found",
-             "Log files not on filesystem, pwd considered as root « / » (Default: #{@default_opts[:not_found]})") { |v|
+             %("Log files not on filesystem, pwd considered as root « / » \
+(Default: #{@default_opts[:not_found]})")) { |v|
           options[:not_found] = v
         }
         o.on("-v", "--verbose",
-             "Show validator errors (Default: #{@default_opts[:validate_verbose]})") { |v|
+             %("Show validator errors \
+(Default: #{@default_opts[:validate_verbose]})")) { |v|
           options[:validate_verbose] = v
         }
         o.on("-q", "--quiet",
