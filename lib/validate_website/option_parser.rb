@@ -16,11 +16,6 @@ module ValidateWebsite
       :color             => true,
       # internal verbose for ValidateWebsite
       :validate_verbose  => false,
-      # Anemone options see anemone/lib/anemone/core.rb
-      :verbose           => false,
-      :cookies           => nil,
-      :accept_cookies    => true,
-      :redirect_limit    => 0,
     }
 
     DEFAULT_OPTS_CRAWL = {
@@ -100,10 +95,6 @@ module ValidateWebsite
         o.on("-q", "--quiet",
              "Only report errors (Default: #{@@default_opts[:quiet]})") { |v|
           options[:quiet] = v
-        }
-        o.on("-d", "--debug",
-             "Show anemone log (Default: #{@@default_opts[:verbose]})") { |v|
-          options[:verbose] = v
         }
 
         o.separator ""

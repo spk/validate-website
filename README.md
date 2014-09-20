@@ -43,7 +43,7 @@ HTML5 support with Validator.nu Web Service.
   -s, --site SITE
       Website to crawl (Default: http://localhost:3000/)
   -u, --user-agent USERAGENT
-      Change user agent (Default: Anemone/VERSION)
+      Change user agent (Default: Spidr.user_agent)
   -e, --exclude EXCLUDE
       Url to exclude (ex: redirect|news)
   -i, --ignore-errors IGNORE
@@ -62,8 +62,6 @@ HTML5 support with Validator.nu Web Service.
       Show detail of validator errors (Default: false).
   -q, --quiet
       Only report errors (Default: false).
-  -d, --debug
-      Show anemone log (Default: false)
   -h, --help
       Show help message and exit.
 ```
@@ -124,7 +122,7 @@ See `validate-website.gemspec` file.
 ## Credits
 
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
-* And Chris Kite for Anemone web-spider framework.
+* And Chris Kite for Anemone web-spider framework and postmodern for Spidr.
 
 ## More info
 
