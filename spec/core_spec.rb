@@ -10,6 +10,14 @@ describe ValidateWebsite::Core do
     @validate_website = ValidateWebsite::Core.new(color: false)
   end
 
+  describe 'invalid options' do
+    it 'raise ArgumentError on wrong validation_type' do
+      proc {
+        ValidateWebsite::Core.new({color: false}, :fail)
+      }.must_raise ArgumentError
+    end
+  end
+
   describe('html') do
     it "extract url" do
       name = 'xhtml1-strict'
