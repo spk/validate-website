@@ -123,9 +123,8 @@ module ValidateWebsite
     private
 
     def to_file(msg)
-      if @file && File.exist?(@file)
-        open(@file, 'a').write("#{msg}\n")
-      end
+      return unless @file
+      open(@file, 'a').write("#{msg}\n") if File.exist?(@file)
     end
 
     # check files linked on static document

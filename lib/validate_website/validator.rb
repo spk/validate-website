@@ -42,11 +42,10 @@ module ValidateWebsite
     def init_namespace(dtd)
       return unless dtd.system_id
       dtd_uri = URI.parse(dtd.system_id)
-      if dtd.system_id && dtd_uri.path
-        @dtd_uri = dtd_uri
-        # http://www.w3.org/TR/xhtml1/#dtds
-        @namespace = File.basename(@dtd_uri.path, '.dtd')
-      end
+      return unless dtd_uri.path
+      @dtd_uri = dtd_uri
+      # http://www.w3.org/TR/xhtml1/#dtds
+      @namespace = File.basename(@dtd_uri.path, '.dtd')
     end
 
     def find_errors
