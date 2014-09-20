@@ -30,11 +30,11 @@ module ValidateWebsite
 
     def self.parse(options, type)
       if const_defined?("DEFAULT_OPTS_#{type.to_s.upcase}")
-        @@default_opts = const_get("DEFAULT_OPTS_#{type.to_s.upcase}")
+        @default_opts = const_get("DEFAULT_OPTS_#{type.to_s.upcase}")
         if Array === options
           send("command_line_parse_#{type}", options)
         else
-          @@default_opts.merge(options)
+          @default_opts.merge(options)
         end
       else
         fail ArgumentError, "Unknown options type : #{type}"
@@ -51,7 +51,7 @@ module ValidateWebsite
         o.separator   ''
 
         o.on("-s", "--site 'SITE'", String,
-             "Website to crawl (Default: #{@@default_opts[:site]})") { |v|
+             "Website to crawl (Default: #{@default_opts[:site]})") { |v|
           options[:site] = v
         }
         o.on("-u", "--user-agent 'USERAGENT'", String,
@@ -73,7 +73,7 @@ module ValidateWebsite
         }
 
         o.on("-m", "--[no-]markup-validation",
-             "Markup validation (Default: #{@@default_opts[:markup_validation]})") { |v|
+             "Markup validation (Default: #{@default_opts[:markup_validation]})") { |v|
           options[:markup_validation] = v
         }
         o.on("-i", "--ignore-errors 'IGNORE'", String,
@@ -81,24 +81,27 @@ module ValidateWebsite
           options[:ignore_errors] = v
         }
         o.on("-n", "--not-found",
-             "Log not found url (Default: #{@@default_opts[:not_found]})") { |v|
+             "Log not found url (Default: #{@default_opts[:not_found]})") { |v|
           options[:not_found] = v
         }
         o.on("--[no-]color",
-             "Show colored output (Default: #{@@default_opts[:color]})") { |v|
+             "Show colored output (Default: #{@default_opts[:color]})") { |v|
           options[:color] = v
         }
         o.on("-v", "--verbose",
-             "Show validator errors (Default: #{@@default_opts[:validate_verbose]})") { |v|
+             "Show validator errors (Default: #{@default_opts[:validate_verbose]})") { |v|
           options[:validate_verbose] = v
         }
         o.on("-q", "--quiet",
-             "Only report errors (Default: #{@@default_opts[:quiet]})") { |v|
+             "Only report errors (Default: #{@default_opts[:quiet]})") { |v|
           options[:quiet] = v
         }
 
         o.separator ""
-        o.on_tail("-h", "--help", "Show this help message.") { puts o; exit }
+        o.on_tail("-h", "--help", "Show this help message.") do
+          puts o
+          exit
+        end
       end
       command_line_parse!(opts, args, options)
     end
@@ -108,16 +111,16 @@ module ValidateWebsite
       opts = OptionParser.new do |o|
         o.set_summary_indent('  ')
         o.banner =    'Usage: validate-website-static [OPTIONS]'
-        o.define_head 'validate-website-static - check the validity of ' +
-          'your documents'
+        o.define_head %(validate-website-static - check the validity of \
+          your documents)
         o.separator   ''
 
         o.on("-s", "--site 'SITE'", String,
-             "Where static files will be hosted (Default: #{@@default_opts[:site]})") { |v|
+             "Where static files will be hosted (Default: #{@default_opts[:site]})") { |v|
           options[:site] = v
         }
         o.on("-p", "--pattern 'PATTERN'", String,
-             "Change filenames pattern (Default: #{@@default_opts[:pattern]})") { |v|
+             "Change filenames pattern (Default: #{@default_opts[:pattern]})") { |v|
           options[:pattern] = v.strip
         }
         o.on("-f", "--file 'FILE'", String,
@@ -130,19 +133,19 @@ module ValidateWebsite
         }
 
         o.on("-m", "--[no-]markup-validation",
-             "Markup validation (Default: #{@@default_opts[:markup_validation]})") { |v|
+             "Markup validation (Default: #{@default_opts[:markup_validation]})") { |v|
           options[:markup_validation] = v
         }
         o.on("-n", "--not-found",
-             "Log files not on filesystem, pwd considered as root « / » (Default: #{@@default_opts[:not_found]})") { |v|
+             "Log files not on filesystem, pwd considered as root « / » (Default: #{@default_opts[:not_found]})") { |v|
           options[:not_found] = v
         }
         o.on("-v", "--verbose",
-             "Show validator errors (Default: #{@@default_opts[:validate_verbose]})") { |v|
+             "Show validator errors (Default: #{@default_opts[:validate_verbose]})") { |v|
           options[:validate_verbose] = v
         }
         o.on("-q", "--quiet",
-             "Only report errors (Default: #{@@default_opts[:quiet]})") { |v|
+             "Only report errors (Default: #{@default_opts[:quiet]})") { |v|
           options[:quiet] = v
         }
       end
@@ -151,7 +154,7 @@ module ValidateWebsite
 
     def self.command_line_parse!(opts, args, options)
       opts.parse!(args)
-      @@default_opts.merge(options)
+      @default_opts.merge(options)
     rescue OptionParser::InvalidOption, OptionParser::MissingArgument
       puts $ERROR_INFO.to_s
       puts opts
