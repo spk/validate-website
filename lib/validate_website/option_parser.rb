@@ -37,7 +37,7 @@ module ValidateWebsite
           @@default_opts.merge(options)
         end
       else
-        raise ArgumentError, "Unknown options type : #{type}"
+        fail ArgumentError, "Unknown options type : #{type}"
       end
     end
 
