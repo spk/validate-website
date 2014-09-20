@@ -129,23 +129,24 @@ module ValidateWebsite
 
     # check files linked on static document
     # see lib/validate_website/runner.rb
-    def check_static_not_found(links, opts = {})
-      opts = @options.merge(opts)
+    def check_static_not_found(links)
       links.each do |l|
         file_location = URI.parse(File.join(Dir.getwd, l.path)).path
+        not_found_error and next unless File.exist?(file_location)
         # Check CSS url()
-        if File.exist?(file_location) && File.extname(file_location) == '.css'
+        if File.extname(file_location) == '.css'
           response = fake_http_response(open(file_location).read, ['text/css'])
           css_page = Spidr::Page.new(l, response)
           links.concat extract_urls_from_css(css_page)
           links.uniq!
         end
-        unless File.exist?(file_location)
-          @not_found_error = true
-          puts color(:error, "#{file_location} linked but not exist", opts[:color])
-          to_file(file_location)
-        end
       end
+    end
+
+    def not_found_error
+      @not_found_error = true
+      puts color(:error, "#{file_location} linked but not exist", @options[:color])
+      to_file(file_location)
     end
 
     # Extract urls from CSS page
