@@ -150,14 +150,12 @@ module ValidateWebsite
     end
 
     def self.command_line_parse!(opts, args, options)
-      begin
-        opts.parse!(args)
-      rescue OptionParser::InvalidOption, OptionParser::MissingArgument
-        puts $!.to_s
-        puts opts
-        exit 128
-      end
+      opts.parse!(args)
       @@default_opts.merge(options)
+    rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+      puts $ERROR_INFO.to_s
+      puts opts
+      exit 128
     end
   end
 end
