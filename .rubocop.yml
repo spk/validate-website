@@ -1,0 +1,42 @@
+AllCops:
+  Exclude:
+    - tmp/**
+
+MethodLength:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+HandleExceptions:
+  Enabled: false
+
+Blocks:
+  Enabled: false
+
+FavorUnlessOverNegatedIf:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+RedundantReturn:
+  Enabled: false
+
+AsciiComments:
+  Enabled: false
+
+CaseEquality:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+EndOfLine:
+  Enabled: false
+
+TrailingComma:
+  Enabled: false

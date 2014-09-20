@@ -1,7 +1,7 @@
 require 'rdoc/task'
 require 'rake/testtask'
 
-task :default => [:test]
+task default: [:test]
 
 RDoc::Task.new do |rd|
   rd.main = "README.rdoc"
@@ -17,4 +17,4 @@ end
 Rake::TestTask.new do |t|
   t.pattern = "spec/*_spec.rb"
 end
-task :spec => :test
+task spec: :test

@@ -5,27 +5,27 @@ module ValidateWebsite
   # Internal class for parse command line args
   class Parser
     DEFAULT_OPTS_ALL = {
-      :markup_validation => true,
+      markup_validation: true,
       # crawler: log not found url (404 status code)
       # static: log not found url (not on filesystem, pwd considered as root « / »)
-      :not_found         => false,
-      :quiet             => false,
-      :file              => nil,
+      not_found: false,
+      quiet: false,
+      file: nil,
       # regex to ignore certain validation errors
-      :ignore_errors     => nil,
-      :color             => true,
+      ignore_errors: nil,
+      color: true,
       # internal verbose for ValidateWebsite
-      :validate_verbose  => false,
+      validate_verbose: false,
     }
 
     DEFAULT_OPTS_CRAWL = {
-      :site              => 'http://localhost:3000/',
-      :exclude           => nil,
+      site: 'http://localhost:3000/',
+      exclude: nil,
     }.merge(DEFAULT_OPTS_ALL)
 
     DEFAULT_OPTS_STATIC = {
-      :site              => 'http://www.example.com/',
-      :pattern           => '**/*.html',
+      site: 'http://www.example.com/',
+      pattern: '**/*.html',
     }.merge(DEFAULT_OPTS_ALL)
 
     def self.parse(options, type)

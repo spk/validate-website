@@ -10,10 +10,8 @@ require 'validate_website/colorful_messages'
 require 'spidr'
 
 module ValidateWebsite
-
   # Core class for static or website validation
   class Core
-
     attr_accessor :site
     attr_reader :options, :crawler
 
@@ -26,7 +24,7 @@ module ValidateWebsite
 
     PING_URL = 'http://www.google.com/'
 
-    def initialize(options={}, validation_type=:crawl)
+    def initialize(options = {}, validation_type = :crawl)
       @markup_error = nil
       @not_found_error = nil
 
@@ -50,9 +48,9 @@ module ValidateWebsite
     #   :markup_validation [Boolean] Check the markup validity
     #   :not_found [Boolean] Check for not found page (404)
     #
-    def crawl(opts={})
+    def crawl(opts = {})
       opts = @options.merge(opts)
-      opts.merge!(:ignore_links => Regexp.new(opts[:exclude])) if opts[:exclude]
+      opts.merge!(ignore_links: Regexp.new(opts[:exclude])) if opts[:exclude]
 
       puts color(:note, "validating #{@site}", opts[:color]) unless opts[:quiet]
       puts color(:warning, "No internet connection") unless internet_connection?
@@ -77,7 +75,7 @@ module ValidateWebsite
         crawler.every_failed_url do |url|
           if opts[:not_found]
             @not_found_error = true
-            puts color(:error, "%s linked but not exist" % [url], opts[:color])
+            puts color(:error, "#{url} linked but not exist", opts[:color])
             to_file(url)
           end
         end
@@ -90,8 +88,7 @@ module ValidateWebsite
       false
     end
 
-
-    def crawl_static(opts={})
+    def crawl_static(opts = {})
       opts = @options.merge(opts)
       puts color(:note, "validating #{@site}", opts[:color])
 
@@ -133,20 +130,20 @@ module ValidateWebsite
 
     # check files linked on static document
     # see lib/validate_website/runner.rb
-    def check_static_not_found(links, opts={})
+    def check_static_not_found(links, opts = {})
       opts = @options.merge(opts)
       links.each do |l|
         file_location = URI.parse(File.join(Dir.getwd, l.path)).path
         # Check CSS url()
-        if File.exists?(file_location) && File.extname(file_location) == '.css'
+        if File.exist?(file_location) && File.extname(file_location) == '.css'
           response = fake_http_response(open(file_location).read, ['text/css'])
           css_page = Spidr::Page.new(l, response)
           links.concat extract_urls_from_css(css_page)
           links.uniq!
         end
-        unless File.exists?(file_location)
+        unless File.exist?(file_location)
           @not_found_error = true
-          puts color(:error, "%s linked but not exist" % file_location, opts[:color])
+          puts color(:error, "#{file_location} linked but not exist", opts[:color])
           to_file(file_location)
         end
       end
@@ -158,7 +155,7 @@ module ValidateWebsite
     # @return [Array] Lists of urls
     #
     def extract_urls_from_css(page)
-      page.body.scan(/url\((['".\/\w-]+)\)/).inject(Set[]) do |result, url|
+      page.body.scan(/url\((['".\/\w-]+)\)/).reduce(Set[]) do |result, url|
         url = url.first.gsub("'", "").gsub('"', '')
         abs = page.to_absolute(URI.parse(url))
         result << abs
@@ -171,7 +168,7 @@ module ValidateWebsite
     # @return [Array] Lists of urls
     #
     def extract_imgs_from_page(page)
-      page.doc.search('//img[@src]').inject(Set[]) do |result, elem|
+      page.doc.search('//img[@src]').reduce(Set[]) do |result, elem|
         u = elem.attributes['src']
         result << page.to_absolute(URI.parse(u))
       end
@@ -185,10 +182,10 @@ module ValidateWebsite
     #   :quiet no output (true, false)
     #   :color color output (true, false)
     #
-    def validate(doc, body, url, opts={})
+    def validate(doc, body, url, opts = {})
       opts = @options.merge(opts)
       validator = Validator.new(doc, body, opts)
-      msg = " well formed? %s" % validator.valid?
+      msg = " well formed? #{validator.valid?}"
       if validator.valid?
         unless opts[:quiet]
           print color(:info, url, opts[:color])
@@ -209,7 +206,7 @@ module ValidateWebsite
     # @param [String] response body
     # @param [Array] content types
     # @return [Net::HTTPResponse] fake http response
-    def fake_http_response(body, content_types=['text/html', 'text/xhtml+xml'])
+    def fake_http_response(body, content_types = ['text/html', 'text/xhtml+xml'])
       response = Net::HTTPResponse.new '1.1', 200, 'OK'
       response.instance_variable_set(:@read, true)
       response.body = body

@@ -4,7 +4,7 @@ require 'paint'
 module ValidateWebsite
   # Internal helper for colorful messages
   module ColorfulMessages
-    def color(type, message, colored=true)
+    def color(type, message, colored = true)
       return message unless colored
       send(type, message)
     end

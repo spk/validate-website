@@ -20,12 +20,12 @@ Gem::Specification.new do |s|
   s.executables << 'validate-website'
   s.executables << 'validate-website-static'
   s.files = Dir['README.rdoc', 'Rakefile', 'LICENSE',
-    'bin',
-    'lib/**/*.rb',
-    'man/**/*',
-    'spec/**/*',
-    'data/**/*']
-  s.description = %Q{validate-website is a web crawler for checking the markup \
-validity with XML Schema / DTD and not found urls.}
+                'bin',
+                'lib/**/*.rb',
+                'man/**/*',
+                'spec/**/*',
+                'data/**/*']
+  s.description = %(validate-website is a web crawler for checking the markup \
+validity with XML Schema / DTD and not found urls.)
   s.test_files = Dir.glob('spec/**/*_spec.rb')
 end

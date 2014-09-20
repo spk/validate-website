@@ -5,7 +5,7 @@ require 'nokogiri'
 module ValidateWebsite
   # Document validation from DTD or XSD (webservice for html5)
   class Validator
-    XHTML_PATH = File.join(File.dirname(__FILE__), '..', '..', 'data', 'schemas')
+    XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
     HTML5_VALIDATOR_SERVICE = 'http://html5.validator.nu/'
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
@@ -13,7 +13,7 @@ module ValidateWebsite
     ##
     # @param [Nokogiri::HTML::Document] original_doc
     # @param [String] The raw HTTP response body of the page
-    def initialize(original_doc, body, opts={})
+    def initialize(original_doc, body, opts = {})
       @original_doc = original_doc
       @body = body
       @options = opts
@@ -38,14 +38,14 @@ module ValidateWebsite
     end
 
     private
+
     def init_namespace(dtd)
-      if dtd.system_id
-        dtd_uri = URI.parse(dtd.system_id)
-        if dtd.system_id && dtd_uri.path
-          @dtd_uri = dtd_uri
-          # http://www.w3.org/TR/xhtml1/#dtds
-          @namespace = File.basename(@dtd_uri.path, '.dtd')
-        end
+      return unless dtd.system_id
+      dtd_uri = URI.parse(dtd.system_id)
+      if dtd.system_id && dtd_uri.path
+        @dtd_uri = dtd_uri
+        # http://www.w3.org/TR/xhtml1/#dtds
+        @namespace = File.basename(@dtd_uri.path, '.dtd')
       end
     end
 
@@ -65,7 +65,7 @@ module ValidateWebsite
 
       # http://www.w3.org/TR/xhtml1-schema/
       @xsd = Dir.chdir(XHTML_PATH) do
-        if @namespace && File.exists?(@namespace + '.xsd')
+        if @namespace && File.exist?(@namespace + '.xsd')
           Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
         end
       end
@@ -91,13 +91,13 @@ module ValidateWebsite
       require 'net/http'
       require 'multipart_body'
       url = URI.parse(HTML5_VALIDATOR_SERVICE)
-      multipart = MultipartBody.new(:content => document)
+      multipart = MultipartBody.new(content: document)
       http = Net::HTTP.new(url.host)
       headers = {
         'Content-Type' => "multipart/form-data; boundary=#{multipart.boundary}",
         'Content-Length' => multipart.to_s.bytesize.to_s,
       }
-      res = http.start {|con| con.post(url.path, multipart.to_s, headers) }
+      res = http.start { |con| con.post(url.path, multipart.to_s, headers) }
       @errors = Nokogiri::HTML(res.body).css('ol li.error').map(&:content)
     end
   end
