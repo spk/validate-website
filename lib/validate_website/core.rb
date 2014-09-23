@@ -13,7 +13,7 @@ module ValidateWebsite
   # Core class for static or website validation
   class Core
     attr_accessor :site
-    attr_reader :options, :crawler, :errors_count
+    attr_reader :options, :crawler, :errors_count, :not_founds_count
 
     include ColorfulMessages
 
@@ -25,7 +25,7 @@ module ValidateWebsite
     PING_URL = 'http://www.google.com/'
 
     def initialize(options = {}, validation_type = :crawl)
-      @not_found_error = nil
+      @not_founds_count = 0
       @errors_count = 0
 
       @options = Parser.parse(options, validation_type)
@@ -72,15 +72,16 @@ module ValidateWebsite
           end
         end
 
-        crawler.every_failed_url do |url|
-          if opts[:not_found]
-            @not_found_error = true
-            puts color(:error, "#{url} linked but not exist", opts[:color])
-            to_file(url)
+        if opts[:not_found]
+          crawler.every_failed_url do |url|
+            not_found_error(url)
           end
         end
       end
-      print_status_line(@crawler.history.size, @crawler.failures.size, @errors_count)
+      print_status_line(@crawler.history.size,
+                        @crawler.failures.size,
+                        @not_founds_count,
+                        @errors_count)
     end
 
     def internet_connection?
@@ -103,19 +104,23 @@ module ValidateWebsite
         validate(page.doc, page.body, f) if opts[:markup_validation]
         check_static_not_found(page.links) if opts[:not_found]
       end
-      print_status_line(files.size, 0, @errors_count)
+      print_status_line(files.size, 0, @not_founds_count, @errors_count)
     end
 
     def errors?
       @errors_count > 0
     end
 
+    def not_founds?
+      @not_founds_count > 0
+    end
+
     def exit_status
-      if errors? && @not_found_error
+      if errors? && not_founds?
         EXIT_FAILURE_MARKUP_NOT_FOUND
       elsif errors?
         EXIT_FAILURE_MARKUP
-      elsif @not_found_error
+      elsif not_founds?
         EXIT_FAILURE_NOT_FOUND
       else
         EXIT_SUCCESS
@@ -133,8 +138,8 @@ module ValidateWebsite
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
       links.each do |l|
-        file_location = URI.parse(File.join(Dir.getwd, l.path)).path
-        not_found_error and next unless File.exist?(file_location)
+        file_location = URI.parse(File.join(Dir.getwd, l)).path
+        not_found_error(file_location) and next unless File.exist?(file_location)
         # Check CSS url()
         if File.extname(file_location) == '.css'
           response = fake_http_response(open(file_location).read, ['text/css'])
@@ -145,10 +150,10 @@ module ValidateWebsite
       end
     end
 
-    def not_found_error
-      @not_found_error = true
-      puts color(:error, "#{file_location} linked but not exist", @options[:color])
-      to_file(file_location)
+    def not_found_error(location)
+      @not_founds_count += 1
+      puts color(:error, "#{location} linked but not exist", @options[:color])
+      to_file(location)
     end
 
     # Extract urls from CSS page
@@ -221,9 +226,10 @@ module ValidateWebsite
       response
     end
 
-    def print_status_line(total_count, failures_count, errors_count)
+    def print_status_line(total_count, failures_count, not_founds, errors_count)
       puts color(:info, ["#{total_count} visited",
                          "#{failures_count} failures",
+                         "#{not_founds_count} not founds",
                          "#{errors_count} errors"].join(', '), @options[:color])
     end
   end

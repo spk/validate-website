@@ -82,6 +82,7 @@ describe ValidateWebsite::Core do
                                      markup_validation: false,
                                      not_found: false,
                                      quiet: true)
+      @validate_website.not_founds_count.must_equal 0
     end
 
     it 'not found' do
@@ -91,6 +92,7 @@ describe ValidateWebsite::Core do
                                      markup_validation: false,
                                      not_found: true,
                                      quiet: true)
+      @validate_website.not_founds_count.must_equal 3
     end
   end
 end
