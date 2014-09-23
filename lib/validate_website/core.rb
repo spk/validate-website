@@ -13,7 +13,7 @@ module ValidateWebsite
   # Core class for static or website validation
   class Core
     attr_accessor :site
-    attr_reader :options, :crawler
+    attr_reader :options, :crawler, :errors_count
 
     include ColorfulMessages
 
@@ -25,8 +25,8 @@ module ValidateWebsite
     PING_URL = 'http://www.google.com/'
 
     def initialize(options = {}, validation_type = :crawl)
-      @markup_error = nil
       @not_found_error = nil
+      @errors_count = 0
 
       @options = Parser.parse(options, validation_type)
 
@@ -80,6 +80,7 @@ module ValidateWebsite
           end
         end
       end
+      print_status_line(@crawler.history.size, @crawler.failures.size, @errors_count)
     end
 
     def internet_connection?
@@ -99,19 +100,20 @@ module ValidateWebsite
         response = fake_http_response(open(f).read)
         page = Spidr::Page.new(URI.parse(opts[:site] + URI.encode(f)), response)
 
-        if opts[:markup_validation]
-          validate(page.doc, page.body, f)
-        end
-        if opts[:not_found]
-          check_static_not_found(page.links)
-        end
+        validate(page.doc, page.body, f) if opts[:markup_validation]
+        check_static_not_found(page.links) if opts[:not_found]
       end
+      print_status_line(files.size, 0, @errors_count)
+    end
+
+    def errors?
+      @errors_count > 0
     end
 
     def exit_status
-      if @markup_error && @not_found_error
+      if errors? && @not_found_error
         EXIT_FAILURE_MARKUP_NOT_FOUND
-      elsif @markup_error
+      elsif errors?
         EXIT_FAILURE_MARKUP
       elsif @not_found_error
         EXIT_FAILURE_NOT_FOUND
@@ -195,7 +197,7 @@ module ValidateWebsite
           puts color(:success, msg, opts[:color])
         end
       else
-        @markup_error = true
+        @errors_count += 1
         print color(:info, url, opts[:color])
         puts color(:error, msg, opts[:color])
         puts color(:error, validator.errors.join(', '), opts[:color]) if opts[:verbose]
@@ -217,6 +219,12 @@ module ValidateWebsite
         response.add_field('content-type', c)
       end
       response
+    end
+
+    def print_status_line(total_count, failures_count, errors_count)
+      puts color(:info, ["#{total_count} visited",
+                         "#{failures_count} failures",
+                         "#{errors_count} errors"].join(', '), @options[:color])
     end
   end
 end
