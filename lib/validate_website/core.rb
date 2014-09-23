@@ -186,8 +186,11 @@ module ValidateWebsite
       opts = @options.merge(opts)
       validator = Validator.new(doc, body, opts)
       msg = " well formed? #{validator.valid?}"
+      # TODO: create a formatter
       if validator.valid?
-        unless opts[:quiet]
+        if opts[:quiet]
+          print color(:success, '.', opts[:color]) # rspec style
+        else
           print color(:info, url, opts[:color])
           puts color(:success, msg, opts[:color])
         end
