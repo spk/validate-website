@@ -83,5 +83,14 @@ describe ValidateWebsite::Core do
                                      not_found: false,
                                      quiet: true)
     end
+
+    it 'not found' do
+      pattern = File.join(File.dirname(__FILE__), 'example/**/*.html')
+      @validate_website.crawl_static(pattern: pattern,
+                                     site: 'http://www.ruby-lang.org/',
+                                     markup_validation: false,
+                                     not_found: true,
+                                     quiet: true)
+    end
   end
 end
