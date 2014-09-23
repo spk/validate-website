@@ -16,7 +16,7 @@ module ValidateWebsite
       ignore_errors: nil,
       color: true,
       # internal verbose for ValidateWebsite
-      validate_verbose: false,
+      verbose: false,
     }
 
     DEFAULT_OPTS_CRAWL = {
@@ -92,8 +92,8 @@ validity of your documents)
         }
         o.on("-v", "--verbose",
              %(Show validator errors \
-(Default: #{@default_opts[:validate_verbose]}))) { |v|
-          options[:validate_verbose] = v
+(Default: #{@default_opts[:verbose]}))) { |v|
+          options[:verbose] = v
         }
         o.on("-q", "--quiet",
              "Only report errors (Default: #{@default_opts[:quiet]})") { |v|
@@ -149,8 +149,8 @@ validity of your documents)
         }
         o.on("-v", "--verbose",
              %(Show validator errors \
-(Default: #{@default_opts[:validate_verbose]}))) { |v|
-          options[:validate_verbose] = v
+(Default: #{@default_opts[:verbose]}))) { |v|
+          options[:verbose] = v
         }
         o.on("-q", "--quiet",
              "Only report errors (Default: #{@default_opts[:quiet]})") { |v|

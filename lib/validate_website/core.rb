@@ -198,7 +198,7 @@ module ValidateWebsite
         @markup_error = true
         print color(:info, url, opts[:color])
         puts color(:error, msg, opts[:color])
-        puts color(:error, validator.errors.join(', '), opts[:color]) if opts[:validate_verbose]
+        puts color(:error, validator.errors.join(', '), opts[:color]) if opts[:verbose]
         to_file(url)
       end
     end
