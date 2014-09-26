@@ -85,7 +85,7 @@ describe ValidateWebsite::Core do
     end
 
     it 'not found' do
-      pattern = File.join(File.dirname(__FILE__), 'example/**/*.html')
+      pattern = File.join(File.dirname(__FILE__), '{example,data}/**/*.html')
       @validate_website.crawl_static(pattern: pattern,
                                      site: 'http://www.ruby-lang.org/',
                                      markup: false,
