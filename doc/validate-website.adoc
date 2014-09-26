@@ -19,26 +19,20 @@ OPTIONS
 -------
 *-s*, *--site* 'SITE'::
   Website to crawl (Default: http://localhost:3000/)
-*-u*, *--user-agent* 'USERAGENT'::
-  Change user agent (Default: Spidr.user_agent)
 *-e*, *--exclude* 'EXCLUDE'::
   Url to exclude (ex: 'redirect|news')
-*-i*, *--ignore-errors* 'IGNORE'::
+*-i*, *--ignore* 'IGNORE'::
   Ignore certain validation errors (ex: 'autocorrect')
-*-f*, *--file* 'FILE'::
-  Save not well formed or not found (with -n used) urls
 *-c*, *--cookies* 'COOKIES'::
   Set defaults cookies
-*-m*, *--[no-]markup-validation*::
+*-m*, *--[no-]markup*::
   Markup validation (Default: true)
-*-n*, *--not-found*::
+*-n*, *--notfound*::
   Log not found url (Default: false)
 *--[no-]color*::
   Show colored output (Default: true)
 *-v*, *--verbose*::
   Show detail of validator errors (Default: false).
-*-q*, *--quiet*::
-  Only report errors (Default: false).
 *-h*, *--help*::
   Show help message and exit.
 
@@ -61,6 +55,6 @@ LICENSE
 -------
 The MIT License
 
-Copyright (c) 2009-2011 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2014 Laurent Arnoud <laurent@spkdev.net>
 
 // vim: set syntax=asciidoc:

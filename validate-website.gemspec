@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.add_dependency('spidr', '~> 0.4')
   s.add_dependency('paint', '~> 0.8')
   s.add_dependency('multipart_body', '~> 0.2')
+  s.add_dependency('slop', '~> 3.5')
   s.add_development_dependency('rake', '~> 10.3')
   s.add_development_dependency('minitest', '~> 5.4')
   s.add_development_dependency('webmock', '~> 1.18')

@@ -26,7 +26,7 @@ describe ValidateWebsite::Core do
                           body: open(file).read,
                           content_type: 'text/html')
       @validate_website.site = page.url
-      @validate_website.crawl(quiet: true)
+      @validate_website.crawl
       @validate_website.crawler.history.size.must_equal 5
     end
 
@@ -37,7 +37,7 @@ describe ValidateWebsite::Core do
                           body: open(file).read,
                           content_type: 'text/html')
       @validate_website.site = page.url
-      @validate_website.crawl(quiet: true)
+      @validate_website.crawl
       @validate_website.crawler.history.size.must_equal 98
     end
   end
@@ -51,7 +51,7 @@ describe ValidateWebsite::Core do
                                  .t {background-image: url(/image/pouet)}',
                           content_type: 'text/css')
       @validate_website.site = page.url
-      @validate_website.crawl(quiet: true)
+      @validate_website.crawl
       @validate_website.crawler.history.size.must_equal 5
     end
 
@@ -60,7 +60,7 @@ describe ValidateWebsite::Core do
                           body: ".test {background-image: url('pouet');}",
                           content_type: 'text/css')
       @validate_website.site = page.url
-      @validate_website.crawl(quiet: true)
+      @validate_website.crawl
       @validate_website.crawler.history.size.must_equal 2
     end
 
@@ -69,7 +69,7 @@ describe ValidateWebsite::Core do
                           body: ".test {background-image: url(\"pouet\");}",
                           content_type: 'text/css')
       @validate_website.site = page.url
-      @validate_website.crawl(quiet: true)
+      @validate_website.crawl
       @validate_website.crawler.history.size.must_equal 2
     end
   end
@@ -79,9 +79,8 @@ describe ValidateWebsite::Core do
       pattern = File.join(File.dirname(__FILE__), 'example/**/*.html')
       @validate_website.crawl_static(pattern: pattern,
                                      site: 'http://dev.af83.com/',
-                                     markup_validation: false,
-                                     not_found: false,
-                                     quiet: true)
+                                     markup: false,
+                                     notfound: false)
       @validate_website.not_founds_count.must_equal 0
     end
 
@@ -89,9 +88,8 @@ describe ValidateWebsite::Core do
       pattern = File.join(File.dirname(__FILE__), 'example/**/*.html')
       @validate_website.crawl_static(pattern: pattern,
                                      site: 'http://www.ruby-lang.org/',
-                                     markup_validation: false,
-                                     not_found: true,
-                                     quiet: true)
+                                     markup: false,
+                                     notfound: true)
       @validate_website.not_founds_count.must_equal 3
     end
   end

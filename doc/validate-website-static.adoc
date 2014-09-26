@@ -21,20 +21,16 @@ OPTIONS
   Where static files will be hosted (Default: http://www.example.com/)
 *-p*, *--pattern* 'PATTERN'::
   Change filenames pattern (Default: \*\*/*.html)
-*-i*, *--ignore-errors* 'IGNORE'::
+*-i*, *--ignore* 'IGNORE'::
   Ignore certain validation errors (ex: 'autocorrect')
-*-f*, *--file* 'FILE'::
-  Save not well formed urls
-*-m*, *--[no-]markup-validation*::
+*-m*, *--[no-]markup*::
   Markup validation (Default: true)
-*-n*, *--not-found*::
+*-n*, *--notfound*::
   Log files not on filesystem, pwd considered as root « / » (Default: false)
 *--[no-]color*::
   Show colored output (Default: true)
 *-v*, *--verbose*::
   Show detail of validator errors (Default: false).
-*-q*, *--quiet*::
-  Only report errors (Default: false).
 *-h*, *--help*::
   Show help message and exit.
 
@@ -57,6 +53,6 @@ LICENSE
 -------
 The MIT License
 
-Copyright (c) 2009-2011 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2014 Laurent Arnoud <laurent@spkdev.net>
 
 // vim: set syntax=asciidoc:

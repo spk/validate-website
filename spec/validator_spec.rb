@@ -74,11 +74,11 @@ describe ValidateWebsite::Validator do
         validator.errors.size.must_equal 38
       end
 
-      it 'should exclude errors ignored by :ignore_errors option' do
-        ignore = "The nowrap attribute on the td element is obsolete"
+      it 'should exclude errors ignored by :ignore option' do
+        ignore = /The nowrap attribute on the td element is obsolete/
         validator = ValidateWebsite::Validator.new(@html5_page.doc,
                                                    @html5_page.body,
-                                                   ignore_errors: ignore)
+                                                   ignore)
         validator.valid?.must_equal false
         validator.errors.size.must_equal 36
       end

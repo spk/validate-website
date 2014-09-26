@@ -1,172 +1,93 @@
 # encoding: utf-8
-require 'optparse'
+require 'slop'
 
 module ValidateWebsite
   # Internal class for parse command line args
   class Parser
-    DEFAULT_OPTS_ALL = {
-      markup_validation: true,
+    DEFAULT_OPTIONS = {
+      markup: true,
       # crawler: log not found url (404 status code)
       # static: log not found url (not on filesystem, `pwd` considered
       # as root « / »)
-      not_found: false,
-      quiet: false,
+      notfound: false,
       file: nil,
       # regex to ignore certain validation errors
-      ignore_errors: nil,
+      ignore: nil,
       color: true,
       # internal verbose for ValidateWebsite
       verbose: false,
     }
 
-    DEFAULT_OPTS_CRAWL = {
+    DEFAULT_OPTIONS_CRAWL = {
       site: 'http://localhost:3000/',
       exclude: nil,
-    }.merge(DEFAULT_OPTS_ALL)
+    }.merge(DEFAULT_OPTIONS)
 
-    DEFAULT_OPTS_STATIC = {
+    DEFAULT_OPTIONS_STATIC = {
       site: 'http://www.example.com/',
       pattern: '**/*.html',
-    }.merge(DEFAULT_OPTS_ALL)
+    }.merge(DEFAULT_OPTIONS)
 
     def self.parse(options, type)
-      if const_defined?("DEFAULT_OPTS_#{type.to_s.upcase}")
-        @default_opts = const_get("DEFAULT_OPTS_#{type.to_s.upcase}")
-        if Array === options
-          send("command_line_parse_#{type}", options)
-        else
-          @default_opts.merge(options)
-        end
+      const = "DEFAULT_OPTIONS_#{type.to_s.upcase}"
+      fail ArgumentError unless const_defined?(const)
+      if Array === options
+        send("command_line_parse_#{type}", options)
       else
-        fail ArgumentError, "Unknown options type : #{type}"
+        const_get(const).merge(options)
       end
     end
 
-    def self.command_line_parse_crawl(args)
-      options = {}
-      opts = OptionParser.new do |o|
-        o.set_summary_indent('  ')
-        o.banner =    'Usage: validate-website [OPTIONS]'
-        o.define_head %(validate-website - Web crawler for checking the \
-validity of your documents)
-        o.separator ''
+    # Parse command line for validate-website bin
+    # @params [ARGV]
+    # @return [Hash]
+    def self.command_line_parse_crawl(_args)
+      opts = Slop.parse(help: true) do
+        banner 'Usage: validate-website [OPTIONS]'
 
-        o.on("-s", "--site 'SITE'", String,
-             "Website to crawl (Default: #{@default_opts[:site]})") { |v|
-          options[:site] = v
-        }
-        o.on("-u", "--user-agent 'USERAGENT'", String,
-             "Change user agent") { |v|
-          options[:user_agent] = v
-        }
-        o.on("-e", "--exclude 'EXCLUDE'", String,
-             "Url to exclude (ex: 'redirect|news')") { |v|
-          options[:exclude] = v
-        }
-        o.on("-f", "--file 'FILE'", String,
-             "Save not well formed or not found urls") { |v|
-          options[:file] = v
-        }
-
-        o.on("-c", "--cookies 'COOKIES'", String,
-             "Set defaults cookies") { |v|
-          options[:cookies] = v
-        }
-
-        o.on("-m", "--[no-]markup-validation",
-             %(Markup validation \
-(Default: #{@default_opts[:markup_validation]}))) { |v|
-          options[:markup_validation] = v
-        }
-        o.on("-i", "--ignore-errors 'IGNORE'", String,
-             "Validation errors to ignore (regex)") { |v|
-          options[:ignore_errors] = v
-        }
-        o.on("-n", "--not-found",
-             "Log not found url (Default: #{@default_opts[:not_found]})") { |v|
-          options[:not_found] = v
-        }
-        o.on("--[no-]color",
-             "Show colored output (Default: #{@default_opts[:color]})") { |v|
-          options[:color] = v
-        }
-        o.on("-v", "--verbose",
-             %(Show validator errors \
-(Default: #{@default_opts[:verbose]}))) { |v|
-          options[:verbose] = v
-        }
-        o.on("-q", "--quiet",
-             "Only report errors (Default: #{@default_opts[:quiet]})") { |v|
-          options[:quiet] = v
-        }
-
-        o.separator ""
-        o.on_tail("-h", "--help", "Show this help message.") do
-          puts o
-          exit
-        end
+        on("s", "site=", "Website to crawl",
+           default: DEFAULT_OPTIONS_CRAWL[:site])
+        on("e", "exclude=", "Url to exclude (ex: 'redirect|news')",
+           type: :regexp)
+        on("c", "cookies=", "Set defaults cookies")
+        on("m", "markup", "Markup validation",
+           default: DEFAULT_OPTIONS_CRAWL[:markup])
+        on("i", "ignore=", "Validation errors to ignore",
+           type: :regexp)
+        on("n", "notfound", "Log not found url",
+           default: DEFAULT_OPTIONS_CRAWL[:notfound])
+        on("color", "Show colored output",
+           default: DEFAULT_OPTIONS_CRAWL[:color])
+        on("v", "verbose", "Show validator errors",
+           default: DEFAULT_OPTIONS_CRAWL[:verbose])
       end
-      command_line_parse!(opts, args, options)
+      opts.to_hash
     end
 
-    def self.command_line_parse_static(args)
-      options = {}
-      opts = OptionParser.new do |o|
-        o.set_summary_indent('  ')
-        o.banner =    'Usage: validate-website-static [OPTIONS]'
-        o.define_head %(validate-website-static - check the validity of \
-          your documents)
-        o.separator ''
+    # Parse command line for validate-website-static bin
+    # @params [ARGV]
+    # @return [Hash]
+    def self.command_line_parse_static(_args)
+      opts = Slop.parse(help: true) do
+        banner 'Usage: validate-website-static [OPTIONS]'
 
-        o.on("-s", "--site 'SITE'", String,
-             %(Where static files will be hosted \
-(Default: #{@default_opts[:site]}))) { |v|
-          options[:site] = v
-        }
-        o.on("-p", "--pattern 'PATTERN'", String,
-             %(Change filenames pattern \
-(Default: #{@default_opts[:pattern]}))) { |v|
-          options[:pattern] = v.strip
-        }
-        o.on("-f", "--file 'FILE'", String,
-             "Save not well formed urls") { |v|
-          options[:file] = v
-        }
-        o.on("-i", "--ignore-errors 'IGNORE'", String,
-             "Validation errors to ignore (regex)") { |v|
-          options[:ignore_errors] = v
-        }
-
-        o.on("-m", "--[no-]markup-validation",
-             %(Markup validation \
-(Default: #{@default_opts[:markup_validation]}))) { |v|
-          options[:markup_validation] = v
-        }
-        o.on("-n", "--not-found",
-             %(Log files not on filesystem, pwd considered as root « / » \
-(Default: #{@default_opts[:not_found]}))) { |v|
-          options[:not_found] = v
-        }
-        o.on("-v", "--verbose",
-             %(Show validator errors \
-(Default: #{@default_opts[:verbose]}))) { |v|
-          options[:verbose] = v
-        }
-        o.on("-q", "--quiet",
-             "Only report errors (Default: #{@default_opts[:quiet]})") { |v|
-          options[:quiet] = v
-        }
+        on("s", "site=", "Website to crawl",
+           default: DEFAULT_OPTIONS_STATIC[:site])
+        on("p", "pattern=", "Change filenames pattern",
+           type: :regexp, default: DEFAULT_OPTIONS_STATIC[:pattern])
+        on("c", "cookies=", "Set defaults cookies")
+        on("m", "markup", "Markup validation",
+           default: DEFAULT_OPTIONS_STATIC[:markup])
+        on("i", "ignore=", "Validation errors to ignore",
+           type: :regexp)
+        on("n", "notfound", "Log not found url",
+           default: DEFAULT_OPTIONS_STATIC[:notfound])
+        on("color", "Show colored output",
+           default: DEFAULT_OPTIONS_STATIC[:color])
+        on("v", "verbose", "Show validator errors",
+           default: DEFAULT_OPTIONS_STATIC[:verbose])
       end
-      command_line_parse!(opts, args, options)
-    end
-
-    def self.command_line_parse!(opts, args, options)
-      opts.parse!(args)
-      @default_opts.merge(options)
-    rescue OptionParser::InvalidOption, OptionParser::MissingArgument
-      puts $ERROR_INFO.to_s
-      puts opts
-      exit 128
+      opts.to_hash
     end
   end
 end

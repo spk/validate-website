@@ -13,10 +13,12 @@ module ValidateWebsite
     ##
     # @param [Nokogiri::HTML::Document] original_doc
     # @param [String] The raw HTTP response body of the page
-    def initialize(original_doc, body, opts = {})
+    # @param [Regexp] Errors to ignore
+    #
+    def initialize(original_doc, body, ignore = nil)
       @original_doc = original_doc
       @body = body
-      @options = opts
+      @ignore = ignore
       @dtd = @original_doc.internal_subset
       init_namespace(@dtd)
       find_errors
@@ -29,12 +31,7 @@ module ValidateWebsite
     end
 
     def errors
-      if @options[:ignore_errors]
-        ignore_re = Regexp.compile @options[:ignore_errors]
-        @errors.reject { |e| ignore_re =~ e }
-      else
-        @errors
-      end
+      @ignore ? @errors.reject { |e| @ignore =~ e } : @errors
     end
 
     private

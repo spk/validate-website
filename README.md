@@ -30,41 +30,12 @@ Web crawler for checking the validity of your documents
 ## Description
 
 validate-website is a web crawler for checking the markup validity with XML
-Schema / DTD and not found urls (more info doc/validate-website.txt).
+Schema / DTD and not found urls (more info [doc/validate-website.adoc](https://github.com/spk/validate-website/blob/master/doc/validate-website.adoc)).
 
 validate-website-static checks the markup validity of your local documents with
-XML Schema / DTD (more info doc/validate-website-static.txt).
+XML Schema / DTD (more info [doc/validate-website-static.adoc](https://github.com/spk/validate-website/blob/master/doc/validate-website-static.adoc)).
 
 HTML5 support with Validator.nu Web Service.
-
-## Validate Website options
-
-``` bash
-  -s, --site SITE
-      Website to crawl (Default: http://localhost:3000/)
-  -u, --user-agent USERAGENT
-      Change user agent (Default: Spidr.user_agent)
-  -e, --exclude EXCLUDE
-      Url to exclude (ex: redirect|news)
-  -i, --ignore-errors IGNORE
-      Ignore certain validation errors (ex: autocorrect)
-  -f, --file FILE
-      Save not well formed or not found (with -n used) urls
-  -c, --cookies COOKIES
-      Set defaults cookies
-  -m, --[no-]markup-validation
-      Markup validation (Default: true)
-  -n, --not-found
-      Log not found url (Default: false)
-  --[no-]color
-      Show colored output (Default: true)
-  -v, --verbose
-      Show detail of validator errors (Default: false).
-  -q, --quiet
-      Only report errors (Default: false).
-  -h, --help
-      Show help message and exit.
-```
 
 ## Exit status
 
@@ -108,7 +79,7 @@ You can add this Rake task to validate a
 desc 'validate _site with validate website'
 task :validate => :build do
   Dir.chdir('_site') do
-    system("validate-website-static --site '<CONFIG_URL>' --quiet")
+    system("validate-website-static --site '<CONFIG_URL>'")
     exit($?.exitstatus)
   end
 end
