@@ -88,7 +88,7 @@ module ValidateWebsite
       files.each do |f|
         next unless File.file?(f)
 
-        response = fake_http_response(open(f).read)
+        response = fake_httpresponse(open(f).read)
         page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
 
         validate(page.doc, page.body, f) if @options[:markup]
@@ -136,10 +136,10 @@ module ValidateWebsite
         link = static_site_link(l)
         return unless in_static_domain?(@site, link)
         file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
-        not_found_error(file_path) and next unless File.exist?(file_path)
+        not_found_error(file_path) && next unless File.exist?(file_path)
         # Check CSS url()
         if File.extname(file_path) == '.css'
-          response = fake_http_response(open(file_path).read, ['text/css'])
+          response = fake_httpresponse(open(file_path).read, ['text/css'])
           css_page = Spidr::Page.new(l, response)
           links.concat extract_urls_from_css(css_page)
           links.uniq!
@@ -192,7 +192,9 @@ module ValidateWebsite
         @errors_count += 1
         puts "\n"
         puts color(:error, "* #{url}", options[:color])
-        puts color(:error, validator.errors.join(', '), options[:color]) if options[:verbose]
+        if options[:verbose]
+          puts color(:error, validator.errors.join(', '), options[:color])
+        end
       end
     end
 
@@ -202,7 +204,7 @@ module ValidateWebsite
     # @param [String] response body
     # @param [Array] content types
     # @return [Net::HTTPResponse] fake http response
-    def fake_http_response(body, content_types = ['text/html', 'text/xhtml+xml'])
+    def fake_httpresponse(body, content_types = ['text/html', 'text/xhtml+xml'])
       response = Net::HTTPResponse.new '1.1', 200, 'OK'
       response.instance_variable_set(:@read, true)
       response.body = body
@@ -212,12 +214,12 @@ module ValidateWebsite
       response
     end
 
-    def print_status_line(total_count, failures_count, not_founds, errors_count)
+    def print_status_line(total, failures, not_founds, errors)
       puts "\n\n"
-      puts color(:info, ["#{total_count} visited",
-                         "#{failures_count} failures",
-                         "#{not_founds_count} not founds",
-                         "#{errors_count} errors"].join(', '), @options[:color])
+      puts color(:info, ["#{total} visited",
+                         "#{failures} failures",
+                         "#{not_founds} not founds",
+                         "#{errors} errors"].join(', '), @options[:color])
     end
   end
 end

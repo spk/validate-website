@@ -21,7 +21,7 @@ module ValidateWebsite
       @ignore = ignore
       @dtd = @original_doc.internal_subset
       init_namespace(@dtd)
-      find_errors
+      @errors = []
     end
 
     ##
@@ -31,6 +31,7 @@ module ValidateWebsite
     end
 
     def errors
+      find_errors
       @ignore ? @errors.reject { |e| @ignore =~ e } : @errors
     end
 
@@ -45,14 +46,16 @@ module ValidateWebsite
       @namespace = File.basename(@dtd_uri.path, '.dtd')
     end
 
-    def find_errors
-      @errors = []
+    def document
+      return @document if @document
       if @dtd_uri && @body.match(@dtd_uri.to_s)
-        document = @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
+        @document = @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
       else
-        document = @body
+        @document = @body
       end
+    end
 
+    def find_errors
       @doc = Dir.chdir(XHTML_PATH) do
         Nokogiri::XML(document) { |cfg|
           cfg.noent.dtdload.dtdvalid
