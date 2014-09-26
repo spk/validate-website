@@ -122,7 +122,7 @@ module ValidateWebsite
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
       links.each do |l|
-        file_location = URI.parse(File.join(Dir.getwd, l)).path
+        file_location = URI.parse(File.join(Dir.getwd, URI.encode(l))).path
         not_found_error(file_location) and next unless File.exist?(file_location)
         # Check CSS url()
         if File.extname(file_location) == '.css'

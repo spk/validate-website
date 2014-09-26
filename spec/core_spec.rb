@@ -90,7 +90,7 @@ describe ValidateWebsite::Core do
                                      site: 'http://www.ruby-lang.org/',
                                      markup: false,
                                      notfound: true)
-      @validate_website.not_founds_count.must_equal 3
+      @validate_website.not_founds_count.must_equal 319
     end
   end
 end
