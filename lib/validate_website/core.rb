@@ -82,13 +82,14 @@ module ValidateWebsite
     #
     def crawl_static(options = {})
       @options = @options.merge(options)
+      @site = @options[:site]
 
       files = Dir.glob(@options[:pattern])
       files.each do |f|
         next unless File.file?(f)
 
         response = fake_http_response(open(f).read)
-        page = Spidr::Page.new(URI.parse(@options[:site] + URI.encode(f)), response)
+        page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
 
         validate(page.doc, page.body, f) if @options[:markup]
         check_static_not_found(page.links) if @options[:notfound]
@@ -118,15 +119,27 @@ module ValidateWebsite
 
     private
 
+    def static_site_link(l)
+      link = URI.parse(URI.encode(l))
+      link = URI.join(@site, link) if link.host.nil?
+      link
+    end
+
+    def in_static_domain?(site, link)
+      URI.parse(site).host == link.host
+    end
+
     # check files linked on static document
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
       links.each do |l|
-        file_location = URI.parse(File.join(Dir.getwd, URI.encode(l))).path
-        not_found_error(file_location) and next unless File.exist?(file_location)
+        link = static_site_link(l)
+        return unless in_static_domain?(@site, link)
+        file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
+        not_found_error(file_path) and next unless File.exist?(file_path)
         # Check CSS url()
-        if File.extname(file_location) == '.css'
-          response = fake_http_response(open(file_location).read, ['text/css'])
+        if File.extname(file_path) == '.css'
+          response = fake_http_response(open(file_path).read, ['text/css'])
           css_page = Spidr::Page.new(l, response)
           links.concat extract_urls_from_css(css_page)
           links.uniq!
