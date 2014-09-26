@@ -135,9 +135,9 @@ module ValidateWebsite
     end
 
     def not_found_error(location)
-      @not_founds_count += 1
       puts "\n"
       puts color(:error, "#{location} linked but not exist", @options[:color])
+      @not_founds_count += 1
     end
 
     # Extract urls from CSS page
