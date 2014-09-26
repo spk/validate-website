@@ -53,23 +53,6 @@ HTML5 support with Validator.nu Web Service.
   v.valid? # => false
 ```
 
-## With RSpec
-
-On spec/spec_helper.rb:
-
-``` ruby
-  require 'validate_website/validator'
-  require 'validate_website/rspec'
-```
-
-On your spec/controllers:
-
-``` ruby
-  it 'should be valid' do
-    response.body.should be_w3c_valid
-  end
-```
-
 ## Jekyll static site validation
 
 You can add this Rake task to validate a
