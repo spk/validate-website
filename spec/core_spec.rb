@@ -91,7 +91,7 @@ describe ValidateWebsite::Core do
                                        site: 'https://linuxfr.org/',
                                        markup: false,
                                        notfound: true)
-        @validate_website.not_founds_count.must_equal 109
+        @validate_website.not_founds_count.must_equal 464
       end
     end
   end

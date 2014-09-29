@@ -134,7 +134,7 @@ module ValidateWebsite
     def check_static_not_found(links)
       links.each do |l|
         link = static_site_link(l)
-        return unless in_static_domain?(@site, link)
+        next unless in_static_domain?(@site, link)
         file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
         not_found_error(file_path) && next unless File.exist?(file_path)
         # Check CSS url()
