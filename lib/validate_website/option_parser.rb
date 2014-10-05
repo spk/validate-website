@@ -21,6 +21,7 @@ module ValidateWebsite
     DEFAULT_OPTIONS_CRAWL = {
       site: 'http://localhost:3000/',
       exclude: nil,
+      user_agent: nil,
     }.merge(DEFAULT_OPTIONS)
 
     DEFAULT_OPTIONS_STATIC = {
@@ -42,11 +43,13 @@ module ValidateWebsite
     # @params [ARGV]
     # @return [Hash]
     def self.command_line_parse_crawl(_args)
-      opts = Slop.parse(help: true) do
+      Slop.parse(help: true) do
         banner 'Usage: validate-website [OPTIONS]'
 
         on("s", "site=", "Website to crawl",
            default: DEFAULT_OPTIONS_CRAWL[:site])
+        on(:u, :user_agent=, "Change user agent",
+           default: DEFAULT_OPTIONS_CRAWL[:user_agent])
         on("e", "exclude=", "Url to exclude (ex: 'redirect|news')",
            type: :regexp)
         on("c", "cookies=", "Set defaults cookies")
@@ -61,14 +64,13 @@ module ValidateWebsite
         on("v", "verbose", "Show validator errors",
            default: DEFAULT_OPTIONS_CRAWL[:verbose])
       end
-      opts.to_hash
     end
 
     # Parse command line for validate-website-static bin
     # @params [ARGV]
     # @return [Hash]
     def self.command_line_parse_static(_args)
-      opts = Slop.parse(help: true) do
+      Slop.parse(help: true) do
         banner 'Usage: validate-website-static [OPTIONS]'
 
         on("s", "site=", "Website to crawl",
@@ -87,7 +89,6 @@ module ValidateWebsite
         on("v", "verbose", "Show validator errors",
            default: DEFAULT_OPTIONS_STATIC[:verbose])
       end
-      opts.to_hash
     end
   end
 end

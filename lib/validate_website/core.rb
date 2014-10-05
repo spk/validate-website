@@ -39,7 +39,7 @@ module ValidateWebsite
     #   :not_found [Boolean] Check for not found page (404)
     #
     def crawl(options = {})
-      @options = @options.merge(options)
+      @options = @options.to_hash.merge(options)
       @options.merge!(ignore_links: @options[:exclude]) if @options[:exclude]
       puts color(:warning, "No internet connection") unless internet_connection?
 
@@ -75,7 +75,7 @@ module ValidateWebsite
     # @param [Hash] options
     #
     def crawl_static(options = {})
-      @options = @options.merge(options)
+      @options = @options.to_hash.merge(options)
       @site = @options[:site]
 
       files = Dir.glob(@options[:pattern])

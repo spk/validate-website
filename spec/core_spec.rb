@@ -18,6 +18,15 @@ describe ValidateWebsite::Core do
     end
   end
 
+  describe 'options' do
+    it 'can change user-agent' do
+      ua = 'Linux / Firefox 29: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0'
+      v = ValidateWebsite::Core.new({site: SPEC_DOMAIN, user_agent: ua}, :crawl)
+      v.crawl
+      v.crawler.user_agent.must_equal ua
+    end
+  end
+
   describe('html') do
     it "extract url" do
       name = 'xhtml1-strict'
