@@ -25,7 +25,7 @@ OPTIONS
   Ignore certain validation errors (ex: 'autocorrect')
 *-m*, *--[no-]markup*::
   Markup validation (Default: true)
-*-n*, *--notfound*::
+*-n*, *--not-found*::
   Log files not on filesystem, pwd considered as root « / » (Default: false)
 *--[no-]color*::
   Show colored output (Default: true)
