@@ -32,12 +32,6 @@ module ValidateWebsite
       puts color(:note, "validating #{@site}\n", @options[:color])
     end
 
-    def internet_connection?
-      true if open(ValidateWebsite::Core::PING_URL)
-    rescue
-      false
-    end
-
     # @param [Hash] options
     #   :color [Boolean] color output (true, false)
     #   :exclude [String] a String used by Regexp.new
@@ -118,6 +112,12 @@ module ValidateWebsite
     end
 
     private
+
+    def internet_connection?
+      true if open(ValidateWebsite::Core::PING_URL)
+    rescue
+      false
+    end
 
     def static_site_link(l)
       link = URI.parse(URI.encode(l))
