@@ -89,7 +89,7 @@ describe ValidateWebsite::Core do
       @validate_website.crawl_static(pattern: pattern,
                                      site: 'http://dev.af83.com/',
                                      markup: false,
-                                     notfound: false)
+                                     not_found: false)
       @validate_website.not_founds_count.must_equal 0
     end
 
@@ -99,7 +99,7 @@ describe ValidateWebsite::Core do
         @validate_website.crawl_static(pattern: pattern,
                                        site: 'https://linuxfr.org/',
                                        markup: false,
-                                       notfound: true)
+                                       not_found: true)
         @validate_website.not_founds_count.must_equal 464
       end
     end

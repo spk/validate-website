@@ -60,7 +60,7 @@ module ValidateWebsite
           end
         end
 
-        if @options[:notfound]
+        if @options[:not_found]
           crawler.every_failed_url do |url|
             not_found_error(url)
           end
@@ -86,7 +86,7 @@ module ValidateWebsite
         page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
 
         validate(page.doc, page.body, f) if @options[:markup]
-        check_static_not_found(page.links) if @options[:notfound]
+        check_static_not_found(page.links) if @options[:not_found]
       end
       print_status_line(files.size, 0, @not_founds_count, @errors_count)
     end

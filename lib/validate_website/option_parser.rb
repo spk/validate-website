@@ -9,7 +9,7 @@ module ValidateWebsite
       # crawler: log not found url (404 status code)
       # static: log not found url (not on filesystem, `pwd` considered
       # as root « / »)
-      notfound: false,
+      not_found: false,
       file: nil,
       # regex to ignore certain validation errors
       ignore: nil,
@@ -57,8 +57,8 @@ module ValidateWebsite
            default: DEFAULT_OPTIONS_CRAWL[:markup])
         on("i", "ignore=", "Validation errors to ignore",
            type: :regexp)
-        on("n", "notfound", "Log not found url",
-           default: DEFAULT_OPTIONS_CRAWL[:notfound])
+        on(:n, :not_found, "Log not found url",
+           default: DEFAULT_OPTIONS_CRAWL[:not_found])
         on("color", "Show colored output",
            default: DEFAULT_OPTIONS_CRAWL[:color])
         on("v", "verbose", "Show validator errors",
@@ -82,8 +82,8 @@ module ValidateWebsite
            default: DEFAULT_OPTIONS_STATIC[:markup])
         on("i", "ignore=", "Validation errors to ignore",
            type: :regexp)
-        on("n", "notfound", "Log not found url",
-           default: DEFAULT_OPTIONS_STATIC[:notfound])
+        on(:n, :not_found, "Log not found url",
+           default: DEFAULT_OPTIONS_STATIC[:not_found])
         on("color", "Show colored output",
            default: DEFAULT_OPTIONS_STATIC[:color])
         on("v", "verbose", "Show validator errors",
