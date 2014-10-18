@@ -2,6 +2,7 @@
 
 require 'set'
 require 'open-uri'
+require 'webrick/cookie'
 
 require 'validate_website/option_parser'
 require 'validate_website/validator'
@@ -45,7 +46,7 @@ module ValidateWebsite
 
       @host = URI(@site).host
       @crawler = Spidr.site(@site, @options) do |crawler|
-        crawler.cookies[@host] = @options[:cookies] if @options[:cookies]
+        crawler.cookies[@host] = default_cookies if @options[:cookies]
         crawler.every_css_page do |page|
           extract_urls_from_css(page).each do |u|
             crawler.enqueue(u)
@@ -110,6 +111,13 @@ module ValidateWebsite
         EXIT_FAILURE_NOT_FOUND
       else
         EXIT_SUCCESS
+      end
+    end
+
+    def default_cookies
+      WEBrick::Cookie.parse(@options[:cookies]).inject({}) do |hash, cookie|
+        hash[cookie.name] = cookie.value
+        hash
       end
     end
 

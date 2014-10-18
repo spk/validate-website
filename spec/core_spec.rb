@@ -29,10 +29,10 @@ describe ValidateWebsite::Core do
 
   describe('cookies') do
     it 'can set cookies' do
-      cookies = { tz: 'Europe%2FBerlin' }
+      cookies = 'tz=Europe%2FBerlin; guid=ZcpBshbtStgl9VjwTofq'
       v = ValidateWebsite::Core.new({site: SPEC_DOMAIN, cookies: cookies}, :crawl)
       v.crawl
-      v.crawler.cookies[v.host].must_equal cookies
+      v.crawler.cookies.cookies_for_host(v.host).must_equal v.default_cookies
     end
   end
 
