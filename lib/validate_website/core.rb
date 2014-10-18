@@ -13,7 +13,7 @@ module ValidateWebsite
   # Core class for static or website validation
   class Core
     attr_accessor :site
-    attr_reader :options, :crawler, :errors_count, :not_founds_count
+    attr_reader :options, :crawler, :errors_count, :not_founds_count, :host
 
     include ColorfulMessages
 
@@ -43,7 +43,9 @@ module ValidateWebsite
       @options.merge!(ignore_links: @options[:exclude]) if @options[:exclude]
       puts color(:warning, "No internet connection") unless internet_connection?
 
+      @host = URI(@site).host
       @crawler = Spidr.site(@site, @options) do |crawler|
+        crawler.cookies[@host] = @options[:cookies] if @options[:cookies]
         crawler.every_css_page do |page|
           extract_urls_from_css(page).each do |u|
             crawler.enqueue(u)

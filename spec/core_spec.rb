@@ -27,6 +27,15 @@ describe ValidateWebsite::Core do
     end
   end
 
+  describe('cookies') do
+    it 'can set cookies' do
+      cookies = { tz: 'Europe%2FBerlin' }
+      v = ValidateWebsite::Core.new({site: SPEC_DOMAIN, cookies: cookies}, :crawl)
+      v.crawl
+      v.crawler.cookies[v.host].must_equal cookies
+    end
+  end
+
   describe('html') do
     it "extract url" do
       name = 'xhtml1-strict'
