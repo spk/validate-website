@@ -60,10 +60,9 @@ You can add this Rake task to validate a
 
 ~~~ ruby
 desc 'validate _site with validate website'
-task :validate => :build do
+task validate: :build do
   Dir.chdir('_site') do
-    system("validate-website-static --site '<CONFIG_URL>'")
-    exit($?.exitstatus)
+    sh("validate-website-static --site '<CONFIG_URL>'")
   end
 end
 ~~~
