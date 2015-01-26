@@ -62,7 +62,11 @@ You can add this Rake task to validate a
 desc 'validate _site with validate website'
 task validate: :build do
   Dir.chdir('_site') do
-    sh("validate-website-static --site '<CONFIG_URL>'")
+    sh("validate-website-static --site '<CONFIG_URL>'") do |ok, res|
+      unless ok
+        puts "validate error (status = #{res.exitstatus})"
+      end
+    end
   end
 end
 ~~~
