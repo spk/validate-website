@@ -91,9 +91,9 @@ module ValidateWebsite
     end
 
     def default_cookies
-      WEBrick::Cookie.parse(@options[:cookies]).inject({}) do |hash, cookie|
-        hash[cookie.name] = cookie.value
-        hash
+      WEBrick::Cookie.parse(@options[:cookies]).each_with_object({}) do |c, h|
+        h[c.name] = c.value
+        h
       end
     end
 
