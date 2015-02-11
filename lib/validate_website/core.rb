@@ -44,31 +44,7 @@ module ValidateWebsite
       @options.merge!(ignore_links: @options[:exclude]) if @options[:exclude]
       puts color(:warning, "No internet connection") unless internet_connection?
 
-      @host = URI(@site).host
-      @crawler = Spidr.site(@site, @options) do |crawler|
-        crawler.cookies[@host] = default_cookies if @options[:cookies]
-        crawler.every_css_page do |page|
-          extract_urls_from_css(page).each do |u|
-            crawler.enqueue(u)
-          end
-        end
-
-        crawler.every_html_page do |page|
-          extract_imgs_from_page(page).each do |i|
-            crawler.enqueue(i)
-          end
-
-          if @options[:markup] && page.html?
-            validate(page.doc, page.body, page.url, @options[:ignore])
-          end
-        end
-
-        if @options[:not_found]
-          crawler.every_failed_url do |url|
-            not_found_error(url)
-          end
-        end
-      end
+      @crawler = spidr_crawler(@site, @options)
       print_status_line(@crawler.history.size,
                         @crawler.failures.size,
                         @not_founds_count,
@@ -230,6 +206,34 @@ module ValidateWebsite
                          "#{failures} failures",
                          "#{not_founds} not founds",
                          "#{errors} errors"].join(', '), @options[:color])
+    end
+
+    def spidr_crawler(site, options)
+      @host = URI(site).host
+      Spidr.site(site, options) do |crawler|
+        crawler.cookies[@host] = default_cookies if options[:cookies]
+        crawler.every_css_page do |page|
+          extract_urls_from_css(page).each do |u|
+            crawler.enqueue(u)
+          end
+        end
+
+        crawler.every_html_page do |page|
+          extract_imgs_from_page(page).each do |i|
+            crawler.enqueue(i)
+          end
+
+          if options[:markup] && page.html?
+            validate(page.doc, page.body, page.url, options[:ignore])
+          end
+        end
+
+        if options[:not_found]
+          crawler.every_failed_url do |url|
+            not_found_error(url)
+          end
+        end
+      end
     end
   end
 end
