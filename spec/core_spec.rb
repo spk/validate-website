@@ -2,7 +2,6 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 describe ValidateWebsite::Core do
-
   before do
     WebMock.reset!
     stub_request(:get, ValidateWebsite::Core::PING_URL).to_return(status: 200)
@@ -20,8 +19,10 @@ describe ValidateWebsite::Core do
 
   describe 'options' do
     it 'can change user-agent' do
-      ua = 'Linux / Firefox 29: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0'
-      v = ValidateWebsite::Core.new({site: SPEC_DOMAIN, user_agent: ua}, :crawl)
+      ua = %{Linux / Firefox 29: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) \
+      Gecko/20100101 Firefox/29.0}
+      v = ValidateWebsite::Core.new({ site: SPEC_DOMAIN, user_agent: ua },
+                                    :crawl)
       v.crawl
       v.crawler.user_agent.must_equal ua
     end
@@ -30,7 +31,8 @@ describe ValidateWebsite::Core do
   describe('cookies') do
     it 'can set cookies' do
       cookies = 'tz=Europe%2FBerlin; guid=ZcpBshbtStgl9VjwTofq'
-      v = ValidateWebsite::Core.new({site: SPEC_DOMAIN, cookies: cookies}, :crawl)
+      v = ValidateWebsite::Core.new({ site: SPEC_DOMAIN, cookies: cookies },
+                                    :crawl)
       v.crawl
       v.crawler.cookies.cookies_for_host(v.host).must_equal v.default_cookies
     end
