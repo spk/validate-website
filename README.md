@@ -100,7 +100,7 @@ validation service.
 
 The MIT License
 
-Copyright (c) 2009-2014 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2015 Laurent Arnoud <laurent@spkdev.net>
 
 ---
 [![Gem Version](https://badge.fury.io/rb/validate-website.svg)](https://rubygems.org/gems/validate-website)
