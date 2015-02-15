@@ -6,7 +6,7 @@ module ValidateWebsite
   # Document validation from DTD or XSD (webservice for html5)
   class Validator
     XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
-    HTML5_VALIDATOR_SERVICE = 'http://html5.validator.nu/'
+    HTML5_VALIDATOR_SERVICE = 'http://validator.w3.org/nu/'
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
 
