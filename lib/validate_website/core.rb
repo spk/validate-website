@@ -118,7 +118,7 @@ module ValidateWebsite
     # check files linked on static document
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
-      links.each do |l|
+      links.each_with_object(Set[]) do |l, result|
         link = static_site_link(l)
         next unless in_static_domain?(@site, link)
         file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
@@ -127,8 +127,7 @@ module ValidateWebsite
         if File.extname(file_path) == '.css'
           response = fake_httpresponse(open(file_path).read, ['text/css'])
           css_page = Spidr::Page.new(l, response)
-          links.concat extract_urls_from_css(css_page)
-          links.uniq!
+          result.merge extract_urls_from_css(css_page)
         end
       end
     end
