@@ -1,0 +1,3 @@
+cli:
+  build: .
+  command: bundle exec rake

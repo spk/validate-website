@@ -10,22 +10,22 @@ Web crawler for checking the validity of your documents
 
 ### Debian
 
-``` bash
-  aptitude install ruby-dev libxslt-dev libxml2-dev
-```
+~~~ console
+aptitude install ruby-dev libxslt-dev libxml2-dev
+~~~
 
 ### RubyGems
 
-``` bash
-  gem install validate-website
-```
+~~~ console
+gem install validate-website
+~~~
 
 ## Synopsis
 
-``` bash
-  validate-website [OPTIONS]
-  validate-website-static [OPTIONS]
-```
+~~~ console
+validate-website [OPTIONS]
+validate-website-static [OPTIONS]
+~~~
 
 ## Description
 
@@ -46,12 +46,12 @@ HTML5 support with Validator.nu Web Service.
 
 ## On your application
 
-``` ruby
-  require 'validate_website/validator'
-  body = '<!DOCTYPE html><html></html>'
-  v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
-  v.valid? # => false
-```
+~~~ ruby
+require 'validate_website/validator'
+body = '<!DOCTYPE html><html></html>'
+v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
+v.valid? # => false
+~~~
 
 ## Jekyll static site validation
 
@@ -71,10 +71,20 @@ task validate: :build do
 end
 ~~~
 
+## Tests
 
-## Requirements
+With standard environment:
 
-See `validate-website.gemspec` file.
+~~~ console
+bundle exec rake
+~~~
+
+With [Docker / Fig](http://www.fig.sh/):
+
+~~~ console
+fig build
+fig up
+~~~
 
 ## Credits
 
