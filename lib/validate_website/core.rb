@@ -119,6 +119,7 @@ module ValidateWebsite
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
       links.each_with_object(Set[]) do |l, result|
+        next if l.include?('#')
         link = static_site_link(l)
         next unless in_static_domain?(@site, link)
         file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
