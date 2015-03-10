@@ -97,7 +97,9 @@ module ValidateWebsite
         'Content-Length' => multipart.to_s.bytesize.to_s,
       }
       res = http.start { |con| con.post(url.path, multipart.to_s, headers) }
-      @errors = Nokogiri::HTML(res.body).css('ol li.error').map(&:content)
+      validator_document = Nokogiri::HTML(res.body)
+      @errors = validator_document.css('h2.invalid').map(&:content)
+      @errors.concat validator_document.css('ol li.error').map(&:content)
     end
   end
 end
