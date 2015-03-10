@@ -83,6 +83,25 @@ describe ValidateWebsite::Validator do
         validator.errors.size.must_equal 36
       end
     end
+
+    describe('excessive') do
+      before do
+        validator_res = File.join('spec', 'data', 'validator.nu-excessive.html')
+        stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
+          .to_return(body: open(validator_res).read)
+      end
+      it "html5 should have errors" do
+        name = 'html5'
+        file = File.join('spec', 'data', "#{name}.html")
+        page = FakePage.new(name,
+                            body: open(file).read,
+                            content_type: 'text/html')
+        @html5_page = @http.get_page(page.url)
+        validator = ValidateWebsite::Validator.new(@html5_page.doc,
+                                                   @html5_page.body)
+        validator.valid?.must_equal false
+      end
+    end
   end
 
   describe('html4') do
