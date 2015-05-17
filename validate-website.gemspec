@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.requirements << 'spidr' << 'rainbow' << 'multipart_body'
   s.add_dependency('spidr', '~> 0.4')
-  s.add_dependency('paint', '~> 0.9')
+  s.add_dependency('paint', '~> 1.0')
   s.add_dependency('multipart_body', '~> 0.2')
   s.add_dependency('slop', '~> 3.6')
   s.add_development_dependency('rake', '~> 10.4')
