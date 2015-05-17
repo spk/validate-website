@@ -33,6 +33,8 @@ OPTIONS
   Log not found url (Default: false)
 *--[no-]color*::
   Show colored output (Default: true)
+*-5*, *--html5-validator-service-url* 'URL'::
+  Change default html5 validator service URL
 *-v*, *--verbose*::
   Show detail of validator errors (Default: false).
 *-h*, *--help*::

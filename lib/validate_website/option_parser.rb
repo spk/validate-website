@@ -61,6 +61,8 @@ module ValidateWebsite
            default: DEFAULT_OPTIONS_CRAWL[:not_found])
         on("color", "Show colored output",
            default: DEFAULT_OPTIONS_CRAWL[:color])
+        on("5", "html5-validator-service-url=",
+           "Change default html5 validator service URL")
         on("v", "verbose", "Show validator errors",
            default: DEFAULT_OPTIONS_CRAWL[:verbose])
       end
@@ -86,6 +88,8 @@ module ValidateWebsite
            default: DEFAULT_OPTIONS_STATIC[:not_found])
         on("color", "Show colored output",
            default: DEFAULT_OPTIONS_STATIC[:color])
+        on("5", "html5-validator-service-url=",
+           "Change default html5 validator service URL")
         on("v", "verbose", "Show validator errors",
            default: DEFAULT_OPTIONS_STATIC[:verbose])
       end

@@ -86,12 +86,24 @@ bundle exec rake
 
 ## More info
 
+### HTML5 validator web service
+
 The HTML5 support is done by using the Validator.nu Web Service, so the content
 of your webpage is logged by a tier. It's not the case for other validation
 because validate-website use the XML Schema or DTD stored on the data/ directory.
 
 Please read <http://about.validator.nu/#tos> for more info on the HTML5
 validation service.
+
+### Use validator standalone web server locally
+
+You can download [validator](https://github.com/validator/validator) jar and
+start it with `java -cp PATH_TO/vnu.jar nu.validator.servlet.Main 8888`.
+
+Then you can use validate-website
+option `--html5-validator-service-url http://localhost:8888/`.
+
+This will prevent you to not be blacklisted from validator webservice.
 
 ## Contributors
 

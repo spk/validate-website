@@ -30,6 +30,8 @@ module ValidateWebsite
       @errors_count = 0
       @options = Parser.parse(options, validation_type)
       @site = @options[:site]
+      @service_url =  @options[:'html5-validator-service-url']
+      Validator.html5_validator_service_url = @service_url if @service_url
       puts color(:note, "validating #{@site}\n", @options[:color])
     end
 
