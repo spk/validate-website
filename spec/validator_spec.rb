@@ -28,7 +28,7 @@ describe ValidateWebsite::Validator do
     describe('when valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-success.html')
-        stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
+        stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
       it "html5 should be valid" do
@@ -57,7 +57,7 @@ describe ValidateWebsite::Validator do
     describe('when not valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
-        stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
+        stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
         name = 'html5'
         file = File.join('spec', 'data', "#{name}-linuxfr.html")
@@ -87,7 +87,7 @@ describe ValidateWebsite::Validator do
     describe('excessive') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-excessive.html')
-        stub_request(:any, ValidateWebsite::Validator::HTML5_VALIDATOR_SERVICE)
+        stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
       it "html5 should have errors" do

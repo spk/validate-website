@@ -6,7 +6,11 @@ module ValidateWebsite
   # Document validation from DTD or XSD (webservice for html5)
   class Validator
     XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
-    HTML5_VALIDATOR_SERVICE = 'http://validator.w3.org/nu/'
+
+    @html5_validator_service_url = 'http://validator.w3.org/nu/'
+    class << self
+      attr_accessor :html5_validator_service_url
+    end
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
 
@@ -89,9 +93,9 @@ module ValidateWebsite
     def html5_validate(document)
       require 'net/http'
       require 'multipart_body'
-      url = URI.parse(HTML5_VALIDATOR_SERVICE)
+      url = URI.parse(self.class.html5_validator_service_url)
       multipart = MultipartBody.new(content: document)
-      http = Net::HTTP.new(url.host)
+      http = Net::HTTP.new(url.host, url.port)
       headers = {
         'Content-Type' => "multipart/form-data; boundary=#{multipart.boundary}",
         'Content-Length' => multipart.to_s.bytesize.to_s,
