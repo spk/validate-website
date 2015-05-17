@@ -79,13 +79,6 @@ With standard environment:
 bundle exec rake
 ~~~
 
-With [Docker / Fig](http://www.fig.sh/):
-
-~~~ console
-fig build
-fig up
-~~~
-
 ## Credits
 
 * Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
