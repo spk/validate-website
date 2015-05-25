@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = 'Web crawler for checking the validity of your documents'
   s.name = 'validate-website'
-  s.version = '1.0.4'
+  s.version = '1.0.5'
   s.license = 'MIT'
   s.requirements << 'spidr' << 'rainbow' << 'multipart_body'
   s.add_dependency('spidr', '~> 0.4')
