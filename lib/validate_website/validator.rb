@@ -12,7 +12,7 @@ module ValidateWebsite
       attr_accessor :html5_validator_service_url
     end
 
-    attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd, :errors
+    attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd
 
     ##
     # @param [Nokogiri::HTML::Document] original_doc
@@ -36,6 +36,7 @@ module ValidateWebsite
 
     def errors
       find_errors
+      @errors.map!(&:to_s)
       @ignore ? @errors.reject { |e| @ignore =~ e } : @errors
     end
 

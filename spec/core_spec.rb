@@ -118,7 +118,17 @@ describe ValidateWebsite::Core do
                                        site: 'https://linuxfr.org/',
                                        markup: false,
                                        not_found: true)
-        @validate_website.not_founds_count.must_equal 448
+        @validate_website.not_founds_count.must_equal 502
+      end
+    end
+
+    it 'ignore' do
+      pattern = File.join(File.dirname(__FILE__), 'data', 'w3.org-xhtml1-strict-errors.html')
+      Dir.chdir('spec/data') do
+        @validate_website.crawl_static(pattern: pattern,
+                                       site: 'http://w3.org/',
+                                       ignore: /height|width/)
+        @validate_website.errors_count.must_equal 0
       end
     end
   end

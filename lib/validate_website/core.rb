@@ -66,7 +66,7 @@ module ValidateWebsite
         response = fake_httpresponse(open(f).read)
         page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
 
-        validate(page.doc, page.body, f) if @options[:markup]
+        validate(page.doc, page.body, f, @options[:ignore]) if @options[:markup]
         check_static_not_found(page.links) if @options[:not_found]
       end
       print_status_line(files.size, 0, @not_founds_count, @errors_count)
