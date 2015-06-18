@@ -28,9 +28,9 @@ module ValidateWebsite
     def initialize(options = {}, validation_type = :crawl)
       @not_founds_count = 0
       @errors_count = 0
-      @options = Parser.parse(options, validation_type)
+      @options = Parser.parse(options, validation_type).to_h
       @site = @options[:site]
-      @service_url =  @options[:'html5-validator-service-url']
+      @service_url =  @options[:html5_validator_service_url]
       Validator.html5_validator_service_url = @service_url if @service_url
       puts color(:note, "validating #{@site}\n", @options[:color])
     end
@@ -42,7 +42,7 @@ module ValidateWebsite
     #   :not_found [Boolean] Check for not found page (404)
     #
     def crawl(options = {})
-      @options = @options.to_hash.merge(options)
+      @options = @options.merge(options)
       @options.merge!(ignore_links: @options[:exclude]) if @options[:exclude]
       puts color(:warning, "No internet connection") unless internet_connection?
 
@@ -56,7 +56,7 @@ module ValidateWebsite
     # @param [Hash] options
     #
     def crawl_static(options = {})
-      @options = @options.to_hash.merge(options)
+      @options = @options.merge(options)
       @site = @options[:site]
 
       files = Dir.glob(@options[:pattern])

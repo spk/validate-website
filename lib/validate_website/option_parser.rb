@@ -43,28 +43,28 @@ module ValidateWebsite
     # @params [ARGV]
     # @return [Hash]
     def self.command_line_parse_crawl(_args)
-      Slop.parse(help: true) do
-        banner 'Usage: validate-website [OPTIONS]'
-
-        on("s", "site=", "Website to crawl",
-           default: DEFAULT_OPTIONS_CRAWL[:site])
-        on(:u, :user_agent=, "Change user agent",
-           default: DEFAULT_OPTIONS_CRAWL[:user_agent])
-        on("e", "exclude=", "Url to exclude (ex: 'redirect|news')",
-           type: :regexp)
-        on("c", "cookies=", "Set defaults cookies")
-        on("m", "markup", "Markup validation",
-           default: DEFAULT_OPTIONS_CRAWL[:markup])
-        on("i", "ignore=", "Validation errors to ignore",
-           type: :regexp)
-        on(:n, :not_found, "Log not found url",
-           default: DEFAULT_OPTIONS_CRAWL[:not_found])
-        on("color", "Show colored output",
-           default: DEFAULT_OPTIONS_CRAWL[:color])
-        on("5", "html5-validator-service-url=",
-           "Change default html5 validator service URL")
-        on("v", "verbose", "Show validator errors",
-           default: DEFAULT_OPTIONS_CRAWL[:verbose])
+      Slop.parse do |o|
+        o.string('-s', '--site', "Website to crawl (default: #{DEFAULT_OPTIONS_CRAWL[:site]})",
+             default: DEFAULT_OPTIONS_CRAWL[:site])
+        o.string('-u', '--user-agent', 'Change user agent',
+             default: DEFAULT_OPTIONS_CRAWL[:user_agent])
+        o.regexp('-e', '--exclude', 'Url to exclude (ex: "redirect|news")')
+        o.string('-c', '--cookies', 'Set defaults cookies')
+        o.bool('-m', 'markup', "Markup validation (default: #{DEFAULT_OPTIONS_CRAWL[:markup]})",
+             default: DEFAULT_OPTIONS_CRAWL[:markup])
+        o.regexp('-i', '--ignore', 'Validation errors to ignore (ex: "valign|autocorrect")')
+        o.bool('-n', '--not-found', "Log not found url (default: #{DEFAULT_OPTIONS_CRAWL[:not_found]})",
+             default: DEFAULT_OPTIONS_CRAWL[:not_found])
+        o.bool('--color', "Show colored output (default: #{DEFAULT_OPTIONS_CRAWL[:color]})",
+             default: DEFAULT_OPTIONS_CRAWL[:color])
+        o.string('-5', '--html5-validator-service-url',
+           'Change default html5 validator service URL')
+        o.bool('-v', '--verbose', "Show validator errors (default: #{DEFAULT_OPTIONS_CRAWL[:verbose]})",
+             default: DEFAULT_OPTIONS_CRAWL[:verbose])
+        o.on('-h', '--help', 'Display this help message.') do
+          puts o
+          exit
+        end
       end
     end
 
@@ -72,26 +72,26 @@ module ValidateWebsite
     # @params [ARGV]
     # @return [Hash]
     def self.command_line_parse_static(_args)
-      Slop.parse(help: true) do
-        banner 'Usage: validate-website-static [OPTIONS]'
-
-        on("s", "site=", "Website to crawl",
-           default: DEFAULT_OPTIONS_STATIC[:site])
-        on("p", "pattern=", "Change filenames pattern",
-           type: :regexp, default: DEFAULT_OPTIONS_STATIC[:pattern])
-        on("c", "cookies=", "Set defaults cookies")
-        on("m", "markup", "Markup validation",
-           default: DEFAULT_OPTIONS_STATIC[:markup])
-        on("i", "ignore=", "Validation errors to ignore",
-           type: :regexp)
-        on(:n, :not_found, "Log not found url",
-           default: DEFAULT_OPTIONS_STATIC[:not_found])
-        on("color", "Show colored output",
-           default: DEFAULT_OPTIONS_STATIC[:color])
-        on("5", "html5-validator-service-url=",
-           "Change default html5 validator service URL")
-        on("v", "verbose", "Show validator errors",
-           default: DEFAULT_OPTIONS_STATIC[:verbose])
+      Slop.parse do |o|
+        o.string('-s', '--site', "Website to crawl (default: #{DEFAULT_OPTIONS_CRAWL[:site]})",
+             default: DEFAULT_OPTIONS_CRAWL[:site])
+        o.regexp('-p', '--pattern', "Change filenames pattern (default: #{DEFAULT_OPTIONS_STATIC[:pattern]})",
+             default: DEFAULT_OPTIONS_STATIC[:pattern])
+        o.regexp('-i', '--ignore', 'Validation errors to ignore (ex: "valign|autocorrect")')
+        o.bool('-m', 'markup', "Markup validation (default: #{DEFAULT_OPTIONS_CRAWL[:markup]})",
+             default: DEFAULT_OPTIONS_CRAWL[:markup])
+        o.bool('-n', '--not-found', "Log not found url (default: #{DEFAULT_OPTIONS_CRAWL[:not_found]})",
+             default: DEFAULT_OPTIONS_CRAWL[:not_found])
+        o.bool('--color', "Show colored output (default: #{DEFAULT_OPTIONS_CRAWL[:color]})",
+             default: DEFAULT_OPTIONS_CRAWL[:color])
+        o.string('-5', '--html5-validator-service-url',
+           'Change default html5 validator service URL')
+        o.bool('-v', '--verbose', "Show validator errors (default: #{DEFAULT_OPTIONS_CRAWL[:verbose]})",
+             default: DEFAULT_OPTIONS_CRAWL[:verbose])
+        o.on('-h', '--help', 'Display this help message.') do
+          puts o
+          exit
+        end
       end
     end
   end

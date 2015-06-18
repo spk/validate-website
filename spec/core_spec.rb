@@ -30,7 +30,7 @@ describe ValidateWebsite::Core do
     it 'can change html5 validator service url' do
       s = 'http://localhost:8888/'
       ValidateWebsite::Core.new({ site: SPEC_DOMAIN,
-                                  :'html5-validator-service-url' => s })
+                                  html5_validator_service_url: s })
       ValidateWebsite::Validator.html5_validator_service_url.must_equal s
     end
   end

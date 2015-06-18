@@ -11,11 +11,10 @@ Gem::Specification.new do |s|
   s.add_dependency('spidr', '~> 0.4')
   s.add_dependency('paint', '~> 1.0')
   s.add_dependency('multipart_body', '~> 0.2')
-  s.add_dependency('slop', '~> 3.6')
+  s.add_dependency('slop', '~> 4.2')
   s.add_development_dependency('rake', '~> 10.4')
   s.add_development_dependency('minitest', '~> 5.5')
   s.add_development_dependency('webmock', '~> 1.18')
-  s.add_development_dependency('pry', '~> 0.10')
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
