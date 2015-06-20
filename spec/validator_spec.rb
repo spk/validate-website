@@ -2,6 +2,8 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 describe ValidateWebsite::Validator do
+  let(:subject) { ValidateWebsite::Validator }
+
   before do
     WebMock.reset!
     @http = Spidr::Agent.new
@@ -16,9 +18,9 @@ describe ValidateWebsite::Validator do
                           content_type: 'text/html')
       @xhtml1_page = @http.get_page(page.url)
       ignore = /width|height|Length/
-      validator = ValidateWebsite::Validator.new(@xhtml1_page.doc,
-                                                 @xhtml1_page.body,
-                                                 ignore)
+      validator = subject.new(@xhtml1_page.doc,
+                              @xhtml1_page.body,
+                              ignore)
       validator.valid?.must_equal true
       validator.errors.size.must_equal 0
     end
@@ -31,8 +33,8 @@ describe ValidateWebsite::Validator do
                           body: open(file).read,
                           content_type: 'text/html')
       @xhtml1_page = @http.get_page(page.url)
-      validator = ValidateWebsite::Validator.new(@xhtml1_page.doc,
-                                                 @xhtml1_page.body)
+      validator = subject.new(@xhtml1_page.doc,
+                              @xhtml1_page.body)
       validator.dtd.system_id.must_equal dtd_uri
       validator.namespace.must_equal name
       validator.valid?.must_equal true
@@ -43,7 +45,7 @@ describe ValidateWebsite::Validator do
     describe('when valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-success.html')
-        stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
+        stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
       it "html5 should be valid" do
@@ -53,8 +55,8 @@ describe ValidateWebsite::Validator do
                             body: open(file).read,
                             content_type: 'text/html')
         @html5_page = @http.get_page(page.url)
-        validator = ValidateWebsite::Validator.new(@html5_page.doc,
-                                                   @html5_page.body)
+        validator = subject.new(@html5_page.doc,
+                                @html5_page.body)
         validator.valid?.must_equal true
       end
       it "with DLFP" do
@@ -64,15 +66,15 @@ describe ValidateWebsite::Validator do
                             body: open(file).read,
                             content_type: 'text/html')
         @html5_page = @http.get_page(page.url)
-        validator = ValidateWebsite::Validator.new(@html5_page.doc,
-                                                   @html5_page.body)
+        validator = subject.new(@html5_page.doc,
+                                @html5_page.body)
         validator.valid?.must_equal true
       end
     end
     describe('when not valid') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
-        stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
+        stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
         name = 'html5'
         file = File.join('spec', 'data', "#{name}-linuxfr.html")
@@ -83,17 +85,17 @@ describe ValidateWebsite::Validator do
       end
 
       it 'should have an array of errors' do
-        validator = ValidateWebsite::Validator.new(@html5_page.doc,
-                                                   @html5_page.body)
+        validator = subject.new(@html5_page.doc,
+                                @html5_page.body)
         validator.valid?.must_equal false
         validator.errors.size.must_equal 38
       end
 
       it 'should exclude errors ignored by :ignore option' do
         ignore = /The nowrap attribute on the td element is obsolete/
-        validator = ValidateWebsite::Validator.new(@html5_page.doc,
-                                                   @html5_page.body,
-                                                   ignore)
+        validator = subject.new(@html5_page.doc,
+                                @html5_page.body,
+                                ignore)
         validator.valid?.must_equal false
         validator.errors.size.must_equal 36
       end
@@ -102,7 +104,7 @@ describe ValidateWebsite::Validator do
     describe('excessive') do
       before do
         validator_res = File.join('spec', 'data', 'validator.nu-excessive.html')
-        stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
+        stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
       it "html5 should have errors" do
@@ -112,8 +114,8 @@ describe ValidateWebsite::Validator do
                             body: open(file).read,
                             content_type: 'text/html')
         @html5_page = @http.get_page(page.url)
-        validator = ValidateWebsite::Validator.new(@html5_page.doc,
-                                                   @html5_page.body)
+        validator = subject.new(@html5_page.doc,
+                                @html5_page.body)
         validator.valid?.must_equal false
       end
     end
@@ -127,8 +129,8 @@ describe ValidateWebsite::Validator do
                           body: open(file).read,
                           content_type: 'text/html')
       @html4_strict_page = @http.get_page(page.url)
-      validator = ValidateWebsite::Validator.new(@html4_strict_page.doc,
-                                                 @html4_strict_page.body)
+      validator = subject.new(@html4_strict_page.doc,
+                              @html4_strict_page.body)
       validator.valid?.must_equal true
     end
   end

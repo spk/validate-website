@@ -147,7 +147,7 @@ module ValidateWebsite
     # @return [Array] Lists of urls
     #
     def extract_urls_from_css(page)
-      page.body.scan(/url\((['".\/\w-]+)\)/).reduce(Set[]) do |result, url|
+      page.body.scan(%r{url\((['".\/\w-]+)\)}).reduce(Set[]) do |result, url|
         url = url.first.gsub("'", "").gsub('"', '')
         abs = page.to_absolute(URI.parse(url))
         result << abs

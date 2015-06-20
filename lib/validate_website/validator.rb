@@ -62,9 +62,7 @@ module ValidateWebsite
 
     def find_errors
       @doc = Dir.chdir(XHTML_PATH) do
-        Nokogiri::XML(document) { |cfg|
-          cfg.noent.dtdload.dtdvalid
-        }
+        Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
       end
 
       # http://www.w3.org/TR/xhtml1-schema/

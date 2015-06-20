@@ -11,9 +11,8 @@ describe ValidateWebsite::Core do
 
   describe 'invalid options' do
     it 'raise ArgumentError on wrong validation_type' do
-      proc {
-        ValidateWebsite::Core.new({ color: false }, :fail)
-      }.must_raise ArgumentError
+      proc { ValidateWebsite::Core.new({ color: false }, :fail) }
+        .must_raise ArgumentError
     end
   end
 
@@ -29,8 +28,8 @@ describe ValidateWebsite::Core do
 
     it 'can change html5 validator service url' do
       s = 'http://localhost:8888/'
-      ValidateWebsite::Core.new({ site: SPEC_DOMAIN,
-                                  html5_validator_service_url: s })
+      ValidateWebsite::Core.new(site: SPEC_DOMAIN,
+                                html5_validator_service_url: s)
       ValidateWebsite::Validator.html5_validator_service_url.must_equal s
     end
   end
@@ -123,7 +122,8 @@ describe ValidateWebsite::Core do
     end
 
     it 'ignore' do
-      pattern = File.join(File.dirname(__FILE__), 'data', 'w3.org-xhtml1-strict-errors.html')
+      pattern = File.join(File.dirname(__FILE__), 'data',
+                          'w3.org-xhtml1-strict-errors.html')
       Dir.chdir('spec/data') do
         @validate_website.crawl_static(pattern: pattern,
                                        site: 'http://w3.org/',
