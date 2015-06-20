@@ -1,9 +1,24 @@
+sudo: false
+bundler_args: --jobs=3 --retry=3
 language: ruby
 cache: bundler
-bundler_args: --jobs=3 --retry=3
+before_install:
+  - gem update --remote bundler
 rvm:
   - 2.0.0
   - 2.1
   - 2.2
   - ruby-head
   - jruby-head
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
+  fast_finish: true
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+script:
+  - bundle exec rake
+  # TODO - bundle exec rubocop
