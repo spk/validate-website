@@ -127,7 +127,7 @@ describe ValidateWebsite::Core do
       Dir.chdir('spec/data') do
         @validate_website.crawl_static(pattern: pattern,
                                        site: 'http://w3.org/',
-                                       ignore: /height|width/)
+                                       ignore: /height|width|Length/)
         @validate_website.errors_count.must_equal 0
       end
     end

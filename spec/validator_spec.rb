@@ -15,12 +15,12 @@ describe ValidateWebsite::Validator do
                           body: open(file).read,
                           content_type: 'text/html')
       @xhtml1_page = @http.get_page(page.url)
-      ignore = /height/
+      ignore = /width|height|Length/
       validator = ValidateWebsite::Validator.new(@xhtml1_page.doc,
                                                  @xhtml1_page.body,
                                                  ignore)
-      validator.valid?.must_equal false
-      validator.errors.size.must_equal 2
+      validator.valid?.must_equal true
+      validator.errors.size.must_equal 0
     end
 
     it "xhtml1-strict should be valid" do
