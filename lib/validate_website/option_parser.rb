@@ -39,7 +39,7 @@ module ValidateWebsite
     def self.default_args
       Slop.parse do |o|
         yield o if block_given?
-        o.bool('-m', 'markup',
+        o.bool('-m', '--markup',
                "Markup validation (default: #{DEFAULT_OPTIONS[:markup]})",
                default: DEFAULT_OPTIONS[:markup])
         o.regexp('-i', '--ignore',
