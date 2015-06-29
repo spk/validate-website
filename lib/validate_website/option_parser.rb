@@ -14,21 +14,21 @@ module ValidateWebsite
       markup: true,
       # crawler: log not found url (404 status code)
       # static: log not found url (not on filesystem, `pwd` considered
-      # as root « / »)
+      # as root " / ")
       not_found: false,
       file: nil,
       # regex to ignore certain validation errors
       ignore: nil,
       color: true,
       # internal verbose for ValidateWebsite
-      verbose: false,
+      verbose: false
     }
 
     # Generic parse method for crawl or static options
     def self.parse(options, type)
       fail ArgumentError unless VALID_TYPES.include?(type)
       # We are in command line (ARGV)
-      if Array === options
+      if options.is_a?(Array)
         send("command_line_parse_#{type}", options)
       else
         # for testing or Ruby usage with a Hash

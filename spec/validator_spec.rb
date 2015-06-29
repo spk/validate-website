@@ -9,7 +9,7 @@ describe ValidateWebsite::Validator do
     @http = Spidr::Agent.new
   end
 
-  describe("xhtml1") do
+  describe('xhtml1') do
     it 'can ignore' do
       name = 'w3.org-xhtml1-strict-errors'
       file = File.join('spec', 'data', "#{name}.html")
@@ -25,7 +25,7 @@ describe ValidateWebsite::Validator do
       validator.errors.size.must_equal 0
     end
 
-    it "xhtml1-strict should be valid" do
+    it 'xhtml1-strict should be valid' do
       name = 'xhtml1-strict'
       dtd_uri = 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'
       file = File.join('spec', 'data', "#{name}.html")
@@ -48,7 +48,7 @@ describe ValidateWebsite::Validator do
         stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
-      it "html5 should be valid" do
+      it 'html5 should be valid' do
         name = 'html5'
         file = File.join('spec', 'data', "#{name}.html")
         page = FakePage.new(name,
@@ -59,7 +59,7 @@ describe ValidateWebsite::Validator do
                                 @html5_page.body)
         validator.valid?.must_equal true
       end
-      it "with DLFP" do
+      it 'with DLFP' do
         name = 'html5'
         file = File.join('spec', 'data', "#{name}-linuxfr.html")
         page = FakePage.new(name,
@@ -107,7 +107,7 @@ describe ValidateWebsite::Validator do
         stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
-      it "html5 should have errors" do
+      it 'html5 should have errors' do
         name = 'html5'
         file = File.join('spec', 'data', "#{name}.html")
         page = FakePage.new(name,

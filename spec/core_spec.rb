@@ -4,7 +4,6 @@ require File.expand_path('../spec_helper', __FILE__)
 describe ValidateWebsite::Core do
   before do
     WebMock.reset!
-    stub_request(:get, ValidateWebsite::Core::PING_URL).to_return(status: 200)
     stub_request(:get, /#{SPEC_DOMAIN}/).to_return(status: 200)
     @validate_website = ValidateWebsite::Core.new(color: false)
   end
@@ -45,7 +44,7 @@ describe ValidateWebsite::Core do
   end
 
   describe('html') do
-    it "extract url" do
+    it 'extract url' do
       name = 'xhtml1-strict'
       file = File.join('spec', 'data', "#{name}.html")
       page = FakePage.new(name,
@@ -69,7 +68,7 @@ describe ValidateWebsite::Core do
   end
 
   describe('css') do
-    it "crawl css and extract url" do
+    it 'crawl css and extract url' do
       page = FakePage.new('test.css',
                           body: '.t {background-image: url(pouet);}
                                  .t {background-image: url(/image/pouet.png)}
@@ -81,7 +80,7 @@ describe ValidateWebsite::Core do
       @validate_website.crawler.history.size.must_equal 5
     end
 
-    it "should extract url with single quote" do
+    it 'should extract url with single quote' do
       page = FakePage.new('test.css',
                           body: ".test {background-image: url('pouet');}",
                           content_type: 'text/css')
@@ -90,7 +89,7 @@ describe ValidateWebsite::Core do
       @validate_website.crawler.history.size.must_equal 2
     end
 
-    it "should extract url with double quote" do
+    it 'should extract url with double quote' do
       page = FakePage.new('test.css',
                           body: ".test {background-image: url(\"pouet\");}",
                           content_type: 'text/css')

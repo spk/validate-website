@@ -1,6 +1,7 @@
 # encoding: UTF-8
 require 'webmock/minitest'
 
+# FakePage html helper for webmock
 class FakePage
   include WebMock::API
 
@@ -12,7 +13,7 @@ class FakePage
     @name = name
     @links = [options[:links]].flatten if options.key?(:links)
     @hrefs = [options[:hrefs]].flatten if options.key?(:hrefs)
-    @content_type = options[:content_type] || "text/html"
+    @content_type = options[:content_type] || 'text/html'
     @body = options[:body]
 
     create_body unless @body
@@ -26,10 +27,10 @@ class FakePage
   private
 
   def create_body
-    @body = "<html><body>"
+    @body = '<html><body>'
     @links.each { |l| @body += "<a href=\"#{SPEC_DOMAIN}#{l}\"></a>" } if @links
     @hrefs.each { |h| @body += "<a href=\"#{h}\"></a>" } if @hrefs
-    @body += "</body></html>"
+    @body += '</body></html>'
   end
 
   def add_to_webmock

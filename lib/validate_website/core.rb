@@ -23,8 +23,6 @@ module ValidateWebsite
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
 
-    PING_URL = 'http://www.google.com/'
-
     def initialize(options = {}, validation_type = :crawl)
       @not_founds_count = 0
       @errors_count = 0
@@ -44,7 +42,6 @@ module ValidateWebsite
     def crawl(options = {})
       @options = @options.merge(options)
       @options.merge!(ignore_links: @options[:exclude]) if @options[:exclude]
-      puts color(:warning, "No internet connection") unless internet_connection?
 
       @crawler = spidr_crawler(@site, @options)
       print_status_line(@crawler.history.size,
@@ -101,12 +98,6 @@ module ValidateWebsite
 
     private
 
-    def internet_connection?
-      true if open(ValidateWebsite::Core::PING_URL)
-    rescue
-      false
-    end
-
     def static_site_link(l)
       link = URI.parse(URI.encode(l))
       link = URI.join(@site, link) if link.host.nil?
@@ -148,7 +139,7 @@ module ValidateWebsite
     #
     def extract_urls_from_css(page)
       page.body.scan(%r{url\((['".\/\w-]+)\)}).reduce(Set[]) do |result, url|
-        url = url.first.gsub("'", "").gsub('"', '')
+        url = url.first.gsub("'", '').gsub('"', '')
         abs = page.to_absolute(URI.parse(url))
         result << abs
       end

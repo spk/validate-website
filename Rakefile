@@ -4,8 +4,8 @@ require 'rake/testtask'
 task default: [:test]
 
 RDoc::Task.new do |rd|
-  rd.main = "README.rdoc"
-  rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
+  rd.main = 'README.rdoc'
+  rd.rdoc_files.include('README.rdoc', 'lib/**/*.rb')
 end
 
 # install asciidoc libxml2-utils xmlto docbook-xsl docbook-xml
@@ -15,6 +15,6 @@ task :manpage do
 end
 
 Rake::TestTask.new do |t|
-  t.pattern = "spec/*_spec.rb"
+  t.pattern = 'spec/*_spec.rb'
 end
 task spec: :test

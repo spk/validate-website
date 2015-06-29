@@ -97,7 +97,7 @@ module ValidateWebsite
       http = Net::HTTP.new(url.host, url.port)
       headers = {
         'Content-Type' => "multipart/form-data; boundary=#{multipart.boundary}",
-        'Content-Length' => multipart.to_s.bytesize.to_s,
+        'Content-Length' => multipart.to_s.bytesize.to_s
       }
       res = http.start { |con| con.post(url.path, multipart.to_s, headers) }
       validator_document = Nokogiri::HTML(res.body)
