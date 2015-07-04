@@ -1,6 +1,8 @@
 # encoding: utf-8
 require 'uri'
 require 'nokogiri'
+require 'net/http'
+require 'multipart_body'
 
 module ValidateWebsite
   # Document validation from DTD or XSD (webservice for html5)
@@ -24,18 +26,18 @@ module ValidateWebsite
       @body = body
       @ignore = ignore
       @dtd = @original_doc.internal_subset
-      init_namespace(@dtd)
-      @errors = []
+      @namespace = init_namespace(@dtd)
     end
 
     ##
     # @return [Boolean]
     def valid?
+      find_errors
       errors.length == 0
     end
 
+    # @return [Array] of errors
     def errors
-      find_errors
       @errors.map!(&:to_s)
       @ignore ? @errors.reject { |e| @ignore =~ e } : @errors
     end
@@ -48,7 +50,7 @@ module ValidateWebsite
       return unless dtd_uri.path
       @dtd_uri = dtd_uri
       # http://www.w3.org/TR/xhtml1/#dtds
-      @namespace = File.basename(@dtd_uri.path, '.dtd')
+      File.basename(@dtd_uri.path, '.dtd')
     end
 
     def document
@@ -60,49 +62,59 @@ module ValidateWebsite
       end
     end
 
-    def find_errors
-      @doc = Dir.chdir(XHTML_PATH) do
-        Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
-      end
-
-      # http://www.w3.org/TR/xhtml1-schema/
-      @xsd = Dir.chdir(XHTML_PATH) do
+    # http://www.w3.org/TR/xhtml1-schema/
+    def xsd
+      @xsd ||= Dir.chdir(XHTML_PATH) do
         if @namespace && File.exist?(@namespace + '.xsd')
           Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
         end
       end
+    end
 
-      if @xsd
-        @errors = @xsd.validate(@doc)
-      elsif document =~ /^\<!DOCTYPE html\>/i
-        html5_validate(document)
+    # @return [Array] contain result errors
+    def validate(xml_doc, document_body)
+      if xsd
+        xsd.validate(xml_doc)
+      elsif document_body =~ /^\<!DOCTYPE html\>/i
+        html5_validate(document_body)
       else
         # dont have xsd fall back to dtd
-        @doc = Dir.chdir(XHTML_PATH) do
+        Dir.chdir(XHTML_PATH) do
           Nokogiri::HTML.parse(document)
-        end
-        @errors = @doc.errors
+        end.errors
       end
+    end
 
+    # http://nokogiri.org/tutorials/ensuring_well_formed_markup.html
+    def find_errors
+      doc = Dir.chdir(XHTML_PATH) do
+        Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
+      end
+      @errors = validate(doc, document)
     rescue Nokogiri::XML::SyntaxError => e
-      # http://nokogiri.org/tutorials/ensuring_well_formed_markup.html
       @errors << e
     end
 
-    def html5_validate(document)
-      require 'net/http'
-      require 'multipart_body'
-      url = URI.parse(self.class.html5_validator_service_url)
-      multipart = MultipartBody.new(content: document)
-      http = Net::HTTP.new(url.host, url.port)
-      headers = {
+    def html5_headers(multipart)
+      {
         'Content-Type' => "multipart/form-data; boundary=#{multipart.boundary}",
         'Content-Length' => multipart.to_s.bytesize.to_s
       }
-      res = http.start { |con| con.post(url.path, multipart.to_s, headers) }
-      validator_document = Nokogiri::HTML(res.body)
-      @errors = validator_document.css('h2.invalid').map(&:content)
-      @errors.concat validator_document.css('ol li.error').map(&:content)
+    end
+
+    def html5_body(document)
+      url = URI.parse(self.class.html5_validator_service_url)
+      multipart = MultipartBody.new(content: document)
+      http = Net::HTTP.new(url.host, url.port)
+      http.start do |con|
+        con.post(url.path, multipart.to_s, html5_headers(multipart))
+      end.body
+    end
+
+    def html5_validate(document)
+      validator_document = Nokogiri::HTML(html5_body(document))
+      errors = validator_document.css('h2.invalid').map(&:content)
+      errors.concat validator_document.css('ol li.error').map(&:content)
     end
   end
 end
