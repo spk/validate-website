@@ -98,12 +98,19 @@ validation service.
 ### Use validator standalone web server locally
 
 You can download [validator](https://github.com/validator/validator) jar and
-start it with `java -cp PATH_TO/vnu.jar nu.validator.servlet.Main 8888`.
+start it with:
 
-Then you can use validate-website
-option `--html5-validator-service-url http://localhost:8888/`.
+~~~
+java -cp PATH_TO/vnu.jar nu.validator.servlet.Main 8888
+~~~
 
-This will prevent you to not be blacklisted from validator webservice.
+Then you can use validate-website option:
+
+~~~
+--html5-validator-service-url http://localhost:8888/
+~~~
+
+This will prevent you to be blacklisted from validator webservice.
 
 ## Contributors
 
