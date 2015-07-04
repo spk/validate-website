@@ -12,15 +12,15 @@ module ValidateWebsite
 
     def self.run_crawl(args)
       trap_interrupt
-      validate_website = ValidateWebsite::Core.new(args, :crawl)
+      validate_website = ValidateWebsite::Crawl.new(args)
       validate_website.crawl
       validate_website.exit_status
     end
 
     def self.run_static(args)
       trap_interrupt
-      validate_website = ValidateWebsite::Core.new(args, :static)
-      validate_website.crawl_static
+      validate_website = ValidateWebsite::Static.new(args)
+      validate_website.crawl
       validate_website.exit_status
     end
   end
