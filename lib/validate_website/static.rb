@@ -48,11 +48,10 @@ module ValidateWebsite
         file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
         not_found_error(file_path) && next unless File.exist?(file_path)
         # Check CSS url()
-        if File.extname(file_path) == '.css'
-          response = fake_httpresponse(open(file_path).read, ['text/css'])
-          css_page = Spidr::Page.new(l, response)
-          result.merge extract_urls_from_css(css_page)
-        end
+        next unless File.extname(file_path) == '.css'
+        response = fake_httpresponse(open(file_path).read, ['text/css'])
+        css_page = Spidr::Page.new(l, response)
+        result.merge extract_urls_from_css(css_page)
       end
     end
 
