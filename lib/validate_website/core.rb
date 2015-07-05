@@ -62,6 +62,19 @@ module ValidateWebsite
       end
     end
 
+    # Extract urls from CSS page
+    #
+    # @param [Spidr::Page] an Spidr::Page object
+    # @return [Array] Lists of urls
+    #
+    def self.extract_urls_from_css(page)
+      page.body.scan(%r{url\((['".\/\w-]+)\)}).reduce(Set[]) do |result, url|
+        url = url.first.gsub("'", '').gsub('"', '')
+        abs = page.to_absolute(URI.parse(url))
+        result << abs
+      end
+    end
+
     private
 
     def print_status_line(total, failures, not_founds, errors)
@@ -76,19 +89,6 @@ module ValidateWebsite
       puts "\n"
       puts color(:error, "#{location} linked but not exist", @options[:color])
       @not_founds_count += 1
-    end
-
-    # Extract urls from CSS page
-    #
-    # @param [Spidr::Page] an Spidr::Page object
-    # @return [Array] Lists of urls
-    #
-    def extract_urls_from_css(page)
-      page.body.scan(%r{url\((['".\/\w-]+)\)}).reduce(Set[]) do |result, url|
-        url = url.first.gsub("'", '').gsub('"', '')
-        abs = page.to_absolute(URI.parse(url))
-        result << abs
-      end
     end
 
     ##

@@ -3,6 +3,8 @@ require 'validate_website/core'
 module ValidateWebsite
   # Class for validation Static website
   class Static < Core
+    CONTENT_TYPES = ['text/html', 'text/xhtml+xml']
+
     def initialize(options = {}, validation_type = :static)
       super
     end
@@ -17,7 +19,7 @@ module ValidateWebsite
       files.each do |f|
         next unless File.file?(f)
 
-        response = fake_httpresponse(open(f).read)
+        response = self.class.fake_httpresponse(open(f).read)
         page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
 
         validate(page.doc, page.body, f, @options[:ignore]) if @options[:markup]
@@ -28,30 +30,51 @@ module ValidateWebsite
 
     private
 
-    def static_site_link(l)
-      link = URI.parse(URI.encode(l))
-      link = URI.join(@site, link) if link.host.nil?
-      link
-    end
+    StaticLink = Struct.new(:link, :site) do
+      def link_uri
+        @link_uri = URI.parse(URI.encode(link))
+        @link_uri = URI.join(site, @link_uri) if @link_uri.host.nil?
+        @link_uri
+      end
 
-    def in_static_domain?(site, link)
-      URI.parse(site).host == link.host
+      def in_static_domain?
+        URI.parse(site).host == link_uri.host
+      end
+
+      def extract_urls_from_fake_css_response
+        response = ValidateWebsite::Static.fake_httpresponse(
+          open(file_path).read,
+          ['text/css'])
+        css_page = Spidr::Page.new(link, response)
+        ValidateWebsite::Core.extract_urls_from_css(css_page)
+      end
+
+      def file_path
+        @file_path ||= URI.parse(
+          File.join(Dir.getwd, link_uri.path || '/')
+        ).path
+      end
+
+      def extname
+        @extname ||= File.extname(file_path)
+      end
+
+      def check?
+        !link.include?('#') && in_static_domain?
+      end
     end
 
     # check files linked on static document
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
-      links.each_with_object(Set[]) do |l, result|
-        next if l.include?('#')
-        link = static_site_link(l)
-        next unless in_static_domain?(@site, link)
-        file_path = URI.parse(File.join(Dir.getwd, link.path || '/')).path
-        not_found_error(file_path) && next unless File.exist?(file_path)
-        # Check CSS url()
-        next unless File.extname(file_path) == '.css'
-        response = fake_httpresponse(open(file_path).read, ['text/css'])
-        css_page = Spidr::Page.new(l, response)
-        result.merge extract_urls_from_css(css_page)
+      static_links = links.map { |l| StaticLink.new(l, @site) }
+      static_links.each_with_object(Set[]) do |static_link, result|
+        next unless static_link.check?
+        not_found_error(static_link.file_path) &&
+          next unless File.exist?(static_link.file_path)
+        # TODO: check and test static css extract
+        next unless static_link.extname == '.css'
+        result.merge static_link.extract_urls_from_fake_css_response
       end
     end
 
@@ -61,7 +84,7 @@ module ValidateWebsite
     # @param [String] response body
     # @param [Array] content types
     # @return [Net::HTTPResponse] fake http response
-    def fake_httpresponse(body, content_types = ['text/html', 'text/xhtml+xml'])
+    def self.fake_httpresponse(body, content_types = CONTENT_TYPES)
       response = Net::HTTPResponse.new '1.1', 200, 'OK'
       response.instance_variable_set(:@read, true)
       response.body = body

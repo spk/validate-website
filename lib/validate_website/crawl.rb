@@ -43,7 +43,7 @@ module ValidateWebsite
       Spidr.site(site, options) do |crawler|
         crawler.cookies[@host] = default_cookies if options[:cookies]
         crawler.every_css_page do |page|
-          extract_urls_from_css(page).each do |u|
+          ValidateWebsite::Core.extract_urls_from_css(page).each do |u|
             crawler.enqueue(u)
           end
         end
