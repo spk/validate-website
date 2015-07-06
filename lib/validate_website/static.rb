@@ -25,9 +25,13 @@ module ValidateWebsite
 
     private
 
-    def check_static_file(f)
+    def generate_static_page(f)
       response = self.class.fake_httpresponse(open(f).read)
-      page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
+      Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
+    end
+
+    def check_static_file(f)
+      page = generate_static_page(f)
       validate(page.doc, page.body, f, @options[:ignore]) if @options[:markup]
       check_static_not_found(page.links) if @options[:not_found]
     end
