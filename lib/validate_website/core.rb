@@ -70,8 +70,8 @@ module ValidateWebsite
     def self.extract_urls_from_css(page)
       page.body.scan(%r{url\((['".\/\w-]+)\)}).reduce(Set[]) do |result, url|
         url = url.first.gsub("'", '').gsub('"', '')
-        abs = page.to_absolute(URI.parse(url))
-        result << abs
+        abs = page.to_absolute(url)
+        result << abs.to_s
       end
     end
 

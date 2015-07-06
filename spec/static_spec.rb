@@ -21,7 +21,7 @@ describe ValidateWebsite::Static do
                               site: 'https://linuxfr.org/',
                               markup: false,
                               not_found: true)
-      @validate_website.not_founds_count.must_equal 502
+      @validate_website.not_founds_count.must_equal 503
     end
   end
 

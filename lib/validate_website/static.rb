@@ -45,7 +45,7 @@ module ValidateWebsite
         response = ValidateWebsite::Static.fake_httpresponse(
           open(file_path).read,
           ['text/css'])
-        css_page = Spidr::Page.new(link, response)
+        css_page = Spidr::Page.new(link_uri, response)
         ValidateWebsite::Core.extract_urls_from_css(css_page)
       end
 
@@ -68,13 +68,13 @@ module ValidateWebsite
     # see lib/validate_website/runner.rb
     def check_static_not_found(links)
       static_links = links.map { |l| StaticLink.new(l, @site) }
-      static_links.each_with_object(Set[]) do |static_link, result|
+      static_links.each do |static_link|
         next unless static_link.check?
         not_found_error(static_link.file_path) &&
           next unless File.exist?(static_link.file_path)
         # TODO: check and test static css extract
         next unless static_link.extname == '.css'
-        result.merge static_link.extract_urls_from_fake_css_response
+        check_static_not_found static_link.extract_urls_from_fake_css_response
       end
     end
 
