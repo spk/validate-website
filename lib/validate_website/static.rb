@@ -18,17 +18,19 @@ module ValidateWebsite
       files = Dir.glob(@options[:pattern])
       files.each do |f|
         next unless File.file?(f)
-
-        response = self.class.fake_httpresponse(open(f).read)
-        page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
-
-        validate(page.doc, page.body, f, @options[:ignore]) if @options[:markup]
-        check_static_not_found(page.links) if @options[:not_found]
+        check_static_file(f)
       end
       print_status_line(files.size, 0, @not_founds_count, @errors_count)
     end
 
     private
+
+    def check_static_file(f)
+      response = self.class.fake_httpresponse(open(f).read)
+      page = Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
+      validate(page.doc, page.body, f, @options[:ignore]) if @options[:markup]
+      check_static_not_found(page.links) if @options[:not_found]
+    end
 
     StaticLink = Struct.new(:link, :site) do
       def link_uri
@@ -72,7 +74,6 @@ module ValidateWebsite
         next unless static_link.check?
         not_found_error(static_link.file_path) &&
           next unless File.exist?(static_link.file_path)
-        # TODO: check and test static css extract
         next unless static_link.extname == '.css'
         check_static_not_found static_link.extract_urls_from_fake_css_response
       end
