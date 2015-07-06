@@ -82,12 +82,12 @@ module ValidateWebsite
       puts color(:info, ["#{total} visited",
                          "#{failures} failures",
                          "#{not_founds} not founds",
-                         "#{errors} errors"].join(', '), @options[:color])
+                         "#{errors} errors"].join(', '), options[:color])
     end
 
     def not_found_error(location)
       puts "\n"
-      puts color(:error, "#{location} linked but not exist", @options[:color])
+      puts color(:error, "#{location} linked but not exist", options[:color])
       @not_founds_count += 1
     end
 
@@ -102,13 +102,16 @@ module ValidateWebsite
       if validator.valid?
         print color(:success, '.', options[:color]) # rspec style
       else
-        @errors_count += 1
-        puts "\n"
-        puts color(:error, "* #{url}", options[:color])
-        if options[:verbose]
-          puts color(:error, validator.errors.join(', '), options[:color])
-        end
+        handle_validation_error(validator, url)
       end
+    end
+
+    def handle_validation_error(validator, url)
+      @errors_count += 1
+      puts "\n"
+      puts color(:error, "* #{url}", options[:color])
+      return unless options[:verbose]
+      puts color(:error, validator.errors.join(', '), options[:color])
     end
   end
 end
