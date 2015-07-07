@@ -39,26 +39,34 @@ module ValidateWebsite
     def self.default_args
       Slop.parse do |o|
         yield o if block_given?
-        o.bool('-m', '--markup',
-               "Markup validation (default: #{DEFAULT_OPTIONS[:markup]})",
-               default: DEFAULT_OPTIONS[:markup])
+        boolean_options(o)
         o.regexp('-i', '--ignore',
                  'Validation errors to ignore (ex: "valign|autocorrect")')
-        o.bool('-n', '--not-found',
-               "Log not found url (default: #{DEFAULT_OPTIONS[:not_found]})",
-               default: DEFAULT_OPTIONS[:not_found])
-        o.bool('--color',
-               "Show colored output (default: #{DEFAULT_OPTIONS[:color]})",
-               default: DEFAULT_OPTIONS[:color])
         o.string('-5', '--html5-validator-service-url',
                  'Change default html5 validator service URL')
-        o.bool('-v', '--verbose',
-               "Show validator errors (default: #{DEFAULT_OPTIONS[:verbose]})",
-               default: DEFAULT_OPTIONS[:verbose])
-        o.on('-h', '--help', 'Display this help message.') do
-          puts o
-          exit
-        end
+        verbose_help_options(o)
+      end
+    end
+
+    def self.boolean_options(o)
+      o.bool('-m', '--markup',
+             "Markup validation (default: #{DEFAULT_OPTIONS[:markup]})",
+             default: DEFAULT_OPTIONS[:markup])
+      o.bool('-n', '--not-found',
+             "Log not found url (default: #{DEFAULT_OPTIONS[:not_found]})",
+             default: DEFAULT_OPTIONS[:not_found])
+      o.bool('--color',
+             "Show colored output (default: #{DEFAULT_OPTIONS[:color]})",
+             default: DEFAULT_OPTIONS[:color])
+    end
+
+    def self.verbose_help_options(o)
+      o.bool('-v', '--verbose',
+             "Show validator errors (default: #{DEFAULT_OPTIONS[:verbose]})",
+             default: DEFAULT_OPTIONS[:verbose])
+      o.on('-h', '--help', 'Display this help message.') do
+        puts o
+        exit
       end
     end
 
