@@ -114,9 +114,7 @@ This will prevent you to be blacklisted from validator webservice.
 
 ## Contributors
 
-* François de Metz (francois2metz)
-* Bruno Michel (nono)
-* Matt Brictson (mbrictson)
+See [GitHub](https://github.com/spk/validate-website/graphs/contributors).
 
 ## License
 
