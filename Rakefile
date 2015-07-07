@@ -1,5 +1,6 @@
 require 'rdoc/task'
 require 'rake/testtask'
+require 'rubocop/rake_task'
 
 task default: [:test]
 
@@ -18,3 +19,8 @@ Rake::TestTask.new do |t|
   t.pattern = 'spec/*_spec.rb'
 end
 task spec: :test
+
+desc 'Execute rubocop -DR'
+RuboCop::RakeTask.new(:rubocop) do |t|
+  t.options = ['-D'] # Rails, display cop name
+end
