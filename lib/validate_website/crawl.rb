@@ -42,27 +42,36 @@ module ValidateWebsite
       @host = URI(site).host
       Spidr.site(site, options) do |crawler|
         crawler.cookies[@host] = default_cookies if options[:cookies]
-        crawler.every_css_page do |page|
-          ValidateWebsite::Core.extract_urls_from_css(page).each do |u|
-            crawler.enqueue(u)
-          end
+        on_every_css_page(crawler)
+        on_every_html_page(crawler)
+        on_every_failed_url(crawler)
+      end
+    end
+
+    def on_every_css_page(crawler)
+      crawler.every_css_page do |page|
+        ValidateWebsite::Core.extract_urls_from_css(page).each do |u|
+          crawler.enqueue(u)
+        end
+      end
+    end
+
+    def on_every_html_page(crawler)
+      crawler.every_html_page do |page|
+        extract_imgs_from_page(page).each do |i|
+          crawler.enqueue(i)
         end
 
-        crawler.every_html_page do |page|
-          extract_imgs_from_page(page).each do |i|
-            crawler.enqueue(i)
-          end
-
-          if options[:markup] && page.html?
-            validate(page.doc, page.body, page.url, options[:ignore])
-          end
+        if options[:markup] && page.html?
+          validate(page.doc, page.body, page.url, options[:ignore])
         end
+      end
+    end
 
-        if options[:not_found]
-          crawler.every_failed_url do |url|
-            not_found_error(url)
-          end
-        end
+    def on_every_failed_url(crawler)
+      return unless options[:not_found]
+      crawler.every_failed_url do |url|
+        not_found_error(url)
       end
     end
   end
