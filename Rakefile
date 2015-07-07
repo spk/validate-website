@@ -20,7 +20,7 @@ Rake::TestTask.new do |t|
 end
 task spec: :test
 
-desc 'Execute rubocop -DR'
+desc 'Execute rubocop'
 RuboCop::RakeTask.new(:rubocop) do |t|
-  t.options = ['-D'] # Rails, display cop name
+  t.options = ['-D'] # display cop name
 end
