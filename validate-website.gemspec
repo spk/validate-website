@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.requirements << 'spidr' << 'rainbow' << 'multipart_body'
   s.add_dependency('spidr', '~> 0.4')
+  s.add_dependency('crass', '~> 1.0')
   s.add_dependency('paint', '~> 1.0')
   s.add_dependency('multipart_body', '~> 0.2')
   s.add_dependency('slop', '~> 4.2')

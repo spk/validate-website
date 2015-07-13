@@ -87,5 +87,23 @@ describe ValidateWebsite::Crawl do
       @validate_website.crawl
       @validate_website.crawler.history.size.must_equal 2
     end
+
+    it 'should extract url with params' do
+      page = FakePage.new('test.css',
+                          body: '.test {background-image: url(/test?size=s);}',
+                          content_type: 'text/css')
+      @validate_website.site = page.url
+      @validate_website.crawl
+      @validate_website.crawler.history.size.must_equal 2
+    end
+
+    it 'should not extract invalid urls' do
+      page = FakePage.new('test.css',
+                          body: '.test {background-image: url(/test.png");}',
+                          content_type: 'text/css')
+      @validate_website.site = page.url
+      @validate_website.crawl
+      @validate_website.crawler.history.size.must_equal 1
+    end
   end
 end

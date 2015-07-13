@@ -7,6 +7,7 @@ require 'validate_website/validator'
 require 'validate_website/colorful_messages'
 
 require 'spidr'
+require 'crass'
 
 # Base module ValidateWebsite
 module ValidateWebsite
@@ -64,18 +65,48 @@ module ValidateWebsite
 
     # Extract urls from CSS page
     #
-    # @param [Spidr::Page] an Spidr::Page object
-    # @return [Array] Lists of urls
+    # @param [Spidr::Page] a Spidr::Page object
+    # @return [Set] Lists of urls
     #
     def self.extract_urls_from_css(page)
-      page.body.scan(%r{url\((['".\/\w-]+)\)}).reduce(Set[]) do |result, url|
-        url = url.first.gsub("'", '').gsub('"', '')
-        abs = page.to_absolute(url)
-        result << abs.to_s
-      end
+      return Set[] unless page
+      return Set[] if page.body.nil?
+      nodes = Crass::Parser.parse_stylesheet(page.body)
+      extract_urls_from_nodes nodes, page
     end
 
     private
+
+    # Return urls as absolute from Crass nodes
+    #
+    # @param [Hash] node from Crass
+    # @param [Spidr::Page] a Spidr::Page object
+    # @return [Set] list of obsolute urls
+    def self.urls_to_absolute(node, page)
+      if node[:node] == :function && node[:name] == 'url' || node[:node] == :url
+        Array(node[:value]).map do |v|
+          url = v.is_a?(String) ? v : v[:value]
+          page.to_absolute(url).to_s
+        end
+      else
+        Set.new
+      end
+    end
+
+    # Extract urls from Crass nodes
+    # @param [Array] Array of nodes from Crass
+    # @param [Spidr::Page] a Spidr::Page object
+    # @param [Set] memo for recursivity
+    # @return [Set] list of urls
+    def self.extract_urls_from_nodes(nodes, page, memo = Set[])
+      nodes.each_with_object(memo) do |node, result|
+        result.merge urls_to_absolute(node, page)
+        if node[:children]
+          extract_urls_from_nodes node.delete(:children), page, result
+        end
+        result
+      end
+    end
 
     def print_status_line(total, failures, not_founds, errors)
       puts "\n\n"

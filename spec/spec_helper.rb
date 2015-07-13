@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'minitest/autorun'
 require_relative 'webmock_helper'
 require 'spidr'
