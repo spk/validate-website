@@ -21,14 +21,14 @@ class FakePage
   end
 
   def url
-    SPEC_DOMAIN + @name
+    TEST_DOMAIN + @name
   end
 
   private
 
   def create_body
     @body = '<html><body>'
-    @links.each { |l| @body += "<a href=\"#{SPEC_DOMAIN}#{l}\"></a>" } if @links
+    @links.each { |l| @body += "<a href=\"#{TEST_DOMAIN}#{l}\"></a>" } if @links
     @hrefs.each { |h| @body += "<a href=\"#{h}\"></a>" } if @hrefs
     @body += '</body></html>'
   end

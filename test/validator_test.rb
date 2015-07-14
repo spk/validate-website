@@ -1,5 +1,4 @@
-# encoding: UTF-8
-require File.expand_path('../spec_helper', __FILE__)
+require_relative 'test_helper'
 
 describe ValidateWebsite::Validator do
   let(:subject) { ValidateWebsite::Validator }
@@ -12,7 +11,7 @@ describe ValidateWebsite::Validator do
   describe('xhtml1') do
     it 'can ignore' do
       name = 'w3.org-xhtml1-strict-errors'
-      file = File.join('spec', 'data', "#{name}.html")
+      file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')
@@ -28,7 +27,7 @@ describe ValidateWebsite::Validator do
     it 'xhtml1-strict should be valid' do
       name = 'xhtml1-strict'
       dtd_uri = 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'
-      file = File.join('spec', 'data', "#{name}.html")
+      file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')
@@ -44,13 +43,13 @@ describe ValidateWebsite::Validator do
   describe('html5') do
     describe('when valid') do
       before do
-        validator_res = File.join('spec', 'data', 'validator.nu-success.html')
+        validator_res = File.join('test', 'data', 'validator.nu-success.html')
         stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
       it 'html5 should be valid' do
         name = 'html5'
-        file = File.join('spec', 'data', "#{name}.html")
+        file = File.join('test', 'data', "#{name}.html")
         page = FakePage.new(name,
                             body: open(file).read,
                             content_type: 'text/html')
@@ -61,7 +60,7 @@ describe ValidateWebsite::Validator do
       end
       it 'with DLFP' do
         name = 'html5'
-        file = File.join('spec', 'data', "#{name}-linuxfr.html")
+        file = File.join('test', 'data', "#{name}-linuxfr.html")
         page = FakePage.new(name,
                             body: open(file).read,
                             content_type: 'text/html')
@@ -73,11 +72,11 @@ describe ValidateWebsite::Validator do
     end
     describe('when not valid') do
       before do
-        validator_res = File.join('spec', 'data', 'validator.nu-failure.html')
+        validator_res = File.join('test', 'data', 'validator.nu-failure.html')
         stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
         name = 'html5'
-        file = File.join('spec', 'data', "#{name}-linuxfr.html")
+        file = File.join('test', 'data', "#{name}-linuxfr.html")
         page = FakePage.new(name,
                             body: open(file).read,
                             content_type: 'text/html')
@@ -103,13 +102,13 @@ describe ValidateWebsite::Validator do
 
     describe('excessive') do
       before do
-        validator_res = File.join('spec', 'data', 'validator.nu-excessive.html')
+        validator_res = File.join('test', 'data', 'validator.nu-excessive.html')
         stub_request(:any, subject.html5_validator_service_url)
           .to_return(body: open(validator_res).read)
       end
       it 'html5 should have errors' do
         name = 'html5'
-        file = File.join('spec', 'data', "#{name}.html")
+        file = File.join('test', 'data', "#{name}.html")
         page = FakePage.new(name,
                             body: open(file).read,
                             content_type: 'text/html')
@@ -124,7 +123,7 @@ describe ValidateWebsite::Validator do
   describe('html4') do
     it 'should validate html4' do
       name = 'html4-strict'
-      file = File.join('spec', 'data', "#{name}.html")
+      file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')

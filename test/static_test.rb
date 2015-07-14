@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative 'test_helper'
 
 describe ValidateWebsite::Static do
   before do
@@ -16,7 +16,7 @@ describe ValidateWebsite::Static do
 
   it 'not found' do
     pattern = File.join(File.dirname(__FILE__), '**/*.html')
-    Dir.chdir('spec/data') do
+    Dir.chdir('test/data') do
       @validate_website.crawl(pattern: pattern,
                               site: 'https://linuxfr.org/',
                               markup: false,
@@ -28,7 +28,7 @@ describe ValidateWebsite::Static do
   it 'ignore' do
     pattern = File.join(File.dirname(__FILE__), 'data',
                         'w3.org-xhtml1-strict-errors.html')
-    Dir.chdir('spec/data') do
+    Dir.chdir('test/data') do
       @validate_website.crawl(pattern: pattern,
                               site: 'http://w3.org/',
                               ignore: /height|width|Length/)

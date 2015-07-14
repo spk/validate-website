@@ -1,13 +1,7 @@
-require 'rdoc/task'
 require 'rake/testtask'
 require 'rubocop/rake_task'
 
 task default: [:test]
-
-RDoc::Task.new do |rd|
-  rd.main = 'README.rdoc'
-  rd.rdoc_files.include('README.rdoc', 'lib/**/*.rb')
-end
 
 # install asciidoc libxml2-utils xmlto docbook-xsl docbook-xml
 desc 'Update manpage from asciidoc file'
@@ -16,7 +10,7 @@ task :manpage do
 end
 
 Rake::TestTask.new do |t|
-  t.pattern = 'spec/*_spec.rb'
+  t.pattern = 'test/**/*_test.rb'
 end
 task spec: :test
 

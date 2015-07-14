@@ -1,9 +1,9 @@
-require_relative 'spec_helper'
+require_relative 'test_helper'
 
 describe ValidateWebsite::Crawl do
   before do
     WebMock.reset!
-    stub_request(:get, /#{SPEC_DOMAIN}/).to_return(status: 200)
+    stub_request(:get, /#{TEST_DOMAIN}/).to_return(status: 200)
     @validate_website = ValidateWebsite::Crawl.new(color: false)
   end
 
@@ -11,14 +11,14 @@ describe ValidateWebsite::Crawl do
     it 'can change user-agent' do
       ua = %{Linux / Firefox 29: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) \
       Gecko/20100101 Firefox/29.0}
-      v = ValidateWebsite::Crawl.new(site: SPEC_DOMAIN, user_agent: ua)
+      v = ValidateWebsite::Crawl.new(site: TEST_DOMAIN, user_agent: ua)
       v.crawl
       v.crawler.user_agent.must_equal ua
     end
 
     it 'can change html5 validator service url' do
       s = 'http://localhost:8888/'
-      ValidateWebsite::Crawl.new(site: SPEC_DOMAIN,
+      ValidateWebsite::Crawl.new(site: TEST_DOMAIN,
                                  html5_validator_service_url: s)
       ValidateWebsite::Validator.html5_validator_service_url.must_equal s
     end
@@ -27,7 +27,7 @@ describe ValidateWebsite::Crawl do
   describe('cookies') do
     it 'can set cookies' do
       cookies = 'tz=Europe%2FBerlin; guid=ZcpBshbtStgl9VjwTofq'
-      v = ValidateWebsite::Crawl.new(site: SPEC_DOMAIN, cookies: cookies)
+      v = ValidateWebsite::Crawl.new(site: TEST_DOMAIN, cookies: cookies)
       v.crawl
       v.crawler.cookies.cookies_for_host(v.host).must_equal v.default_cookies
     end
@@ -36,7 +36,7 @@ describe ValidateWebsite::Crawl do
   describe('html') do
     it 'extract url' do
       name = 'xhtml1-strict'
-      file = File.join('spec', 'data', "#{name}.html")
+      file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')
@@ -47,7 +47,7 @@ describe ValidateWebsite::Crawl do
 
     it 'extract link' do
       name = 'html4-strict'
-      file = File.join('spec', 'data', "#{name}.html")
+      file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')
