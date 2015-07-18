@@ -44,7 +44,7 @@ module ValidateWebsite
         crawler.cookies[@host] = default_cookies if options[:cookies]
         on_every_css_page(crawler)
         on_every_html_page(crawler)
-        on_every_failed_url(crawler)
+        on_every_failed_url(crawler) if options[:not_found]
       end
     end
 
@@ -69,7 +69,6 @@ module ValidateWebsite
     end
 
     def on_every_failed_url(crawler)
-      return unless options[:not_found]
       crawler.every_failed_url do |url|
         not_found_error(url)
       end
