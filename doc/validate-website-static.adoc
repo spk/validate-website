@@ -25,6 +25,8 @@ OPTIONS
   Ignore certain validation errors (ex: 'autocorrect')
 *-m*, *--[no-]markup*::
   Markup validation (Default: true)
+*--css-syntax*::
+  Css validation (Default: false)
 *-n*, *--not-found*::
   Log files not on filesystem, pwd considered as root « / » (Default: false)
 *--[no-]color*::

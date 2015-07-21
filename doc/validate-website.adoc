@@ -29,6 +29,8 @@ OPTIONS
   Set defaults cookies
 *-m*, *--[no-]markup*::
   Markup validation (Default: true)
+*--css-syntax*::
+  Css validation (Default: false)
 *-n*, *--not-found*::
   Log not found url (Default: false)
 *--[no-]color*::
