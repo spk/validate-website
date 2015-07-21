@@ -102,7 +102,7 @@ module ValidateWebsite
         o.string('-s', '--site',
                  "Website to crawl (default: #{DEFAULT_OPTIONS[:site]})",
                  default: DEFAULT_OPTIONS[:site])
-        o.regexp('-p', '--pattern',
+        o.string('-p', '--pattern',
                  "Filename pattern (default: #{DEFAULT_OPTIONS[:pattern]})",
                  default: DEFAULT_OPTIONS[:pattern])
       end
