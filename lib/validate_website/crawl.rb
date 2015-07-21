@@ -1,4 +1,5 @@
 require 'validate_website/core'
+require 'validate_website/utils'
 
 module ValidateWebsite
   # Class for http website validation
@@ -51,7 +52,7 @@ module ValidateWebsite
     def on_every_css_page(crawler)
       crawler.every_css_page do |page|
         check_css_syntax(page) if options[:css_syntax]
-        ValidateWebsite::Core.extract_urls_from_css(page).each do |u|
+        ValidateWebsite::Utils.extract_urls_from_css(page).each do |u|
           crawler.enqueue(u)
         end
       end

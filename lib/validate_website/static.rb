@@ -1,4 +1,5 @@
 require 'validate_website/core'
+require 'validate_website/utils'
 
 module ValidateWebsite
   # Class for validation Static website
@@ -76,7 +77,7 @@ module ValidateWebsite
       end
 
       def extract_urls_from_fake_css_response
-        ValidateWebsite::Core.extract_urls_from_css(page)
+        ValidateWebsite::Utils.extract_urls_from_css(page)
       end
 
       def file_path
