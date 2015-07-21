@@ -12,6 +12,7 @@ module ValidateWebsite
       exclude: nil,
       user_agent: nil,
       markup: true,
+      css_syntax: false,
       # crawler: log not found url (404 status code)
       # static: log not found url (not on filesystem, `pwd` considered
       # as root " / ")
@@ -39,6 +40,7 @@ module ValidateWebsite
     def self.default_args
       Slop.parse do |o|
         yield o if block_given?
+        markup_syntax(o)
         boolean_options(o)
         o.regexp('-i', '--ignore',
                  'Validation errors to ignore (ex: "valign|autocorrect")')
@@ -48,10 +50,16 @@ module ValidateWebsite
       end
     end
 
-    def self.boolean_options(o)
+    def self.markup_syntax(o)
       o.bool('-m', '--markup',
              "Markup validation (default: #{DEFAULT_OPTIONS[:markup]})",
              default: DEFAULT_OPTIONS[:markup])
+      o.bool('--css-syntax',
+             "Css validation (default: #{DEFAULT_OPTIONS[:css_syntax]})",
+             default: DEFAULT_OPTIONS[:css_syntax])
+    end
+
+    def self.boolean_options(o)
       o.bool('-n', '--not-found',
              "Log not found url (default: #{DEFAULT_OPTIONS[:not_found]})",
              default: DEFAULT_OPTIONS[:not_found])

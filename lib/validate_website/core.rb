@@ -77,6 +77,24 @@ module ValidateWebsite
 
     private
 
+    def check_css_syntax(page)
+      nodes = Crass::Parser.parse_stylesheet(page.body)
+      return unless any_css_errors?(nodes)
+      handle_validation_error(page.url)
+    end
+
+    def any_css_errors?(nodes)
+      nodes.any? do |node|
+        if node[:children]
+          any_css_errors? node.delete(:children)
+        elsif node[:tokens]
+          any_css_errors? node.delete(:tokens)
+        else
+          node[:node] == :error || node[:error] == true
+        end
+      end
+    end
+
     # Return urls as absolute from Crass nodes
     #
     # @param [Hash] node from Crass
@@ -133,16 +151,20 @@ module ValidateWebsite
       if validator.valid?
         print color(:success, '.', options[:color]) # rspec style
       else
-        handle_validation_error(validator, url)
+        handle_html_validation_error(validator, url)
       end
     end
 
-    def handle_validation_error(validator, url)
+    def handle_html_validation_error(validator, url)
+      handle_validation_error(url)
+      return unless options[:verbose]
+      puts color(:error, validator.errors.join(', '), options[:color])
+    end
+
+    def handle_validation_error(url)
       @errors_count += 1
       puts "\n"
       puts color(:error, "* #{url}", options[:color])
-      return unless options[:verbose]
-      puts color(:error, validator.errors.join(', '), options[:color])
     end
   end
 end

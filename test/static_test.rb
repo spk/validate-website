@@ -35,4 +35,17 @@ describe ValidateWebsite::Static do
       @validate_website.errors_count.must_equal 0
     end
   end
+
+  describe 'css' do
+    it 'validate' do
+      pattern = File.join(File.dirname(__FILE__), '**/*.{html,css}')
+      Dir.chdir('test/data') do
+        @validate_website.crawl(pattern: pattern,
+                                site: 'https://linuxfr.org/',
+                                markup: false,
+                                css_syntax: true)
+        @validate_website.errors_count.must_equal 1
+      end
+    end
+  end
 end

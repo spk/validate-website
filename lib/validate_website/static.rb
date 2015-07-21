@@ -25,15 +25,17 @@ module ValidateWebsite
 
     private
 
-    def generate_static_page(f)
-      response = self.class.fake_httpresponse(open(f).read)
-      Spidr::Page.new(URI.join(@site, URI.encode(f)), response)
+    def check_static_file(f)
+      page = StaticLink.new(f, @site).page
+      check_page(f, page)
+      check_css_syntax(page) if page.css? && options[:css_syntax]
     end
 
-    def check_static_file(f)
-      page = generate_static_page(f)
-      validate(page.doc, page.body, f, @options[:ignore]) if @options[:markup]
-      check_static_not_found(page.links) if @options[:not_found]
+    def check_page(f, page)
+      if page.html? && options[:markup]
+        validate(page.doc, page.body, f, options[:ignore])
+      end
+      check_static_not_found(page.links) if options[:not_found]
     end
 
     StaticLink = Struct.new(:link, :site) do
@@ -47,12 +49,34 @@ module ValidateWebsite
         URI.parse(site).host == link_uri.host
       end
 
+      def content_types
+        if css?
+          ['text/css']
+        else
+          CONTENT_TYPES
+        end
+      end
+
+      def body
+        if File.exist?(link)
+          open(link).read
+        else
+          open(file_path).read
+        end
+      end
+
+      def response
+        @response ||= ValidateWebsite::Static.fake_httpresponse(
+          body,
+          content_types)
+      end
+
+      def page
+        @page ||= Spidr::Page.new(link_uri, response)
+      end
+
       def extract_urls_from_fake_css_response
-        response = ValidateWebsite::Static.fake_httpresponse(
-          open(file_path).read,
-          ['text/css'])
-        css_page = Spidr::Page.new(link_uri, response)
-        ValidateWebsite::Core.extract_urls_from_css(css_page)
+        ValidateWebsite::Core.extract_urls_from_css(page)
       end
 
       def file_path
@@ -63,6 +87,10 @@ module ValidateWebsite
 
       def extname
         @extname ||= File.extname(file_path)
+      end
+
+      def css?
+        extname == '.css'
       end
 
       def check?
@@ -78,7 +106,7 @@ module ValidateWebsite
         next unless static_link.check?
         not_found_error(static_link.file_path) &&
           next unless File.exist?(static_link.file_path)
-        next unless static_link.extname == '.css'
+        next unless static_link.css?
         check_static_not_found static_link.extract_urls_from_fake_css_response
       end
     end

@@ -10,7 +10,7 @@ describe ValidateWebsite::Crawl do
   describe 'options' do
     it 'can change user-agent' do
       ua = %{Linux / Firefox 29: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) \
-      Gecko/20100101 Firefox/29.0}
+             Gecko/20100101 Firefox/29.0}
       v = ValidateWebsite::Crawl.new(site: TEST_DOMAIN, user_agent: ua)
       v.crawl
       v.crawler.user_agent.must_equal ua
@@ -58,52 +58,78 @@ describe ValidateWebsite::Crawl do
   end
 
   describe('css') do
-    it 'crawl css and extract url' do
-      page = FakePage.new('test.css',
-                          body: '.t {background-image: url(pouet);}
+    describe 'extract urls' do
+      it 'crawl css and extract url' do
+        page = FakePage.new('test.css',
+                            body: '.t {background-image: url(pouet);}
                                  .t {background-image: url(/image/pouet.png)}
                                  .t {background-image: url(/image/pouet_42.png)}
                                  .t {background-image: url(/image/pouet)}',
-                          content_type: 'text/css')
-      @validate_website.site = page.url
-      @validate_website.crawl
-      @validate_website.crawler.history.size.must_equal 5
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.crawler.history.size.must_equal 5
+      end
+
+      it 'should extract url with single quote' do
+        page = FakePage.new('test.css',
+                            body: ".test {background-image: url('pouet');}",
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.crawler.history.size.must_equal 2
+      end
+
+      it 'should extract url with double quote' do
+        page = FakePage.new('test.css',
+                            body: ".test {background-image: url(\"pouet\");}",
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.crawler.history.size.must_equal 2
+      end
+
+      it 'should extract url with params' do
+        page = FakePage.new('test.css',
+                            body: '.test {background-image: url(/t?size=s);}',
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.crawler.history.size.must_equal 2
+      end
+
+      it 'should not extract invalid urls' do
+        page = FakePage.new('test.css',
+                            body: '.test {background-image: url(/test.png");}',
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.crawler.history.size.must_equal 1
+      end
     end
 
-    it 'should extract url with single quote' do
-      page = FakePage.new('test.css',
-                          body: ".test {background-image: url('pouet');}",
-                          content_type: 'text/css')
-      @validate_website.site = page.url
-      @validate_website.crawl
-      @validate_website.crawler.history.size.must_equal 2
-    end
+    describe 'validate css syntax' do
+      before do
+        @validate_website = ValidateWebsite::Crawl.new(color: false,
+                                                       css_syntax: true)
+      end
+      it 'should be invalid with bad urls' do
+        page = FakePage.new('test.css',
+                            body: '.test {background-image: url(/test.png");}',
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.errors_count.must_equal 1
+      end
 
-    it 'should extract url with double quote' do
-      page = FakePage.new('test.css',
-                          body: ".test {background-image: url(\"pouet\");}",
-                          content_type: 'text/css')
-      @validate_website.site = page.url
-      @validate_website.crawl
-      @validate_website.crawler.history.size.must_equal 2
-    end
-
-    it 'should extract url with params' do
-      page = FakePage.new('test.css',
-                          body: '.test {background-image: url(/test?size=s);}',
-                          content_type: 'text/css')
-      @validate_website.site = page.url
-      @validate_website.crawl
-      @validate_website.crawler.history.size.must_equal 2
-    end
-
-    it 'should not extract invalid urls' do
-      page = FakePage.new('test.css',
-                          body: '.test {background-image: url(/test.png");}',
-                          content_type: 'text/css')
-      @validate_website.site = page.url
-      @validate_website.crawl
-      @validate_website.crawler.history.size.must_equal 1
+      it 'should be invalid with syntax error' do
+        page = FakePage.new('test.css',
+                            body: ' /**/ .foo {} #{bar {}',
+                            content_type: 'text/css')
+        @validate_website.site = page.url
+        @validate_website.crawl
+        @validate_website.errors_count.must_equal 1
+      end
     end
   end
 end
