@@ -127,3 +127,4 @@ Copyright (c) 2009-2015 Laurent Arnoud <laurent@spkdev.net>
 [![Build Status](https://secure.travis-ci.org/spk/validate-website.svg?branch=master)](https://travis-ci.org/spk/validate-website)
 [![Code Climate](http://img.shields.io/codeclimate/github/spk/validate-website.svg)](https://codeclimate.com/github/spk/validate-website)
 [![Inline docs](http://inch-ci.org/github/spk/validate-website.svg?branch=master)](http://inch-ci.org/github/spk/validate-website)
+[![License](https://img.shields.io/github/license/spk/validate-website.svg)](http://opensource.org/licenses/MIT)
