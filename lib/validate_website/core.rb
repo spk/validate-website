@@ -26,7 +26,12 @@ module ValidateWebsite
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
 
-    def initialize(options = {}, validation_type)
+    # Initialize core ValidateWebsite class
+    # @example
+    #   new({ site: "https://example.com/" }, :crawl)
+    # @param [Hash] options
+    # @return [NilClass]
+    def initialize(options, validation_type)
       @not_founds_count = 0
       @errors_count = 0
       @options = Parser.parse(options, validation_type).to_h
