@@ -1,7 +1,7 @@
 require 'rake/testtask'
 require 'rubocop/rake_task'
 
-task default: [:test]
+task default: [:test, :rubocop]
 
 # install asciidoc libxml2-utils xmlto docbook-xsl docbook-xml
 desc 'Update manpage from asciidoc file'
