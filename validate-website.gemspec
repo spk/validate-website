@@ -1,4 +1,4 @@
-require_relative 'lib/validate_website/version'
+require File.expand_path('../lib/validate_website/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.author = 'Laurent Arnoud'
