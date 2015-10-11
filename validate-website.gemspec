@@ -28,9 +28,9 @@ Gem::Specification.new do |s|
                 'bin',
                 'lib/**/*.rb',
                 'man/**/*',
-                'spec/**/*',
+                'test/**/*',
                 'data/**/*']
   s.description = %(validate-website is a web crawler for checking the markup \
 validity with XML Schema / DTD and not found urls.)
-  s.test_files = Dir.glob('spec/**/*_spec.rb')
+  s.test_files = Dir.glob('test/**/*_test.rb')
 end
