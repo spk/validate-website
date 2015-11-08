@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables << 'validate-website'
   s.executables << 'validate-website-static'
-  s.files = Dir['README.rdoc', 'Rakefile', 'LICENSE',
+  s.files = Dir['README.md', 'Rakefile', 'LICENSE', 'History.md',
                 'bin',
                 'lib/**/*.rb',
                 'man/**/*',
