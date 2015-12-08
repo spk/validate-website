@@ -67,6 +67,18 @@ describe ValidateWebsite::Crawl do
       end
       @validate_website.crawler.history.size.must_equal 98
     end
+
+    it 'crawl when URLs are not ascii only' do
+      name = 'cozy-community'
+      file = File.join('test', 'data', "#{name}.html")
+      page = FakePage.new(name,
+                          body: open(file).read,
+                          content_type: 'text/html')
+      @validate_website.site = page.url
+      _out, _err = capture_io do
+        @validate_website.crawl
+      end
+    end
   end
 
   describe('css') do

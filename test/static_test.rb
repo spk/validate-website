@@ -27,7 +27,7 @@ describe ValidateWebsite::Static do
                                 markup: false,
                                 not_found: true)
       end
-      @validate_website.not_founds_count.must_equal 503
+      @validate_website.not_founds_count.must_equal 518
     end
   end
 
