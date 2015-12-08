@@ -34,8 +34,8 @@ module ValidateWebsite
     #
     def extract_imgs_from_page(page)
       page.doc.search('//img[@src]').reduce(Set[]) do |result, elem|
-        u = elem.attributes['src']
-        result << page.to_absolute(URI.parse(u))
+        u = elem.attributes['src'].content
+        result << page.to_absolute(URI.parse(URI.encode(u)))
       end
     end
 

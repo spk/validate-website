@@ -21,11 +21,13 @@ describe ValidateWebsite::Crawl do
     end
 
     it 'can change html5 validator service url' do
-      s = 'http://localhost:8888/'
+      original = ValidateWebsite::Validator.html5_validator_service_url
+      new = 'http://localhost:8888/'
       _out, _err = capture_io do
         ValidateWebsite::Crawl.new(site: TEST_DOMAIN,
-                                   html5_validator_service_url: s)
-        ValidateWebsite::Validator.html5_validator_service_url.must_equal s
+                                   html5_validator_service_url: new)
+        ValidateWebsite::Validator.html5_validator_service_url.must_equal new
+        ValidateWebsite::Validator.html5_validator_service_url = original
       end
     end
   end
@@ -74,6 +76,9 @@ describe ValidateWebsite::Crawl do
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')
+      validator_res = File.join('test', 'data', 'validator.nu-success.html')
+      stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
+        .to_return(body: open(validator_res).read)
       @validate_website.site = page.url
       _out, _err = capture_io do
         @validate_website.crawl
