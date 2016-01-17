@@ -9,17 +9,16 @@ Gem::Specification.new do |s|
   s.name = 'validate-website'
   s.version = ValidateWebsite::VERSION
   s.license = 'MIT'
-  s.requirements << 'spidr' << 'rainbow' << 'multipart_body'
-  s.add_dependency('spidr', '~> 0.4')
-  s.add_dependency('crass', '~> 1.0')
-  s.add_dependency('paint', '~> 1.0')
-  s.add_dependency('multipart_body', '~> 0.2')
-  s.add_dependency('slop', '~> 4.2')
-  s.add_development_dependency('rake', '~> 10.4')
-  s.add_development_dependency('minitest', '~> 5.6')
-  s.add_development_dependency('minitest-line', '~> 0.6')
-  s.add_development_dependency('webmock', '~> 1.21')
-  s.add_development_dependency('rubocop', '~> 0')
+  s.required_ruby_version = '>= 2.0.0'
+  s.add_dependency 'spidr', '~> 0.5'
+  s.add_dependency 'crass', '~> 1'
+  s.add_dependency 'paint', '~> 1'
+  s.add_dependency 'multipart_body', '~> 0.2'
+  s.add_dependency 'slop', '~> 4.2'
+  s.add_development_dependency 'rake', '~> 10'
+  s.add_development_dependency 'minitest', '~> 5'
+  s.add_development_dependency 'webmock', '~> 1'
+  s.add_development_dependency 'rubocop', '~> 0.36'
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'
