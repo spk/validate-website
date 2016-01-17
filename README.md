@@ -120,7 +120,7 @@ See [GitHub](https://github.com/spk/validate-website/graphs/contributors).
 
 The MIT License
 
-Copyright (c) 2009-2015 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2016 Laurent Arnoud <laurent@spkdev.net>
 
 ---
 [![Build](https://img.shields.io/travis-ci/spk/validate-website.svg)](https://travis-ci.org/spk/validate-website)
