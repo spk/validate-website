@@ -10,13 +10,14 @@ rvm:
   - 2.2
   - 2.3.0
   - jruby-9.0.4.0
-  - rbx-2
+  - rbx
   - ruby-head
   - jruby-head
 matrix:
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
+    - rvm: rbx
   fast_finish: true
 notifications:
   email:
