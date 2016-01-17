@@ -11,7 +11,7 @@ Web crawler for checking the validity of your documents
 ### Debian
 
 ~~~ console
-aptitude install ruby-dev libxslt-dev libxml2-dev
+apt install ruby-dev libxslt-dev libxml2-dev
 ~~~
 
 ### RubyGems
@@ -123,8 +123,9 @@ The MIT License
 Copyright (c) 2009-2015 Laurent Arnoud <laurent@spkdev.net>
 
 ---
-[![Gem Version](https://badge.fury.io/rb/validate-website.svg)](https://rubygems.org/gems/validate-website)
-[![Build Status](https://secure.travis-ci.org/spk/validate-website.svg?branch=master)](https://travis-ci.org/spk/validate-website)
+[![Build](https://img.shields.io/travis-ci/spk/validate-website.svg)](https://travis-ci.org/spk/validate-website)
+[![Version](https://img.shields.io/gem/v/validate-website.svg)](https://rubygems.org/gems/validate-website)
+[![Documentation](https://img.shields.io/badge/doc-rubydoc-blue.svg)](http://www.rubydoc.info/gems/validate-website)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT "MIT")
 [![Code Climate](http://img.shields.io/codeclimate/github/spk/validate-website.svg)](https://codeclimate.com/github/spk/validate-website)
 [![Inline docs](http://inch-ci.org/github/spk/validate-website.svg?branch=master)](http://inch-ci.org/github/spk/validate-website)
-[![License](https://img.shields.io/github/license/spk/validate-website.svg)](http://opensource.org/licenses/MIT)
