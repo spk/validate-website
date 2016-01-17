@@ -115,7 +115,7 @@ describe ValidateWebsite::Crawl do
 
       it 'should extract url with double quote' do
         page = FakePage.new('test.css',
-                            body: ".test {background-image: url(\"pouet\");}",
+                            body: '.test {background-image: url("pouet");}',
                             content_type: 'text/css')
         @validate_website.site = page.url
         _out, _err = capture_io do

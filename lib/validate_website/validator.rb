@@ -55,11 +55,11 @@ module ValidateWebsite
 
     def document
       return @document if @document
-      if @dtd_uri && @body.match(@dtd_uri.to_s)
-        @document = @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
-      else
-        @document = @body
-      end
+      @document = if @dtd_uri && @body.match(@dtd_uri.to_s)
+                    @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
+                  else
+                    @body
+                  end
     end
 
     # http://www.w3.org/TR/xhtml1-schema/

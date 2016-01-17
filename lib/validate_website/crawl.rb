@@ -16,7 +16,7 @@ module ValidateWebsite
     #
     def crawl(options = {})
       @options = @options.merge(options)
-      @options.merge!(ignore_links: @options[:exclude]) if @options[:exclude]
+      @options[:ignore_links] = @options[:exclude] if @options[:exclude]
 
       @crawler = spidr_crawler(@site, @options)
       print_status_line(@crawler.history.size,

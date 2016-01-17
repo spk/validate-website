@@ -21,7 +21,7 @@ module ValidateWebsite
       Paint[message, :green]
     end
 
-    alias_method :message, :success
+    alias message success
 
     def note(message)
       Paint[message, :magenta]

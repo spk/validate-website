@@ -4,7 +4,7 @@ require 'validate_website/utils'
 module ValidateWebsite
   # Class for validation Static website
   class Static < Core
-    CONTENT_TYPES = ['text/html', 'text/xhtml+xml']
+    CONTENT_TYPES = ['text/html', 'text/xhtml+xml'].freeze
 
     def initialize(options = {}, validation_type = :static)
       super
@@ -22,6 +22,22 @@ module ValidateWebsite
         check_static_file(f)
       end
       print_status_line(files.size, 0, @not_founds_count, @errors_count)
+    end
+
+    # Fake http response for Spidr static crawling
+    # see https://github.com/ruby/ruby/blob/trunk/lib/net/http/response.rb
+    #
+    # @param [String] response body
+    # @param [Array] content types
+    # @return [Net::HTTPResponse] fake http response
+    def self.fake_httpresponse(body, content_types = CONTENT_TYPES)
+      response = Net::HTTPResponse.new '1.1', 200, 'OK'
+      response.instance_variable_set(:@read, true)
+      response.body = body
+      content_types.each do |c|
+        response.add_field('content-type', c)
+      end
+      response
     end
 
     private
@@ -110,22 +126,6 @@ module ValidateWebsite
         next unless static_link.css?
         check_static_not_found static_link.extract_urls_from_fake_css_response
       end
-    end
-
-    # Fake http response for Spidr static crawling
-    # see https://github.com/ruby/ruby/blob/trunk/lib/net/http/response.rb
-    #
-    # @param [String] response body
-    # @param [Array] content types
-    # @return [Net::HTTPResponse] fake http response
-    def self.fake_httpresponse(body, content_types = CONTENT_TYPES)
-      response = Net::HTTPResponse.new '1.1', 200, 'OK'
-      response.instance_variable_set(:@read, true)
-      response.body = body
-      content_types.each do |c|
-        response.add_field('content-type', c)
-      end
-      response
     end
   end
 end

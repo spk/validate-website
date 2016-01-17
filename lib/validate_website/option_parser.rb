@@ -23,7 +23,7 @@ module ValidateWebsite
       color: true,
       # internal verbose for ValidateWebsite
       verbose: false
-    }
+    }.freeze
 
     # Generic parse method for crawl or static options
     def self.parse(options, type)
