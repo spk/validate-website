@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 10'
   s.add_development_dependency 'minitest', '~> 5'
   s.add_development_dependency 'webmock', '~> 1'
-  s.add_development_dependency 'rubocop', '~> 0.36'
+  s.add_development_dependency 'rubocop', '~> 0.37'
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'

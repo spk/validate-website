@@ -27,7 +27,7 @@ module ValidateWebsite
 
     # Generic parse method for crawl or static options
     def self.parse(options, type)
-      fail ArgumentError unless VALID_TYPES.include?(type)
+      raise ArgumentError unless VALID_TYPES.include?(type)
       # We are in command line (ARGV)
       if options.is_a?(Array)
         send("command_line_parse_#{type}", options)

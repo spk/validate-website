@@ -33,7 +33,7 @@ module ValidateWebsite
     # @return [Boolean]
     def valid?
       find_errors
-      errors.length == 0
+      errors.empty?
     end
 
     # @return [Array] of errors
