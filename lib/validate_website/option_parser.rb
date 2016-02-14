@@ -42,12 +42,17 @@ module ValidateWebsite
         yield o if block_given?
         markup_syntax(o)
         boolean_options(o)
-        o.regexp('-i', '--ignore',
-                 'Validation errors to ignore (ex: "valign|autocorrect")')
-        o.string('-5', '--html5-validator-service-url',
-                 'Change default html5 validator service URL')
-        verbose_help_options(o)
+        ignore_html5_options(o)
+        verbose_option(o)
+        version_help(o)
       end
+    end
+
+    def self.ignore_html5_options(o)
+      o.regexp('-i', '--ignore',
+               'Validation errors to ignore (ex: "valign|autocorrect")')
+      o.string('-5', '--html5-validator-service-url',
+               'Change default html5 validator service URL')
     end
 
     def self.markup_syntax(o)
@@ -68,10 +73,17 @@ module ValidateWebsite
              default: DEFAULT_OPTIONS[:color])
     end
 
-    def self.verbose_help_options(o)
+    def self.verbose_option(o)
       o.bool('-v', '--verbose',
              "Show validator errors (default: #{DEFAULT_OPTIONS[:verbose]})",
              default: DEFAULT_OPTIONS[:verbose])
+    end
+
+    def self.version_help(o)
+      o.on('--version', 'Display version.') do
+        puts ValidateWebsite::VERSION
+        exit
+      end
       o.on('-h', '--help', 'Display this help message.') do
         puts o
         exit
