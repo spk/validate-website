@@ -1,4 +1,12 @@
 
+v1.5.6 / 2016-03-02
+==================
+
+  * Fix error with redirect and extract images (see #16)
+  * Display version number
+  * Rubocop fixes
+  * Updates deps
+
 v1.5.4 / 2015-12-08
 ==================
 
