@@ -33,6 +33,7 @@ module ValidateWebsite
     # @return [Array] Lists of urls
     #
     def extract_imgs_from_page(page)
+      return Set[] if page.is_redirect?
       page.doc.search('//img[@src]').reduce(Set[]) do |result, elem|
         u = elem.attributes['src'].content
         result << page.to_absolute(URI.parse(URI.encode(u)))
@@ -58,13 +59,17 @@ module ValidateWebsite
       end
     end
 
+    def validate?(page)
+      options[:markup] && page.html? && !page.is_redirect?
+    end
+
     def on_every_html_page(crawler)
       crawler.every_html_page do |page|
         extract_imgs_from_page(page).each do |i|
           crawler.enqueue(i)
         end
 
-        if options[:markup] && page.html?
+        if validate?(page)
           validate(page.doc, page.body, page.url, options[:ignore])
         end
       end
