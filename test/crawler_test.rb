@@ -84,6 +84,21 @@ describe ValidateWebsite::Crawl do
         @validate_website.crawl
       end
     end
+
+    it 'dont try to extract imgs for redirect' do
+      url = 'https://wordpress.org/support/bb-login.php'
+      stub_request(:get, url).to_return(
+        status: 302,
+        headers: {
+          'Location' => 'https://login.wordpress.org/',
+          'Content-Type' => 'text/html; charset=UTF-8'
+        }
+      )
+      @validate_website.site = url
+      _out, _err = capture_io do
+        @validate_website.crawl
+      end
+    end
   end
 
   describe('css') do
