@@ -1,4 +1,12 @@
 
+v1.5.7 / 2016-06-13
+==================
+
+  * Fix JRuby CI build
+  * Update JRuby and other rubies on Travis
+  * Update rubocop to v0.40
+  * Add env variable VALIDATOR_NU_URL support
+
 v1.5.6 / 2016-03-02
 ==================
 
