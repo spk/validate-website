@@ -27,6 +27,7 @@ module ValidateWebsite
       @ignore = ignore
       @dtd = @original_doc.internal_subset
       @namespace = init_namespace(@dtd)
+      @errors = []
     end
 
     ##

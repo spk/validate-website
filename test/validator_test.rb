@@ -130,7 +130,8 @@ describe ValidateWebsite::Validator do
       @html4_strict_page = @http.get_page(page.url)
       validator = subject.new(@html4_strict_page.doc,
                               @html4_strict_page.body)
-      validator.valid?.must_equal true
+      validator.valid?
+      validator.errors.must_equal []
     end
   end
 end
