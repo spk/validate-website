@@ -85,7 +85,8 @@ module ValidateWebsite
       def response
         @response ||= ValidateWebsite::Static.fake_httpresponse(
           body,
-          content_types)
+          content_types
+        )
       end
 
       def page
