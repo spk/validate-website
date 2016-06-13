@@ -103,11 +103,12 @@ module ValidateWebsite
     end
 
     def html5_body(document)
-      url = URI.parse(self.class.html5_validator_service_url)
+      url = ENV['VALIDATOR_NU_URL'] || self.class.html5_validator_service_url
+      uri = URI.parse(url)
       multipart = MultipartBody.new(content: document)
-      http = Net::HTTP.new(url.host, url.port)
+      http = Net::HTTP.new(uri.host, uri.port)
       http.start do |con|
-        con.post(url.path, multipart.to_s, html5_headers(multipart))
+        con.post(uri.path, multipart.to_s, html5_headers(multipart))
       end.body
     end
 

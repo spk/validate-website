@@ -108,6 +108,8 @@ Then you can use validate-website option:
 
 ~~~
 --html5-validator-service-url http://localhost:8888/
+# or
+export VALIDATOR_NU_URL="http://localhost:8888/"
 ~~~
 
 This will prevent you to be blacklisted from validator webservice.
