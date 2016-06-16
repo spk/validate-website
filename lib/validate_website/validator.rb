@@ -14,7 +14,7 @@ module ValidateWebsite
       attr_accessor :html5_validator_service_url
     end
 
-    attr_reader :original_doc, :body, :dtd, :doc, :namespace, :xsd
+    attr_reader :original_doc, :body, :dtd, :doc, :namespace
 
     ##
     # @param [Nokogiri::HTML::Document] original_doc
@@ -22,12 +22,13 @@ module ValidateWebsite
     # @param [Regexp] Errors to ignore
     #
     def initialize(original_doc, body, ignore = nil)
+      @errors = []
+      @document, @dtd_uri = nil
       @original_doc = original_doc
       @body = body
       @ignore = ignore
       @dtd = @original_doc.internal_subset
       @namespace = init_namespace(@dtd)
-      @errors = []
     end
 
     ##
@@ -74,7 +75,7 @@ module ValidateWebsite
 
     # @return [Array] contain result errors
     def validate(xml_doc, document_body)
-      if xsd
+      if !xsd.nil?
         xsd.validate(xml_doc)
       elsif document_body =~ /^\<!DOCTYPE html\>/i
         html5_validate(document_body)
