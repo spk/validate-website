@@ -54,7 +54,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         @validate_website.crawl
       end
-      @validate_website.crawler.history.size.must_equal 5
+      @validate_website.history_count.must_equal 5
     end
 
     it 'extract link' do
@@ -67,7 +67,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         @validate_website.crawl
       end
-      @validate_website.crawler.history.size.must_equal 98
+      @validate_website.history_count.must_equal 98
     end
 
     it 'crawl when URLs are not ascii only' do
@@ -114,7 +114,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.crawler.history.size.must_equal 5
+        @validate_website.history_count.must_equal 5
       end
 
       it 'should extract url with single quote' do
@@ -125,7 +125,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.crawler.history.size.must_equal 2
+        @validate_website.history_count.must_equal 2
       end
 
       it 'should extract url with double quote' do
@@ -136,7 +136,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.crawler.history.size.must_equal 2
+        @validate_website.history_count.must_equal 2
       end
 
       it 'should extract url with params' do
@@ -147,7 +147,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.crawler.history.size.must_equal 2
+        @validate_website.history_count.must_equal 2
       end
 
       it 'should not extract invalid urls' do
@@ -158,7 +158,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.crawler.history.size.must_equal 1
+        @validate_website.history_count.must_equal 1
       end
     end
 

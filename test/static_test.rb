@@ -7,6 +7,18 @@ describe ValidateWebsite::Static do
     end
   end
 
+  it 'exclude directories' do
+    pattern = File.join(File.dirname(__FILE__), '**/*.html')
+    _out, _err = capture_io do
+      @validate_website.crawl(pattern: pattern,
+                              site: 'http://spkdev.net/',
+                              markup: false,
+                              not_found: false,
+                              exclude: /data|example/)
+    end
+    @validate_website.history_count.must_equal 0
+  end
+
   it 'no space in directory name' do
     pattern = File.join(File.dirname(__FILE__), 'example/**/*.html')
     _out, _err = capture_io do

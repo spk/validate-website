@@ -21,6 +21,8 @@ OPTIONS
   Where static files will be hosted (Default: http://www.example.com/)
 *-p*, *--pattern* 'PATTERN'::
   Change filenames pattern (Default: \*\*/*.html)
+*-e*, *--exclude* 'EXCLUDE'::
+  Url to exclude (ex: 'redirect|news')
 *-i*, *--ignore* 'IGNORE'::
   Ignore certain validation errors (ex: 'autocorrect')
 *-m*, *--[no-]markup*::

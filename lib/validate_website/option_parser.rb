@@ -117,6 +117,7 @@ module ValidateWebsite
         o.string('-p', '--pattern',
                  "Filename pattern (default: #{DEFAULT_OPTIONS[:pattern]})",
                  default: DEFAULT_OPTIONS[:pattern])
+        o.regexp('-e', '--exclude', 'Url to exclude (ex: "redirect|news")')
       end
     end
   end

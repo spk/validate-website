@@ -4,8 +4,14 @@ require 'validate_website/utils'
 module ValidateWebsite
   # Class for http website validation
   class Crawl < Core
+    attr_reader :crawler
+
     def initialize(options = {}, validation_type = :crawl)
       super
+    end
+
+    def history_count
+      crawler.history.size
     end
 
     # @param [Hash] options

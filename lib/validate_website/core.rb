@@ -17,7 +17,7 @@ module ValidateWebsite
   # Core class for static or website validation
   class Core
     attr_accessor :site
-    attr_reader :options, :crawler, :errors_count, :not_founds_count, :host
+    attr_reader :options, :host, :errors_count, :not_founds_count
 
     include ColorfulMessages
 

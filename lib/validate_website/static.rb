@@ -6,7 +6,10 @@ module ValidateWebsite
   class Static < Core
     CONTENT_TYPES = ['text/html', 'text/xhtml+xml'].freeze
 
+    attr_reader :history_count
+
     def initialize(options = {}, validation_type = :static)
+      @history_count = 0
       super
     end
 
@@ -19,6 +22,8 @@ module ValidateWebsite
       files = Dir.glob(@options[:pattern])
       files.each do |f|
         next unless File.file?(f)
+        next if @options[:exclude].is_a?(Regexp) && @options[:exclude].match(f)
+        @history_count += 1
         check_static_file(f)
       end
       print_status_line(files.size, 0, @not_founds_count, @errors_count)
