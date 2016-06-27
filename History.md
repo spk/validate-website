@@ -1,6 +1,13 @@
 
+v1.5.8 / 2016-06-27
+===================
+
+  * Update manpages
+  * Exclude urls on static crawl
+  * Fix warning: instance variable not initialized
+
 v1.5.7 / 2016-06-13
-==================
+===================
 
   * Fix JRuby CI build
   * Update JRuby and other rubies on Travis
@@ -8,7 +15,7 @@ v1.5.7 / 2016-06-13
   * Add env variable VALIDATOR_NU_URL support
 
 v1.5.6 / 2016-03-02
-==================
+===================
 
   * Fix error with redirect and extract images (see #16)
   * Display version number
@@ -16,12 +23,12 @@ v1.5.6 / 2016-03-02
   * Updates deps
 
 v1.5.4 / 2015-12-08
-==================
+===================
 
   * Fix URI must be ascii only error
 
 v1.5.3 / 2015-11-08
-==================
+===================
 
   * Fix test_files on gemspec
   * Use File.expand_path for jruby
