@@ -9,7 +9,7 @@ module ValidateWebsite
   class Validator
     XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
 
-    @html5_validator_service_url = 'http://validator.w3.org/nu/'
+    @html5_validator_service_url = 'http://checker.html5.org:443/'
     class << self
       attr_accessor :html5_validator_service_url
     end
