@@ -1,55 +1,67 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Validate-website by spk</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Validate-website</h1>
-      <h2 class="project-tagline">Web crawler for checking the validity of your documents.</h2>
-      <a href="https://github.com/spk/validate-website" class="btn">View on GitHub</a>
-      <a href="https://github.com/spk/validate-website/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/spk/validate-website/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+<html>
 
-    <section class="main-content">
-      <h1>
-<a id="validate-website" class="anchor" href="#validate-website" aria-hidden="true"><span class="octicon octicon-link"></span></a>validate-website</h1>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Validate-website : Web crawler for checking the validity of your documents.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Validate-website</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/spk/validate-website">View on GitHub</a>
+
+          <h1 id="project_title">Validate-website</h1>
+          <h2 id="project_tagline">Web crawler for checking the validity of your documents.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/spk/validate-website/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/spk/validate-website/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="validate-website" class="anchor" href="#validate-website" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>validate-website</h1>
 
 <h2>
-<a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h2>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
 
 <p>Web crawler for checking the validity of your documents</p>
 
 <p><img src="https://raw.github.com/spk/validate-website/master/validate-website.png" alt="validate website"></p>
 
 <h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <h3>
-<a id="debian" class="anchor" href="#debian" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debian</h3>
+<a id="debian" class="anchor" href="#debian" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Debian</h3>
 
-<div class="highlight highlight-console"><pre><span class="pl-mo">aptitude install ruby-dev libxslt-dev libxml2-dev</span></pre></div>
+<div class="highlight highlight-text-shell-session"><pre><span class="pl-mo">apt install ruby-dev libxslt-dev libxml2-dev</span></pre></div>
 
 <h3>
-<a id="rubygems" class="anchor" href="#rubygems" aria-hidden="true"><span class="octicon octicon-link"></span></a>RubyGems</h3>
+<a id="rubygems" class="anchor" href="#rubygems" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RubyGems</h3>
 
-<div class="highlight highlight-console"><pre><span class="pl-mo">gem install validate-website</span></pre></div>
+<div class="highlight highlight-text-shell-session"><pre><span class="pl-mo">gem install validate-website</span></pre></div>
 
 <h2>
-<a id="synopsis" class="anchor" href="#synopsis" aria-hidden="true"><span class="octicon octicon-link"></span></a>Synopsis</h2>
+<a id="synopsis" class="anchor" href="#synopsis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Synopsis</h2>
 
-<div class="highlight highlight-console"><pre><span class="pl-mo">validate-website [OPTIONS]</span>
+<div class="highlight highlight-text-shell-session"><pre><span class="pl-mo">validate-website [OPTIONS]</span>
 <span class="pl-mo">validate-website-static [OPTIONS]</span></pre></div>
 
 <h2>
-<a id="description-1" class="anchor" href="#description-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h2>
+<a id="description-1" class="anchor" href="#description-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h2>
 
 <p>validate-website is a web crawler for checking the markup validity with XML
 Schema / DTD and not found urls (more info <a href="https://github.com/spk/validate-website/blob/master/doc/validate-website.adoc">doc/validate-website.adoc</a>).</p>
@@ -60,7 +72,7 @@ XML Schema / DTD (more info <a href="https://github.com/spk/validate-website/blo
 <p>HTML5 support with Validator.nu Web Service.</p>
 
 <h2>
-<a id="exit-status" class="anchor" href="#exit-status" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exit status</h2>
+<a id="exit-status" class="anchor" href="#exit-status" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exit status</h2>
 
 <ul>
 <li>0: Markup is valid and no 404 found.</li>
@@ -70,20 +82,20 @@ XML Schema / DTD (more info <a href="https://github.com/spk/validate-website/blo
 </ul>
 
 <h2>
-<a id="on-your-application" class="anchor" href="#on-your-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>On your application</h2>
+<a id="on-your-application" class="anchor" href="#on-your-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On your application</h2>
 
-<div class="highlight highlight-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>validate_website/validator<span class="pl-pds">'</span></span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>validate_website/validator<span class="pl-pds">'</span></span>
 body <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;/html&gt;<span class="pl-pds">'</span></span>
 v <span class="pl-k">=</span> <span class="pl-c1">ValidateWebsite</span>::<span class="pl-c1">Validator</span>.<span class="pl-k">new</span>(<span class="pl-c1">Nokogiri</span>::<span class="pl-c1">HTML</span>(body), body)
 v.valid? <span class="pl-c"># =&gt; false</span></pre></div>
 
 <h2>
-<a id="jekyll-static-site-validation" class="anchor" href="#jekyll-static-site-validation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jekyll static site validation</h2>
+<a id="jekyll-static-site-validation" class="anchor" href="#jekyll-static-site-validation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Jekyll static site validation</h2>
 
 <p>You can add this Rake task to validate a
 <a href="https://github.com/jekyll/jekyll">jekyll</a> site:</p>
 
-<div class="highlight highlight-ruby"><pre>desc <span class="pl-s"><span class="pl-pds">'</span>validate _site with validate website<span class="pl-pds">'</span></span>
+<div class="highlight highlight-source-ruby"><pre>desc <span class="pl-s"><span class="pl-pds">'</span>validate _site with validate website<span class="pl-pds">'</span></span>
 task <span class="pl-c1">validate:</span> <span class="pl-c1">:build</span> <span class="pl-k">do</span>
   <span class="pl-c1">Dir</span>.chdir(<span class="pl-s"><span class="pl-pds">'</span>_site<span class="pl-pds">'</span></span>) <span class="pl-k">do</span>
     sh(<span class="pl-s"><span class="pl-pds">"</span>validate-website-static --site '&lt;CONFIG_URL&gt;'<span class="pl-pds">"</span></span>) <span class="pl-k">do </span>|<span class="pl-smi">ok</span>, <span class="pl-smi">res</span>|
@@ -95,14 +107,14 @@ task <span class="pl-c1">validate:</span> <span class="pl-c1">:build</span> <spa
 <span class="pl-k">end</span></pre></div>
 
 <h2>
-<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tests</h2>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tests</h2>
 
 <p>With standard environment:</p>
 
-<div class="highlight highlight-console"><pre><span class="pl-mo">bundle exec rake</span></pre></div>
+<div class="highlight highlight-text-shell-session"><pre><span class="pl-mo">bundle exec rake</span></pre></div>
 
 <h2>
-<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h2>
 
 <ul>
 <li>Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.</li>
@@ -110,10 +122,10 @@ task <span class="pl-c1">validate:</span> <span class="pl-c1">:build</span> <spa
 </ul>
 
 <h2>
-<a id="more-info" class="anchor" href="#more-info" aria-hidden="true"><span class="octicon octicon-link"></span></a>More info</h2>
+<a id="more-info" class="anchor" href="#more-info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>More info</h2>
 
 <h3>
-<a id="html5-validator-web-service" class="anchor" href="#html5-validator-web-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>HTML5 validator web service</h3>
+<a id="html5-validator-web-service" class="anchor" href="#html5-validator-web-service" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HTML5 validator web service</h3>
 
 <p>The HTML5 support is done by using the Validator.nu Web Service, so the content
 of your webpage is logged by a tier. It's not the case for other validation
@@ -123,7 +135,7 @@ because validate-website use the XML Schema or DTD stored on the data/ directory
 validation service.</p>
 
 <h3>
-<a id="use-validator-standalone-web-server-locally" class="anchor" href="#use-validator-standalone-web-server-locally" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use validator standalone web server locally</h3>
+<a id="use-validator-standalone-web-server-locally" class="anchor" href="#use-validator-standalone-web-server-locally" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use validator standalone web server locally</h3>
 
 <p>You can download <a href="https://github.com/validator/validator">validator</a> jar and
 start it with:</p>
@@ -134,41 +146,44 @@ start it with:</p>
 <p>Then you can use validate-website option:</p>
 
 <pre><code>--html5-validator-service-url http://localhost:8888/
+# or
+export VALIDATOR_NU_URL="http://localhost:8888/"
 </code></pre>
 
 <p>This will prevent you to be blacklisted from validator webservice.</p>
 
 <h2>
-<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributors</h2>
+<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributors</h2>
 
-<ul>
-<li>François de Metz (francois2metz)</li>
-<li>Bruno Michel (nono)</li>
-<li>Matt Brictson (mbrictson)</li>
-</ul>
+<p>See <a href="https://github.com/spk/validate-website/graphs/contributors">GitHub</a>.</p>
 
 <h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
 <p>The MIT License</p>
 
-<p>Copyright (c) 2009-2015 Laurent Arnoud <a href="mailto:laurent@spkdev.net">laurent@spkdev.net</a></p>
+<p>Copyright (c) 2009-2016 Laurent Arnoud <a href="mailto:laurent@spkdev.net">laurent@spkdev.net</a></p>
 
 <hr>
 
-<p><a href="https://rubygems.org/gems/validate-website"><img src="https://badge.fury.io/rb/validate-website.svg" alt="Gem Version"></a>
-<a href="https://travis-ci.org/spk/validate-website"><img src="https://secure.travis-ci.org/spk/validate-website.svg?branch=master" alt="Build Status"></a>
-<a href="https://codeclimate.com/github/spk/validate-website"><img src="http://img.shields.io/codeclimate/github/spk/validate-website.svg" alt="Code Climate"></a></p>
+<p><a href="https://travis-ci.org/spk/validate-website"><img src="https://img.shields.io/travis-ci/spk/validate-website.svg" alt="Build"></a>
+<a href="https://rubygems.org/gems/validate-website"><img src="https://img.shields.io/gem/v/validate-website.svg" alt="Version"></a>
+<a href="http://www.rubydoc.info/gems/validate-website"><img src="https://img.shields.io/badge/doc-rubydoc-blue.svg" alt="Documentation"></a>
+<a href="http://opensource.org/licenses/MIT" title="MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+<a href="https://codeclimate.com/github/spk/validate-website"><img src="http://img.shields.io/codeclimate/github/spk/validate-website.svg" alt="Code Climate"></a>
+<a href="http://inch-ci.org/github/spk/validate-website"><img src="http://inch-ci.org/github/spk/validate-website.svg?branch=master" alt="Inline docs"></a></p>
+      </section>
+    </div>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/spk/validate-website">Validate-website</a> is maintained by <a href="https://github.com/spk">spk</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Validate-website maintained by <a href="https://github.com/spk">spk</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
+    </div>
 
-    </section>
+    
 
-  
   </body>
 </html>
-
