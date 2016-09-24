@@ -1,4 +1,10 @@
 
+v1.6.0 / 2016-09-24
+===================
+
+  * Update spidr and rubocop
+  * Use more upto date validator service and https
+
 v1.5.8 / 2016-06-27
 ===================
 
