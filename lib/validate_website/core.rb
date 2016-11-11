@@ -13,6 +13,7 @@ require 'crass'
 module ValidateWebsite
   autoload :Crawl, 'validate_website/crawl'
   autoload :Static, 'validate_website/static'
+  autoload :StaticLink, 'validate_website/static_link'
 
   # Core class for static or website validation
   class Core
