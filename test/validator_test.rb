@@ -21,7 +21,7 @@ describe ValidateWebsite::Validator do
                               @xhtml1_page.body,
                               ignore)
       validator.valid?.must_equal true
-      validator.errors.size.must_equal 0
+      validator.errors.must_equal []
     end
 
     it 'xhtml1-strict should be valid' do
@@ -32,11 +32,14 @@ describe ValidateWebsite::Validator do
                           body: open(file).read,
                           content_type: 'text/html')
       @xhtml1_page = @http.get_page(page.url)
+      ignore = /width|height|Length/
       validator = subject.new(@xhtml1_page.doc,
-                              @xhtml1_page.body)
+                              @xhtml1_page.body,
+                              ignore)
       validator.dtd.system_id.must_equal dtd_uri
       validator.namespace.must_equal name
       validator.valid?.must_equal true
+      validator.errors.must_equal []
     end
   end
 
