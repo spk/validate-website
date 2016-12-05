@@ -9,6 +9,24 @@ module ValidateWebsite
   class Validator
     XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
 
+    @xsd_schemas = {}
+    class << self
+      attr_reader :xsd_schemas
+    end
+    # `Dir.chdir` is needed by `Nokogiri::XML::Schema` to validate with local
+    # files and cannot use file absolute path.
+    Dir.glob(File.join(XHTML_PATH, '*.xsd')).each do |schema|
+      Dir.chdir(XHTML_PATH) do
+        schema_name = File.basename(schema, '.xsd')
+        schema_content = File.read(File.basename(schema))
+        begin
+          @xsd_schemas[schema_name] = Nokogiri::XML::Schema(schema_content)
+        rescue Nokogiri::XML::SyntaxError
+          STDERR.puts "XSD SCHEMA: #{schema} cannot be loaded"
+        end
+      end
+    end
+
     @html5_validator_service_url = 'http://checker.html5.org:443/'
     class << self
       attr_accessor :html5_validator_service_url
@@ -28,7 +46,7 @@ module ValidateWebsite
       @body = body
       @ignore = ignore
       @dtd = @original_doc.internal_subset
-      @namespace = init_namespace(@dtd)
+      @namespace = find_namespace(@dtd)
     end
 
     ##
@@ -44,14 +62,20 @@ module ValidateWebsite
       @ignore ? @errors.reject { |e| @ignore =~ e } : @errors
     end
 
+    # http://www.w3.org/TR/xhtml1-schema/
+    def self.xsd(namespace)
+      return unless namespace
+      @xsd_schemas[namespace] if @xsd_schemas.key? namespace
+    end
+
     private
 
-    def init_namespace(dtd)
+    # http://www.w3.org/TR/xhtml1/#dtds
+    def find_namespace(dtd)
       return unless dtd.system_id
       dtd_uri = URI.parse(dtd.system_id)
       return unless dtd_uri.path
       @dtd_uri = dtd_uri
-      # http://www.w3.org/TR/xhtml1/#dtds
       File.basename(@dtd_uri.path, '.dtd')
     end
 
@@ -64,19 +88,10 @@ module ValidateWebsite
                   end
     end
 
-    # http://www.w3.org/TR/xhtml1-schema/
-    def xsd
-      @xsd ||= Dir.chdir(XHTML_PATH) do
-        if @namespace && File.exist?(@namespace + '.xsd')
-          Nokogiri::XML::Schema(File.read(@namespace + '.xsd'))
-        end
-      end
-    end
-
     # @return [Array] contain result errors
     def validate(xml_doc, document_body)
-      if !xsd.nil?
-        xsd.validate(xml_doc)
+      if self.class.xsd(@namespace)
+        self.class.xsd(@namespace).validate(xml_doc)
       elsif document_body =~ /^\<!DOCTYPE html\>/i
         html5_validate(document_body)
       else
