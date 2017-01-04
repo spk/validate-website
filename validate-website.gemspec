@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.name = 'validate-website'
   s.version = ValidateWebsite::VERSION
   s.license = 'MIT'
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.1.0'
   s.add_dependency 'spidr', '~> 0.6'
   s.add_dependency 'crass', '~> 1'
   s.add_dependency 'paint', '~> 1'
