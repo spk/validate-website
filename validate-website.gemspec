@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'slop', '~> 4.2'
   s.add_development_dependency 'rake', '~> 11'
   s.add_development_dependency 'minitest', '~> 5'
-  s.add_development_dependency 'webmock', '~> 1'
+  s.add_development_dependency 'webmock', '~> 2.3'
   s.add_development_dependency 'rubocop', '~> 0.43.0'
   s.require_path = 'lib'
   s.bindir = 'bin'
