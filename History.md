@@ -1,4 +1,12 @@
 
+v1.7.0 / 2017-04-08
+===================
+
+  * Use w3c_validators and remove multipart_body gem
+  * Drop Ruby 2.0.0
+  * Update webmock to 2.3
+  * Load xsd on init to avoid conflicting chdir
+
 v1.6.0 / 2016-09-24
 ===================
 
