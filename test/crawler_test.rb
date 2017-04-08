@@ -9,6 +9,10 @@ describe ValidateWebsite::Crawl do
     end
   end
 
+  def validator
+    ValidateWebsite::Validator
+  end
+
   describe 'options' do
     it 'can change user-agent' do
       ua = %{Linux / Firefox 29: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) \
@@ -21,13 +25,13 @@ describe ValidateWebsite::Crawl do
     end
 
     it 'can change html5 validator service url' do
-      original = ValidateWebsite::Validator.html5_validator_service_url
+      original = validator.html5_validator_service_url
       new = 'http://localhost:8888/'
       _out, _err = capture_io do
         ValidateWebsite::Crawl.new(site: TEST_DOMAIN,
                                    html5_validator_service_url: new)
-        ValidateWebsite::Validator.html5_validator_service_url.must_equal new
-        ValidateWebsite::Validator.html5_validator_service_url = original
+        validator.html5_validator_service_url.must_equal new
+        validator.html5_validator_service_url = original
       end
     end
   end
@@ -76,8 +80,8 @@ describe ValidateWebsite::Crawl do
       page = FakePage.new(name,
                           body: open(file).read,
                           content_type: 'text/html')
-      validator_res = File.join('test', 'data', 'validator.nu-success.html')
-      stub_request(:any, ValidateWebsite::Validator.html5_validator_service_url)
+      validator_res = File.join('test', 'data', 'validator.nu-failure.json')
+      stub_request(:any, /#{validator.html5_validator_service_url}/)
         .to_return(body: open(validator_res).read)
       @validate_website.site = page.url
       _out, _err = capture_io do

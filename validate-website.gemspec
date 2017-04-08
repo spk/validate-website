@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spidr', '~> 0.6'
   s.add_dependency 'crass', '~> 1'
   s.add_dependency 'paint', '~> 1'
-  s.add_dependency 'multipart_body', '~> 0.2'
+  s.add_dependency 'w3c_validators', '~> 1.3'
   s.add_dependency 'slop', '~> 4.2'
   s.add_development_dependency 'rake', '~> 11'
   s.add_development_dependency 'minitest', '~> 5'

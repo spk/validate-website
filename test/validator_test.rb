@@ -46,8 +46,8 @@ describe ValidateWebsite::Validator do
   describe('html5') do
     describe('when valid') do
       before do
-        validator_res = File.join('test', 'data', 'validator.nu-success.html')
-        stub_request(:any, subject.html5_validator_service_url)
+        validator_res = File.join('test', 'data', 'validator.nu-success.json')
+        stub_request(:any, /#{subject.html5_validator_service_url}/)
           .to_return(body: open(validator_res).read)
       end
       it 'html5 should be valid' do
@@ -61,25 +61,14 @@ describe ValidateWebsite::Validator do
                                 @html5_page.body)
         validator.valid?.must_equal true
       end
-      it 'with DLFP' do
-        name = 'html5'
-        file = File.join('test', 'data', "#{name}-linuxfr.html")
-        page = FakePage.new(name,
-                            body: open(file).read,
-                            content_type: 'text/html')
-        @html5_page = @http.get_page(page.url)
-        validator = subject.new(@html5_page.doc,
-                                @html5_page.body)
-        validator.valid?.must_equal true
-      end
     end
     describe('when not valid') do
       before do
-        validator_res = File.join('test', 'data', 'validator.nu-failure.html')
-        stub_request(:any, subject.html5_validator_service_url)
+        validator_res = File.join('test', 'data', 'validator.nu-failure.json')
+        stub_request(:any, /#{subject.html5_validator_service_url}/)
           .to_return(body: open(validator_res).read)
         name = 'html5'
-        file = File.join('test', 'data', "#{name}-linuxfr.html")
+        file = File.join('test', 'data', "#{name}.html")
         page = FakePage.new(name,
                             body: open(file).read,
                             content_type: 'text/html')
@@ -90,35 +79,16 @@ describe ValidateWebsite::Validator do
         validator = subject.new(@html5_page.doc,
                                 @html5_page.body)
         validator.valid?.must_equal false
-        validator.errors.size.must_equal 38
+        validator.errors.size.must_equal 1
       end
 
       it 'should exclude errors ignored by :ignore option' do
-        ignore = /The nowrap attribute on the td element is obsolete/
+        ignore = /Duplicate ID/
         validator = subject.new(@html5_page.doc,
                                 @html5_page.body,
                                 ignore)
-        validator.valid?.must_equal false
-        validator.errors.size.must_equal 36
-      end
-    end
-
-    describe('excessive') do
-      before do
-        validator_res = File.join('test', 'data', 'validator.nu-excessive.html')
-        stub_request(:any, subject.html5_validator_service_url)
-          .to_return(body: open(validator_res).read)
-      end
-      it 'html5 should have errors' do
-        name = 'html5'
-        file = File.join('test', 'data', "#{name}.html")
-        page = FakePage.new(name,
-                            body: open(file).read,
-                            content_type: 'text/html')
-        @html5_page = @http.get_page(page.url)
-        validator = subject.new(@html5_page.doc,
-                                @html5_page.body)
-        validator.valid?.must_equal false
+        validator.valid?.must_equal true
+        validator.errors.size.must_equal 0
       end
     end
   end

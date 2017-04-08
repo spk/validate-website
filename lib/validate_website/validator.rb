@@ -1,12 +1,21 @@
-# encoding: utf-8
 require 'uri'
 require 'nokogiri'
-require 'net/http'
-require 'multipart_body'
+require 'w3c_validators'
 
 module ValidateWebsite
   # Document validation from DTD or XSD (webservice for html5)
   class Validator
+    @html5_validator_service_url = 'https://checker.html5.org/'
+
+    class << self
+      attr_accessor :html5_validator_service_url
+
+      def validator_uri
+        @validator_uri ||=
+          ENV['VALIDATOR_NU_URL'] || @html5_validator_service_url
+      end
+    end
+
     XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
 
     @xsd_schemas = {}
@@ -25,11 +34,6 @@ module ValidateWebsite
           STDERR.puts "XSD SCHEMA: #{schema} cannot be loaded"
         end
       end
-    end
-
-    @html5_validator_service_url = 'http://checker.html5.org:443/'
-    class << self
-      attr_accessor :html5_validator_service_url
     end
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace
@@ -112,27 +116,12 @@ module ValidateWebsite
       @errors << e
     end
 
-    def html5_headers(multipart)
-      {
-        'Content-Type' => "multipart/form-data; boundary=#{multipart.boundary}",
-        'Content-Length' => multipart.to_s.bytesize.to_s
-      }
-    end
-
-    def html5_body(document)
-      url = ENV['VALIDATOR_NU_URL'] || self.class.html5_validator_service_url
-      uri = URI.parse(url)
-      multipart = MultipartBody.new(content: document)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.start do |con|
-        con.post(uri.path, multipart.to_s, html5_headers(multipart))
-      end.body
-    end
-
     def html5_validate(document)
-      validator_document = Nokogiri::HTML(html5_body(document))
-      errors = validator_document.css('h2.invalid').map(&:content)
-      errors.concat validator_document.css('ol li.error').map(&:content)
+      validator = W3CValidators::NuValidator.new(
+        validator_uri: self.class.validator_uri
+      )
+      results = validator.validate_text(document)
+      errors.concat results.errors
     end
   end
 end
