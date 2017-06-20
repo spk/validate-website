@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'webmock/minitest'
 
 # FakePage html helper for webmock
