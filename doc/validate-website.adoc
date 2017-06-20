@@ -35,8 +35,10 @@ OPTIONS
   Log not found url (Default: false)
 *--[no-]color*::
   Show colored output (Default: true)
+*-x*, *--html5-validator* 'VALIDATOR'::
+  Change default html5 validator engine (ex: tidy or nu)
 *-5*, *--html5-validator-service-url* 'URL'::
-  Change default html5 validator service URL
+  Change default html5 validator service URL for "nu" engine
 *-v*, *--verbose*::
   Show detail of validator errors (Default: false).
 *-h*, *--help*::

@@ -1,27 +1,24 @@
 require 'uri'
+
 require 'nokogiri'
 require 'w3c_validators'
+
+require 'validate_website/validator_class_methods'
 
 module ValidateWebsite
   # Document validation from DTD or XSD (webservice for html5)
   class Validator
-    @html5_validator_service_url = 'https://checker.html5.org/'
+    extend ValidatorClassMethods
 
+    @html5_validator_service_url = 'https://checker.html5.org/'
     class << self
       attr_accessor :html5_validator_service_url
-
-      def validator_uri
-        @validator_uri ||=
-          ENV['VALIDATOR_NU_URL'] || @html5_validator_service_url
-      end
     end
 
     XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
 
-    @xsd_schemas = {}
-    class << self
-      attr_reader :xsd_schemas
-    end
+    @xsd_schemas ||= {}
+
     # `Dir.chdir` is needed by `Nokogiri::XML::Schema` to validate with local
     # files and cannot use file absolute path.
     Dir.glob(File.join(XHTML_PATH, '*.xsd')).each do |schema|
@@ -36,19 +33,21 @@ module ValidateWebsite
       end
     end
 
-    attr_reader :original_doc, :body, :dtd, :doc, :namespace
+    attr_reader :original_doc, :body, :dtd, :doc, :namespace, :html5_validator
 
     ##
     # @param [Nokogiri::HTML::Document] original_doc
     # @param [String] The raw HTTP response body of the page
     # @param [Regexp] Errors to ignore
-    #
-    def initialize(original_doc, body, ignore = nil)
+    # @param [Symbol] html5_validator default offline :tidy
+    #                                 fallback webservice :nu
+    def initialize(original_doc, body, ignore: nil, html5_validator: :tidy)
       @errors = []
       @document, @dtd_uri = nil
       @original_doc = original_doc
       @body = body
       @ignore = ignore
+      @html5_validator = html5_validator
       @dtd = @original_doc.internal_subset
       @namespace = find_namespace(@dtd)
     end
@@ -93,11 +92,11 @@ module ValidateWebsite
     end
 
     # @return [Array] contain result errors
-    def validate(xml_doc, document_body)
+    def validate(xhtml_doc)
       if self.class.xsd(@namespace)
-        self.class.xsd(@namespace).validate(xml_doc)
-      elsif document_body =~ /^\<!DOCTYPE html\>/i
-        html5_validate(document_body)
+        self.class.xsd(@namespace).validate(xhtml_doc)
+      elsif document =~ /^\<!DOCTYPE html\>/i
+        html5_validate
       else
         # dont have xsd fall back to dtd
         Dir.chdir(XHTML_PATH) do
@@ -108,20 +107,37 @@ module ValidateWebsite
 
     # http://nokogiri.org/tutorials/ensuring_well_formed_markup.html
     def find_errors
-      doc = Dir.chdir(XHTML_PATH) do
+      xhtml_doc = Dir.chdir(XHTML_PATH) do
         Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
       end
-      @errors = validate(doc, document)
+      @errors = validate(xhtml_doc)
     rescue Nokogiri::XML::SyntaxError => e
       @errors << e
     end
 
-    def html5_validate(document)
+    def html5_validate
+      if html5_validator.to_sym == :tidy && self.class.tidy
+        tidy_validate
+      else
+        nu_validate
+      end
+    end
+
+    def tidy_validate
+      results = self.class.tidy.new(document)
+      if results.errors
+        errors.concat(results.errors.split("\n"))
+      else
+        []
+      end
+    end
+
+    def nu_validate
       validator = W3CValidators::NuValidator.new(
         validator_uri: self.class.validator_uri
       )
       results = validator.validate_text(document)
-      errors.concat results.errors
+      errors.concat(results.errors)
     end
   end
 end

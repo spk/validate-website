@@ -19,7 +19,7 @@ describe ValidateWebsite::Validator do
       ignore = /width|height|Length/
       validator = subject.new(@xhtml1_page.doc,
                               @xhtml1_page.body,
-                              ignore)
+                              ignore: ignore)
       validator.valid?.must_equal true
       validator.errors.must_equal []
     end
@@ -35,7 +35,7 @@ describe ValidateWebsite::Validator do
       ignore = /width|height|Length/
       validator = subject.new(@xhtml1_page.doc,
                               @xhtml1_page.body,
-                              ignore)
+                              ignore: ignore)
       validator.dtd.system_id.must_equal dtd_uri
       validator.namespace.must_equal name
       validator.valid?.must_equal true
@@ -62,12 +62,13 @@ describe ValidateWebsite::Validator do
         validator.valid?.must_equal true
       end
     end
+
     describe('when not valid') do
       before do
         validator_res = File.join('test', 'data', 'validator.nu-failure.json')
         stub_request(:any, /#{subject.html5_validator_service_url}/)
           .to_return(body: open(validator_res).read)
-        name = 'html5'
+        name = 'html5-fail'
         file = File.join('test', 'data', "#{name}.html")
         page = FakePage.new(name,
                             body: open(file).read,
@@ -75,20 +76,42 @@ describe ValidateWebsite::Validator do
         @html5_page = @http.get_page(page.url)
       end
 
-      it 'should have an array of errors' do
-        validator = subject.new(@html5_page.doc,
-                                @html5_page.body)
-        validator.valid?.must_equal false
-        validator.errors.size.must_equal 1
+      describe('without tidy') do
+        it 'should have an array of errors' do
+          validator = subject.new(@html5_page.doc,
+                                  @html5_page.body,
+                                  html5_validator: :nu)
+          validator.valid?.must_equal false
+          validator.errors.size.must_equal 3
+        end
+
+        it 'should exclude errors ignored by :ignore option' do
+          ignore = /Unclosed element/
+          validator = subject.new(@html5_page.doc,
+                                  @html5_page.body,
+                                  ignore: ignore,
+                                  html5_validator: :nu)
+          validator.valid?.must_equal false
+          validator.errors.size.must_equal 1
+        end
       end
 
-      it 'should exclude errors ignored by :ignore option' do
-        ignore = /Duplicate ID/
-        validator = subject.new(@html5_page.doc,
-                                @html5_page.body,
-                                ignore)
-        validator.valid?.must_equal true
-        validator.errors.size.must_equal 0
+      describe('with tidy') do
+        it 'should have an array of errors' do
+          validator = subject.new(@html5_page.doc,
+                                  @html5_page.body)
+          validator.valid?.must_equal false
+          validator.errors.size.must_equal 4
+        end
+
+        it 'should exclude errors ignored by :ignore option' do
+          ignore = /letter not allowed here|trimming empty/
+          validator = subject.new(@html5_page.doc,
+                                  @html5_page.body,
+                                  ignore: ignore)
+          validator.valid?.must_equal false
+          validator.errors.size.must_equal 2
+        end
       end
     end
   end

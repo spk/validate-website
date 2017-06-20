@@ -21,6 +21,7 @@ module ValidateWebsite
       # regex to ignore certain validation errors
       ignore: nil,
       color: true,
+      html5_validator: 'tidy',
       # internal verbose for ValidateWebsite
       verbose: false
     }.freeze
@@ -51,8 +52,11 @@ module ValidateWebsite
     def self.ignore_html5_options(o)
       o.regexp('-i', '--ignore',
                'Validation errors to ignore (ex: "valign|autocorrect")')
+      o.string('-x', '--html5-validator',
+               'Change default html5 validator engine (ex: tidy or nu)',
+               default: DEFAULT_OPTIONS[:html5_validator])
       o.string('-5', '--html5-validator-service-url',
-               'Change default html5 validator service URL')
+               'Change default html5 validator service URL for "nu" engine')
     end
 
     def self.markup_syntax(o)

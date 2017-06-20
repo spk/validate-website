@@ -110,7 +110,7 @@ module ValidateWebsite
     # @param [Regexp] Errors to ignore
     #
     def validate(doc, body, url, ignore = nil)
-      validator = Validator.new(doc, body, ignore)
+      validator = Validator.new(doc, body, ignore: ignore)
       if validator.valid?
         print color(:success, '.', options[:color]) # rspec style
       else
