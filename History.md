@@ -1,4 +1,12 @@
 
+v1.8.0 / 2017-08-24
+===================
+
+  * Update manpages
+  * Update rubies and jruby on travis
+  * Remove encoding and other Style/SymbolArray fixes
+  * Add tidy validator for html5
+
 v1.7.0 / 2017-04-08
 ===================
 
