@@ -1,12 +1,16 @@
 require 'rake/testtask'
 require 'rubocop/rake_task'
+require 'asciidoctor'
 
 task default: %i(test rubocop)
 
-# install asciidoc libxml2-utils xmlto docbook-xsl docbook-xml
 desc 'Update manpage from asciidoc file'
 task :manpage do
-  system('find doc/ -type f -exec a2x -d manpage -f manpage -D man/man1 {} \;')
+  Dir.glob('doc/*.adoc').each do |adoc|
+    Asciidoctor.convert_file adoc, to_file: true,
+                                   backend: 'manpage',
+                                   to_dir: 'man/man1'
+  end
 end
 
 Rake::TestTask.new do |t|

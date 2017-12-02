@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest', '~> 5'
   s.add_development_dependency 'webmock', '~> 2.3'
   s.add_development_dependency 'rubocop', '~> 0.43.0'
+  s.add_development_dependency 'asciidoctor', '~> 1.5'
   s.require_path = 'lib'
   s.bindir = 'bin'
   s.executables << 'validate-website'

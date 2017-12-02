@@ -57,12 +57,12 @@ EXIT STATUS
 
 AUTHOR
 ------
-Laurent Arnoud <laurent@spkdev.net>
+Laurent Arnoud mailto:laurent@spkdev.net[Laurent Arnoud]
 
 LICENSE
 -------
 The MIT License
 
-Copyright (c) 2009-2017 Laurent Arnoud <laurent@spkdev.net>
+Copyright (c) 2009-2017 mailto:laurent@spkdev.net[Laurent Arnoud]
 
 // vim: set syntax=asciidoc:
