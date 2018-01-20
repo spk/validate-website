@@ -3,6 +3,7 @@ require 'validate_website/utils'
 require 'validate_website/static'
 require 'spidr'
 
+# rubocop:disable Metrics/BlockLength
 StaticLink = Struct.new(:link, :site) do
   def link_uri
     @link_uri = URI.parse(URI.encode(link))

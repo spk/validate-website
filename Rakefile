@@ -2,7 +2,7 @@ require 'rake/testtask'
 require 'rubocop/rake_task'
 require 'asciidoctor'
 
-task default: %i(test rubocop)
+task default: %i[test rubocop]
 
 desc 'Update manpage from asciidoc file'
 task :manpage do

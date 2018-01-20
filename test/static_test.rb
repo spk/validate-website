@@ -1,5 +1,6 @@
 require File.expand_path('../test_helper', __FILE__)
 
+# rubocop:disable Metrics/BlockLength
 describe ValidateWebsite::Static do
   before do
     _out, _err = capture_io do

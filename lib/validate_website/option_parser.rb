@@ -3,7 +3,7 @@ require 'slop'
 module ValidateWebsite
   # Internal class for parse command line args
   class Parser
-    VALID_TYPES = %i(crawl static).freeze
+    VALID_TYPES = %i[crawl static].freeze
 
     DEFAULT_OPTIONS = {
       site: 'http://localhost/',
