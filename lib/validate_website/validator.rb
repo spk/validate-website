@@ -92,11 +92,11 @@ module ValidateWebsite
     end
 
     # @return [Array] contain result errors
-    def validate(xhtml_doc)
-      if self.class.xsd(@namespace)
-        self.class.xsd(@namespace).validate(xhtml_doc)
-      elsif document =~ /^\<!DOCTYPE html\>/i
+    def validate
+      if document =~ /^\<!DOCTYPE html\>/i
         html5_validate
+      elsif self.class.xsd(@namespace)
+        self.class.xsd(@namespace).validate(xhtml_doc)
       else
         # dont have xsd fall back to dtd
         Dir.chdir(XHTML_PATH) do
@@ -107,10 +107,7 @@ module ValidateWebsite
 
     # http://nokogiri.org/tutorials/ensuring_well_formed_markup.html
     def find_errors
-      xhtml_doc = Dir.chdir(XHTML_PATH) do
-        Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
-      end
-      @errors = validate(xhtml_doc)
+      @errors = validate
     rescue Nokogiri::XML::SyntaxError => e
       @errors << e
     end
@@ -138,6 +135,12 @@ module ValidateWebsite
       )
       results = validator.validate_text(document)
       errors.concat(results.errors)
+    end
+
+    def xhtml_doc
+      Dir.chdir(XHTML_PATH) do
+        Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
+      end
     end
   end
 end
