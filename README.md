@@ -11,7 +11,7 @@ Web crawler for checking the validity of your documents
 ### Debian
 
 ~~~ console
-apt install ruby-dev libxslt-dev libxml2-dev
+apt install ruby-dev libxslt-dev libxml2-dev libtidy5
 ~~~
 
 ### RubyGems
@@ -35,7 +35,8 @@ Schema / DTD and not found urls (more info [doc/validate-website.adoc](https://g
 validate-website-static checks the markup validity of your local documents with
 XML Schema / DTD (more info [doc/validate-website-static.adoc](https://github.com/spk/validate-website/blob/master/doc/validate-website-static.adoc)).
 
-HTML5 support with Validator.nu Web Service.
+HTML5 support with [libtidy5](http://www.html-tidy.org/) or [Validator.nu Web
+Service](https://checker.html5.org/).
 
 ## Exit status
 
@@ -71,31 +72,27 @@ task validate: :build do
 end
 ~~~
 
-## Tests
-
-With standard environment:
-
-~~~ console
-bundle exec rake
-~~~
-
-## Credits
-
-* Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
-* And Chris Kite for Anemone web-spider framework and postmodern for Spidr.
-
 ## More info
 
-### HTML5 validator web service
+### HTML5
 
-The HTML5 support is done by using the Validator.nu Web Service, so the content
-of your webpage is logged by a tier. It's not the case for other validation
-because validate-website use the XML Schema or DTD stored on the data/ directory.
+#### Tidy5
+
+If the libtidy5 is found on your system this will be the default to validate
+your html5 document. This does not depend on a tier service everything is done
+locally.
+
+#### Validator.nu web service
+
+When `--html5-validator nu` option is used HTML5 support is done by using the
+Validator.nu Web Service, so the content of your webpage is logged by a tier.
+It's not the case for other validation because validate-website use the XML
+Schema or DTD stored on the data/ directory.
 
 Please read <http://about.validator.nu/#tos> for more info on the HTML5
 validation service.
 
-### Use validator standalone web server locally
+##### Use validator standalone web server locally
 
 You can download [validator](https://github.com/validator/validator) jar and
 start it with:
@@ -113,6 +110,19 @@ export VALIDATOR_NU_URL="http://localhost:8888/"
 ~~~
 
 This will prevent you to be blacklisted from validator webservice.
+
+## Tests
+
+With standard environment:
+
+~~~ console
+bundle exec rake
+~~~
+
+## Credits
+
+* Thanks tenderlove for Nokogiri, this tool is inspired from markup_validity.
+* And Chris Kite for Anemone web-spider framework and postmodern for Spidr.
 
 ## Contributors
 
