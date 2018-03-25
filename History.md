@@ -1,4 +1,10 @@
 
+v1.8.1 / 2018-03-25
+===================
+
+  * Change document to local dtd only when needed
+  * Switch to asciidoctor to generate manpage
+
 v1.8.0 / 2017-08-24
 ===================
 
