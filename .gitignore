@@ -4,3 +4,4 @@ Gemfile.lock
 *.gem
 man/man1/validate-website-static.xml
 man/man1/validate-website.xml
+coverage

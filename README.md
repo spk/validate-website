@@ -139,5 +139,5 @@ Copyright (c) 2009-2018 Laurent Arnoud <laurent@spkdev.net>
 [![Version](https://img.shields.io/gem/v/validate-website.svg)](https://rubygems.org/gems/validate-website)
 [![Documentation](https://img.shields.io/badge/doc-rubydoc-blue.svg)](http://www.rubydoc.info/gems/validate-website)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT "MIT")
-[![Code Climate](https://img.shields.io/codeclimate/github/spk/validate-website.svg)](https://codeclimate.com/github/spk/validate-website)
+[![Coverage Status](https://img.shields.io/coveralls/github/spk/validate-website.svg)](https://coveralls.io/github/spk/validate-website?branch=master)
 [![Inline docs](https://inch-ci.org/github/spk/validate-website.svg?branch=master)](http://inch-ci.org/github/spk/validate-website)
