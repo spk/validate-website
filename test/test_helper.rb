@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
+require 'coveralls'
+Coveralls.wear!
+
 require 'minitest/autorun'
 require 'spidr'
 
 require 'validate_website/core'
-
-require 'coveralls'
-Coveralls.wear!
 
 require File.expand_path('../webmock_helper', __FILE__)
 
