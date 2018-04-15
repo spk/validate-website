@@ -8,13 +8,13 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://github.com/htacg/tidy-html5/releases/download/5.2.0/tidy-5.2.0-64bit.deb; sudo apt-get remove '^libtidy.*';  sudo dpkg -i tidy-5.2.0-64bit.deb; fi
   - gem install bundler
 rvm:
-  - 2.1
-  - 2.2
-  - 2.3
-  - 2.4
+  - 2.1.10
+  - 2.2.10
+  - 2.3.7
+  - 2.4.4
   - 2.5.1
-  - jruby-9.1.16.0
   - rbx-3
+  - jruby-9.1.16.0
   - ruby-head
   - jruby-head
 matrix:
