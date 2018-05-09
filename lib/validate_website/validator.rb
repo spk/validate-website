@@ -139,7 +139,7 @@ module ValidateWebsite
 
     def xhtml_doc
       Dir.chdir(XHTML_PATH) do
-        Nokogiri::XML(document) { |cfg| cfg.noent.dtdload.dtdvalid }
+        Nokogiri::XML(document) { |cfg| cfg.nonoent.dtdload.dtdvalid.nonet }
       end
     end
   end
