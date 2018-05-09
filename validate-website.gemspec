@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'slop', '~> 4.2'
   s.add_development_dependency 'rake', '~> 12'
   s.add_development_dependency 'minitest', '~> 5'
+  s.add_development_dependency 'minitest-focus', '~> 1'
   s.add_development_dependency 'webmock', '~> 2.3'
   s.add_development_dependency 'rubocop', '~> 0.49.0'
   s.add_development_dependency 'asciidoctor', '~> 1.5'
