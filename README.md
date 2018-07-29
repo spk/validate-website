@@ -11,8 +11,11 @@ Web crawler for checking the validity of your documents
 ### Debian
 
 ~~~ console
-apt install ruby-dev libxslt-dev libxml2-dev libtidy5
+apt install ruby-dev libxslt1-dev libxml2-dev
 ~~~
+
+If you want complete local validation look [tidy
+packages](https://binaries.html-tidy.org/)
 
 ### RubyGems
 
@@ -25,6 +28,15 @@ gem install validate-website
 ~~~ console
 validate-website [OPTIONS]
 validate-website-static [OPTIONS]
+~~~
+
+## Examples
+
+~~~ console
+validate-website -v -s https://www.ruby-lang.org/
+validate-website -v -x tidy -s https://www.ruby-lang.org/
+validate-website -v -x nu -s https://www.ruby-lang.org/
+validate-website -h
 ~~~
 
 ## Description
