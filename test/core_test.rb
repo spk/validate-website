@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper', __FILE__)
+require File.expand_path('test_helper', __dir__)
 
 describe ValidateWebsite::Core do
   describe 'invalid options' do

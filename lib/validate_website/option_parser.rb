@@ -38,57 +38,57 @@ module ValidateWebsite
     end
 
     def self.default_args
-      Slop.parse do |o|
-        yield o if block_given?
-        markup_syntax(o)
-        boolean_options(o)
-        ignore_html5_options(o)
-        verbose_option(o)
-        version_help(o)
+      Slop.parse do |opt|
+        yield opt if block_given?
+        markup_syntax(opt)
+        boolean_options(opt)
+        ignore_html5_options(opt)
+        verbose_option(opt)
+        version_help(opt)
       end
     end
 
-    def self.ignore_html5_options(o)
-      o.regexp('-i', '--ignore',
-               'Validation errors to ignore (ex: "valign|autocorrect")')
-      o.string('-x', '--html5-validator',
-               'Change default html5 validator engine (ex: tidy or nu)',
-               default: DEFAULT_OPTIONS[:html5_validator])
-      o.string('-5', '--html5-validator-service-url',
-               'Change default html5 validator service URL for "nu" engine')
+    def self.ignore_html5_options(opt)
+      opt.regexp('-i', '--ignore',
+                 'Validation errors to ignore (ex: "valign|autocorrect")')
+      opt.string('-x', '--html5-validator',
+                 'Change default html5 validator engine (ex: tidy or nu)',
+                 default: DEFAULT_OPTIONS[:html5_validator])
+      opt.string('-5', '--html5-validator-service-url',
+                 'Change default html5 validator service URL for "nu" engine')
     end
 
-    def self.markup_syntax(o)
-      o.bool('-m', '--markup',
-             "Markup validation (default: #{DEFAULT_OPTIONS[:markup]})",
-             default: DEFAULT_OPTIONS[:markup])
-      o.bool('--css-syntax',
-             "Css validation (default: #{DEFAULT_OPTIONS[:css_syntax]})",
-             default: DEFAULT_OPTIONS[:css_syntax])
+    def self.markup_syntax(opt)
+      opt.bool('-m', '--markup',
+               "Markup validation (default: #{DEFAULT_OPTIONS[:markup]})",
+               default: DEFAULT_OPTIONS[:markup])
+      opt.bool('--css-syntax',
+               "Css validation (default: #{DEFAULT_OPTIONS[:css_syntax]})",
+               default: DEFAULT_OPTIONS[:css_syntax])
     end
 
-    def self.boolean_options(o)
-      o.bool('-n', '--not-found',
-             "Log not found url (default: #{DEFAULT_OPTIONS[:not_found]})",
-             default: DEFAULT_OPTIONS[:not_found])
-      o.bool('--color',
-             "Show colored output (default: #{DEFAULT_OPTIONS[:color]})",
-             default: DEFAULT_OPTIONS[:color])
+    def self.boolean_options(opt)
+      opt.bool('-n', '--not-found',
+               "Log not found url (default: #{DEFAULT_OPTIONS[:not_found]})",
+               default: DEFAULT_OPTIONS[:not_found])
+      opt.bool('--color',
+               "Show colored output (default: #{DEFAULT_OPTIONS[:color]})",
+               default: DEFAULT_OPTIONS[:color])
     end
 
-    def self.verbose_option(o)
-      o.bool('-v', '--verbose',
-             "Show validator errors (default: #{DEFAULT_OPTIONS[:verbose]})",
-             default: DEFAULT_OPTIONS[:verbose])
+    def self.verbose_option(opt)
+      opt.bool('-v', '--verbose',
+               "Show validator errors (default: #{DEFAULT_OPTIONS[:verbose]})",
+               default: DEFAULT_OPTIONS[:verbose])
     end
 
-    def self.version_help(o)
-      o.on('--version', 'Display version.') do
+    def self.version_help(opt)
+      opt.on('--version', 'Display version.') do
         puts ValidateWebsite::VERSION
         exit
       end
-      o.on('-h', '--help', 'Display this help message.') do
-        puts o
+      opt.on('-h', '--help', 'Display this help message.') do
+        puts opt
         exit
       end
     end
@@ -97,15 +97,15 @@ module ValidateWebsite
     # @params [ARGV]
     # @return [Hash]
     def self.command_line_parse_crawl(_args)
-      default_args do |o|
-        o.string('-s', '--site',
-                 "Website to crawl (default: #{DEFAULT_OPTIONS[:site]})",
-                 default: DEFAULT_OPTIONS[:site])
-        o.string('-u', '--user-agent',
-                 'Change user agent',
-                 default: DEFAULT_OPTIONS[:user_agent])
-        o.regexp('-e', '--exclude', 'Url to exclude (ex: "redirect|news")')
-        o.string('-c', '--cookies', 'Set defaults cookies')
+      default_args do |opt|
+        opt.string('-s', '--site',
+                   "Website to crawl (default: #{DEFAULT_OPTIONS[:site]})",
+                   default: DEFAULT_OPTIONS[:site])
+        opt.string('-u', '--user-agent',
+                   'Change user agent',
+                   default: DEFAULT_OPTIONS[:user_agent])
+        opt.regexp('-e', '--exclude', 'Url to exclude (ex: "redirect|news")')
+        opt.string('-c', '--cookies', 'Set defaults cookies')
       end
     end
 
@@ -113,14 +113,14 @@ module ValidateWebsite
     # @params [ARGV]
     # @return [Hash]
     def self.command_line_parse_static(_args)
-      default_args do |o|
-        o.string('-s', '--site',
-                 "Website to crawl (default: #{DEFAULT_OPTIONS[:site]})",
-                 default: DEFAULT_OPTIONS[:site])
-        o.string('-p', '--pattern',
-                 "Filename pattern (default: #{DEFAULT_OPTIONS[:pattern]})",
-                 default: DEFAULT_OPTIONS[:pattern])
-        o.regexp('-e', '--exclude', 'Url to exclude (ex: "redirect|news")')
+      default_args do |opt|
+        opt.string('-s', '--site',
+                   "Website to crawl (default: #{DEFAULT_OPTIONS[:site]})",
+                   default: DEFAULT_OPTIONS[:site])
+        opt.string('-p', '--pattern',
+                   "Filename pattern (default: #{DEFAULT_OPTIONS[:pattern]})",
+                   default: DEFAULT_OPTIONS[:pattern])
+        opt.regexp('-e', '--exclude', 'Url to exclude (ex: "redirect|news")')
       end
     end
   end

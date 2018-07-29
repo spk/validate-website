@@ -20,11 +20,11 @@ module ValidateWebsite
       @site = @options[:site]
 
       files = Dir.glob(@options[:pattern])
-      files.each do |f|
-        next unless File.file?(f)
-        next if @options[:exclude].is_a?(Regexp) && @options[:exclude].match(f)
+      files.each do |file|
+        next unless File.file?(file)
+        next if @options[:exclude] && @options[:exclude].match(file)
         @history_count += 1
-        check_static_file(f)
+        check_static_file(file)
       end
       print_status_line(files.size, 0, @not_founds_count, @errors_count)
     end
@@ -47,15 +47,15 @@ module ValidateWebsite
 
     private
 
-    def check_static_file(f)
-      page = StaticLink.new(f, @site).page
-      check_page(f, page)
+    def check_static_file(file)
+      page = StaticLink.new(file, @site).page
+      check_page(file, page)
       check_css_syntax(page) if page.css? && options[:css_syntax]
     end
 
-    def check_page(f, page)
+    def check_page(file, page)
       if page.html? && options[:markup]
-        validate(page.doc, page.body, f, options[:ignore])
+        validate(page.doc, page.body, file, options[:ignore])
       end
       check_static_not_found(page.links) if options[:not_found]
     end

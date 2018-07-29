@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-# encoding: utf-8
 
 require 'validate_website/runner'
 exit_status = ValidateWebsite::Runner.run_crawl(ARGV)

@@ -15,7 +15,7 @@ module ValidateWebsite
       attr_accessor :html5_validator_service_url
     end
 
-    XHTML_PATH = File.expand_path('../../../data/schemas', __FILE__)
+    XHTML_PATH = File.expand_path('../../data/schemas', __dir__)
 
     @xsd_schemas ||= {}
 

@@ -1,2 +1,13 @@
-Style/FileName:
+---
+AllCops:
+  TargetRubyVersion: 2.2
+Naming/FileName:
+  Enabled: false
+Security/Open:
+  Enabled: false
+Lint/MissingCopEnableDirective:
+  Enabled: false
+Lint/InterpolationCheck:
+  Enabled: false
+Lint/UriEscapeUnescape:
   Enabled: false
