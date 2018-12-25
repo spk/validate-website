@@ -1,4 +1,12 @@
 
+1.9.0 / 2018-12-25
+==================
+
+  * Update deps paint; slop; webmock
+  * Remove Ruby 2.1 support
+  * Force nonet and disable substitute entities on xhtml parse
+  * Use coveralls for code coverage
+
 v1.8.1 / 2018-03-25
 ===================
 
