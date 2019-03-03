@@ -1,20 +1,19 @@
 ---
-dist: trusty
-group: beta
+dist: xenial
 sudo: true
 language: ruby
 cache: bundler
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://github.com/htacg/tidy-html5/releases/download/5.2.0/tidy-5.2.0-64bit.deb; sudo apt-get remove '^libtidy.*';  sudo dpkg -i tidy-5.2.0-64bit.deb; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget https://github.com/htacg/tidy-html5/releases/download/5.4.0/tidy-5.4.0-64bit.deb; sudo apt-get remove '^libtidy.*';  sudo dpkg -i tidy-5.4.0-64bit.deb; fi
   - gem install bundler -v '<2'
 rvm:
   - 2.2.10
   - 2.3.8
   - 2.4.5
   - 2.5.3
-  - 2.6.0
+  - 2.6
   - rbx-3
-  - jruby-9.1.16.0
+  - jruby-9.2.5.0
   - ruby-head
   - jruby-head
 matrix:
