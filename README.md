@@ -10,34 +10,34 @@ Web crawler for checking the validity of your documents
 
 ### Debian
 
-~~~ console
+```
 apt install ruby-dev libxslt1-dev libxml2-dev
-~~~
+```
 
 If you want complete local validation look [tidy
 packages](https://binaries.html-tidy.org/)
 
 ### RubyGems
 
-~~~ console
+```
 gem install validate-website
-~~~
+```
 
 ## Synopsis
 
-~~~ console
+```
 validate-website [OPTIONS]
 validate-website-static [OPTIONS]
-~~~
+```
 
 ## Examples
 
-~~~ console
+```
 validate-website -v -s https://www.ruby-lang.org/
 validate-website -v -x tidy -s https://www.ruby-lang.org/
 validate-website -v -x nu -s https://www.ruby-lang.org/
 validate-website -h
-~~~
+```
 
 ## Description
 
@@ -59,30 +59,31 @@ Service](https://checker.html5.org/).
 
 ## On your application
 
-~~~ ruby
+``` ruby
 require 'validate_website/validator'
 body = '<!DOCTYPE html><html></html>'
 v = ValidateWebsite::Validator.new(Nokogiri::HTML(body), body)
 v.valid? # => false
-~~~
+```
 
 ## Jekyll static site validation
 
 You can add this Rake task to validate a
 [jekyll](https://github.com/jekyll/jekyll) site:
 
-~~~ ruby
+``` ruby
 desc 'validate _site with validate website'
 task validate: :build do
-  Dir.chdir('_site') do
-    sh("validate-website-static --site '<CONFIG_URL>'") do |ok, res|
-      unless ok
-        puts "validate error (status = #{res.exitstatus})"
-      end
+    Dir.chdir("_site") do
+      system("validate-website-static",
+               "--verbose",
+               "--exclude", "examples",
+               "--site", HTTP_URL)
+      exit($?.exitstatus)
     end
   end
 end
-~~~
+```
 
 ## More info
 
@@ -109,17 +110,17 @@ validation service.
 You can download [validator](https://github.com/validator/validator) jar and
 start it with:
 
-~~~
+```
 java -cp PATH_TO/vnu.jar nu.validator.servlet.Main 8888
-~~~
+```
 
 Then you can use validate-website option:
 
-~~~
+```
 --html5-validator-service-url http://localhost:8888/
 # or
 export VALIDATOR_NU_URL="http://localhost:8888/"
-~~~
+```
 
 This will prevent you to be blacklisted from validator webservice.
 
@@ -127,9 +128,9 @@ This will prevent you to be blacklisted from validator webservice.
 
 With standard environment:
 
-~~~ console
+```
 bundle exec rake
-~~~
+```
 
 ## Credits
 
@@ -147,7 +148,7 @@ The MIT License
 Copyright (c) 2009-2019 Laurent Arnoud <laurent@spkdev.net>
 
 ---
-[![Build](https://img.shields.io/travis-ci/spk/validate-website.svg)](https://travis-ci.org/spk/validate-website)
+[![Build](https://img.shields.io/travis/spk/validate-website.svg)](https://travis-ci.org/spk/validate-website)
 [![Version](https://img.shields.io/gem/v/validate-website.svg)](https://rubygems.org/gems/validate-website)
 [![Documentation](https://img.shields.io/badge/doc-rubydoc-blue.svg)](http://www.rubydoc.info/gems/validate-website)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT "MIT")
