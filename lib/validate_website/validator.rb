@@ -15,20 +15,16 @@ module ValidateWebsite
       attr_accessor :html5_validator_service_url
     end
 
-    XHTML_PATH = File.expand_path('../../data/schemas', __dir__)
+    XHTML_SCHEMA_PATH = File.expand_path('../../data/schemas', __dir__)
+    @mutex = Mutex.new
 
-    @xsd_schemas ||= {}
-
-    # `Dir.chdir` is needed by `Nokogiri::XML::Schema` to validate with local
-    # files and cannot use file absolute path.
-    Dir.glob(File.join(XHTML_PATH, '*.xsd')).each do |schema|
-      Dir.chdir(XHTML_PATH) do
-        schema_name = File.basename(schema, '.xsd')
-        schema_content = File.read(File.basename(schema))
-        begin
-          @xsd_schemas[schema_name] = Nokogiri::XML::Schema(schema_content)
-        rescue Nokogiri::XML::SyntaxError
-          STDERR.puts "XSD SCHEMA: #{schema} cannot be loaded"
+    # http://www.w3.org/TR/xhtml1-schema/
+    def self.schema(namespace)
+      @mutex.synchronize do
+        Dir.chdir(XHTML_SCHEMA_PATH) do
+          if File.exist?("#{namespace}.xsd")
+            Nokogiri::XML::Schema(File.read("#{namespace}.xsd"))
+          end
         end
       end
     end
@@ -65,12 +61,6 @@ module ValidateWebsite
       @ignore ? @errors.reject { |e| @ignore =~ e } : @errors
     end
 
-    # http://www.w3.org/TR/xhtml1-schema/
-    def self.xsd(namespace)
-      return unless namespace
-      @xsd_schemas[namespace] if @xsd_schemas.key? namespace
-    end
-
     private
 
     # http://www.w3.org/TR/xhtml1/#dtds
@@ -95,11 +85,11 @@ module ValidateWebsite
     def validate
       if document =~ /^\<!DOCTYPE html\>/i
         html5_validate
-      elsif self.class.xsd(@namespace)
-        self.class.xsd(@namespace).validate(xhtml_doc)
+      elsif self.class.schema(@namespace)
+        self.class.schema(@namespace).validate(xhtml_doc)
       else
         # dont have xsd fall back to dtd
-        Dir.chdir(XHTML_PATH) do
+        Dir.chdir(XHTML_SCHEMA_PATH) do
           Nokogiri::HTML.parse(document)
         end.errors
       end
@@ -138,7 +128,7 @@ module ValidateWebsite
     end
 
     def xhtml_doc
-      Dir.chdir(XHTML_PATH) do
+      Dir.chdir(XHTML_SCHEMA_PATH) do
         Nokogiri::XML(document) { |cfg| cfg.nonoent.dtdload.dtdvalid.nonet }
       end
     end
