@@ -8,6 +8,7 @@ module ValidateWebsite
 
     def initialize(options = {}, validation_type = :crawl)
       super
+      start_message(@site)
     end
 
     def history_count
