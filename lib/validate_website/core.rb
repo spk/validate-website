@@ -26,6 +26,7 @@ module ValidateWebsite
     EXIT_FAILURE_MARKUP = 64
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
+    START_MESSAGE = 'Validating'.freeze
 
     # Initialize core ValidateWebsite class
     # @example
@@ -39,7 +40,6 @@ module ValidateWebsite
       @site = @options[:site]
       @service_url = @options[:html5_validator_service_url]
       Validator.html5_validator_service_url = @service_url if @service_url
-      puts color(:note, "validating #{@site}\n", @options[:color])
     end
 
     def errors?
@@ -70,6 +70,10 @@ module ValidateWebsite
     end
 
     private
+
+    def start_message(type)
+      puts color(:note, "#{START_MESSAGE} #{type}\n", @options[:color])
+    end
 
     def check_css_syntax(page)
       nodes = Crass::Parser.parse_stylesheet(page.body)

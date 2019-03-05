@@ -5,12 +5,14 @@ module ValidateWebsite
   # Class for validation Static website
   class Static < Core
     CONTENT_TYPES = ['text/html', 'text/xhtml+xml'].freeze
+    START_MESSAGE_TYPE = 'files'.freeze
 
     attr_reader :history_count
 
     def initialize(options = {}, validation_type = :static)
       @history_count = 0
       super
+      start_message("#{START_MESSAGE_TYPE} in #{Dir.pwd} (#{@site} as site)")
     end
 
     # @param [Hash] options
