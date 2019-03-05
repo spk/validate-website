@@ -1,4 +1,11 @@
 
+1.9.1 / 2019-03-05
+==================
+
+  * Improve start message for static validator
+  * Update travis config
+  * Fix bundler to <2 on travis (dropped support Ruby < 2.3)
+
 1.9.0 / 2018-12-25
 ==================
 
