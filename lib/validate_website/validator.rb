@@ -11,22 +11,24 @@ module ValidateWebsite
     extend ValidatorClassMethods
 
     @html5_validator_service_url = 'https://checker.html5.org/'
-    class << self
-      attr_accessor :html5_validator_service_url
-    end
-
     XHTML_SCHEMA_PATH = File.expand_path('../../data/schemas', __dir__)
     @mutex = Mutex.new
 
-    # http://www.w3.org/TR/xhtml1-schema/
-    def self.schema(namespace)
-      @mutex.synchronize do
-        Dir.chdir(XHTML_SCHEMA_PATH) do
-          if File.exist?("#{namespace}.xsd")
-            Nokogiri::XML::Schema(File.read("#{namespace}.xsd"))
+    class << self
+      attr_accessor :html5_validator_service_url
+
+      # http://www.w3.org/TR/xhtml1-schema/
+      def schema(namespace)
+        @mutex.synchronize do
+          Dir.chdir(XHTML_SCHEMA_PATH) do
+            if File.exist?("#{namespace}.xsd")
+              Nokogiri::XML::Schema(File.read("#{namespace}.xsd"))
+            end
           end
         end
       end
+
+      alias xsd schema
     end
 
     attr_reader :original_doc, :body, :dtd, :doc, :namespace, :html5_validator
