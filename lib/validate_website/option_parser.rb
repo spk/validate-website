@@ -1,4 +1,5 @@
 require 'slop'
+require File.expand_path('version', __dir__)
 
 module ValidateWebsite
   # Internal class for parse command line args
