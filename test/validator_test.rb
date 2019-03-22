@@ -102,7 +102,7 @@ describe ValidateWebsite::Validator do
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body)
           validator.valid?.must_equal false
-          validator.errors.size.must_equal 4
+          validator.errors.size.must_equal 3
         end
 
         it 'should exclude errors ignored by :ignore option' do
