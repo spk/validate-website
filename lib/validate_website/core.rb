@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'set'
 require 'open-uri'
 require 'webrick/cookie'
@@ -26,7 +28,7 @@ module ValidateWebsite
     EXIT_FAILURE_MARKUP = 64
     EXIT_FAILURE_NOT_FOUND = 65
     EXIT_FAILURE_MARKUP_NOT_FOUND = 66
-    START_MESSAGE = 'Validating'.freeze
+    START_MESSAGE = 'Validating'
 
     # Initialize core ValidateWebsite class
     # @example
@@ -43,11 +45,11 @@ module ValidateWebsite
     end
 
     def errors?
-      @errors_count > 0
+      @errors_count.positive?
     end
 
     def not_founds?
-      @not_founds_count > 0
+      @not_founds_count.positive?
     end
 
     def exit_status

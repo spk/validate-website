@@ -2,5 +2,5 @@
 
 # Version file for ValidateWebsite
 module ValidateWebsite
-  VERSION = '1.9.3'.freeze
+  VERSION = '1.9.3'
 end

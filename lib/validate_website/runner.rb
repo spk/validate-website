@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'validate_website/core'
 
 module ValidateWebsite

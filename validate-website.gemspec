@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('lib/validate_website/version', __dir__)
 
 # rubocop:disable Metrics/BlockLength
@@ -10,7 +12,7 @@ Gem::Specification.new do |s|
   s.name = 'validate-website'
   s.version = ValidateWebsite::VERSION
   s.license = 'MIT'
-  s.required_ruby_version = '>= 2.2.0'
+  s.required_ruby_version = '>= 2.3.0'
   s.add_dependency 'crass', '~> 1'
   s.add_dependency 'paint', '~> 2'
   s.add_dependency 'slop', '~> 4.6'

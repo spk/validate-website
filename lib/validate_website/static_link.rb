@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'validate_website/utils'
 require 'validate_website/static'

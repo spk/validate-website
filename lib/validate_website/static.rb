@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'validate_website/core'
 require 'validate_website/utils'
 
@@ -5,7 +7,7 @@ module ValidateWebsite
   # Class for validation Static website
   class Static < Core
     CONTENT_TYPES = ['text/html', 'text/xhtml+xml'].freeze
-    START_MESSAGE_TYPE = 'files'.freeze
+    START_MESSAGE_TYPE = 'files'
 
     attr_reader :history_count
 
@@ -24,7 +26,7 @@ module ValidateWebsite
       files = Dir.glob(@options[:pattern])
       files.each do |file|
         next unless File.file?(file)
-        next if @options[:exclude] && @options[:exclude].match(file)
+        next if @options[:exclude]&.match(file)
         @history_count += 1
         check_static_file(file)
       end

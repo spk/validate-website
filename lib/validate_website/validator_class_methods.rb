@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tidy_ffi'
 
 # Validator Class Methods

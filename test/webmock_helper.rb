@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'webmock/minitest'
 
 # FakePage html helper for webmock
@@ -27,8 +29,8 @@ class FakePage
 
   def create_body
     @body = '<html><body>'
-    @links.each { |l| @body += "<a href=\"#{TEST_DOMAIN}#{l}\"></a>" } if @links
-    @hrefs.each { |h| @body += "<a href=\"#{h}\"></a>" } if @hrefs
+    @links&.each { |l| @body += "<a href=\"#{TEST_DOMAIN}#{l}\"></a>" }
+    @hrefs&.each { |h| @body += "<a href=\"#{h}\"></a>" }
     @body += '</body></html>'
   end
 

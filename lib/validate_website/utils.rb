@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Base module ValidateWebsite
 module ValidateWebsite
   # Utils class for CSS helpers

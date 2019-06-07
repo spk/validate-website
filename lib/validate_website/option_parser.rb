@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'slop'
 require File.expand_path('version', __dir__)
 
