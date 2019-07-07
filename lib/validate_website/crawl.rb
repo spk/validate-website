@@ -43,6 +43,7 @@ module ValidateWebsite
     #
     def extract_imgs_from_page(page)
       return Set[] if page.is_redirect?
+
       page.doc.search('//img[@src]').reduce(Set[]) do |result, elem|
         u = elem.attributes['src'].content
         result << page.to_absolute(URI.parse(URI.encode(u)))

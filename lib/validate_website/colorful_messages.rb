@@ -7,6 +7,7 @@ module ValidateWebsite
   module ColorfulMessages
     def color(type, message, colored = true)
       return message unless colored
+
       send(type, message)
     end
 

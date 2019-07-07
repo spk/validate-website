@@ -27,9 +27,9 @@ StaticLink = Struct.new(:link, :site) do
 
   def body
     if File.exist?(link)
-      open(link).read
+      File.open(link).read
     else
-      open(file_path).read
+      File.open(file_path).read
     end
   end
 

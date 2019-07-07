@@ -80,6 +80,7 @@ module ValidateWebsite
     def check_css_syntax(page)
       nodes = Crass::Parser.parse_stylesheet(page.body)
       return unless any_css_errors?(nodes)
+
       handle_validation_error(page.url)
     end
 
@@ -127,6 +128,7 @@ module ValidateWebsite
     def handle_html_validation_error(validator, url)
       handle_validation_error(url)
       return unless options[:verbose]
+
       puts color(:error, validator.errors.join(', '), options[:color])
     end
 

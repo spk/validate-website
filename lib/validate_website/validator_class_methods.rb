@@ -11,6 +11,7 @@ module ValidatorClassMethods
 
   def tidy
     return @tidy if defined?(@tidy)
+
     @lib_tidy = TidyFFI::LibTidy
     @tidy = TidyFFI::Tidy
   rescue TidyFFI::LibTidyNotInstalled

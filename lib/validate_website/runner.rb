@@ -7,7 +7,7 @@ module ValidateWebsite
   class Runner
     def self.trap_interrupt
       trap('INT') do
-        STDERR.puts "\nExiting..."
+        warn "\nExiting..."
         exit!(1)
       end
     end

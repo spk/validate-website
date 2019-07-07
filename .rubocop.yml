@@ -3,8 +3,6 @@ AllCops:
   TargetRubyVersion: 2.3
 Naming/FileName:
   Enabled: false
-Security/Open:
-  Enabled: false
 Lint/MissingCopEnableDirective:
   Enabled: false
 Lint/InterpolationCheck:

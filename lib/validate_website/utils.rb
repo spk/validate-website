@@ -12,6 +12,7 @@ module ValidateWebsite
     def self.extract_urls_from_css(page)
       return Set[] unless page
       return Set[] if page.body.nil?
+
       nodes = Crass::Parser.parse_stylesheet(page.body)
       extract_urls_from_nodes nodes, page
     end

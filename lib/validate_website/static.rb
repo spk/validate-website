@@ -27,6 +27,7 @@ module ValidateWebsite
       files.each do |file|
         next unless File.file?(file)
         next if @options[:exclude]&.match(file)
+
         @history_count += 1
         check_static_file(file)
       end
@@ -70,11 +71,13 @@ module ValidateWebsite
       static_links = links.map { |l| StaticLink.new(l, @site) }
       static_links.each do |static_link|
         next unless static_link.check?
+
         unless File.exist?(static_link.file_path)
           not_found_error(static_link.file_path)
           next
         end
         next unless static_link.css?
+
         check_static_not_found static_link.extract_urls_from_fake_css_response
       end
     end

@@ -55,7 +55,7 @@ describe ValidateWebsite::Crawl do
       name = 'xhtml1-strict'
       file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
-                          body: open(file).read,
+                          body: File.open(file).read,
                           content_type: 'text/html')
       @validate_website.site = page.url
       _out, _err = capture_io do
@@ -68,7 +68,7 @@ describe ValidateWebsite::Crawl do
       name = 'html4-strict'
       file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
-                          body: open(file).read,
+                          body: File.open(file).read,
                           content_type: 'text/html')
       @validate_website.site = page.url
       _out, _err = capture_io do
@@ -81,11 +81,11 @@ describe ValidateWebsite::Crawl do
       name = 'cozy-community'
       file = File.join('test', 'data', "#{name}.html")
       page = FakePage.new(name,
-                          body: open(file).read,
+                          body: File.open(file).read,
                           content_type: 'text/html')
       validator_res = File.join('test', 'data', 'validator.nu-failure.json')
       stub_request(:any, /#{validator.html5_validator_service_url}/)
-        .to_return(body: open(validator_res).read)
+        .to_return(body: File.open(validator_res).read)
       @validate_website.site = page.url
       _out, _err = capture_io do
         @validate_website.crawl

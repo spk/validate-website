@@ -4,7 +4,7 @@ begin
   require 'coveralls'
   Coveralls.wear!
 rescue LoadError
-  STDERR.puts 'coveralls not loaded'
+  warn 'coveralls not loaded'
 end
 
 require 'minitest/autorun'

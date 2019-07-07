@@ -70,14 +70,17 @@ module ValidateWebsite
     # http://www.w3.org/TR/xhtml1/#dtds
     def find_namespace(dtd)
       return unless dtd.system_id
+
       dtd_uri = URI.parse(dtd.system_id)
       return unless dtd_uri.path
+
       @dtd_uri = dtd_uri
       File.basename(@dtd_uri.path, '.dtd')
     end
 
     def document
       return @document if @document
+
       @document = if @dtd_uri && @body.match(@dtd_uri.to_s)
                     @body.sub(@dtd_uri.to_s, @namespace + '.dtd')
                   else

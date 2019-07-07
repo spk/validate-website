@@ -2,7 +2,6 @@
 
 require File.expand_path('lib/validate_website/version', __dir__)
 
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |s|
   s.author = 'Laurent Arnoud'
   s.email = 'laurent@spkdev.net'
@@ -24,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest-focus', '~> 1'
   s.add_development_dependency('racc') if RUBY_ENGINE == 'rbx'
   s.add_development_dependency 'rake', '~> 12'
-  s.add_development_dependency 'rubocop', '~> 0.58.0'
+  s.add_development_dependency 'rubocop', '~> 0.72.0'
   s.add_development_dependency 'webmock', '~> 3.4'
   s.require_path = 'lib'
   s.bindir = 'bin'
