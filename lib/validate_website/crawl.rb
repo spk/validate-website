@@ -80,8 +80,10 @@ module ValidateWebsite
         end
 
         if validate?(page)
-          validate(page.doc, page.body, page.url,
-                   options.slice(:ignore, :html5_validator))
+          keys = %i[ignore html5_validator]
+          # slice does not exists on Ruby <= 2.4
+          slice = Hash[[keys, options.values_at(*keys)].transpose]
+          validate(page.doc, page.body, page.url, slice)
         end
       end
     end
