@@ -8,7 +8,6 @@ rescue LoadError
 end
 
 require 'minitest/autorun'
-require 'minitest/focus'
 require 'spidr'
 
 require 'validate_website/core'

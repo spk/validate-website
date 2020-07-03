@@ -23,7 +23,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         v = ValidateWebsite::Crawl.new(site: TEST_DOMAIN, user_agent: ua)
         v.crawl
-        v.crawler.user_agent.must_equal ua
+        _(v.crawler.user_agent).must_equal ua
       end
     end
 
@@ -33,7 +33,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         ValidateWebsite::Crawl.new(site: TEST_DOMAIN,
                                    html5_validator_service_url: new)
-        validator.html5_validator_service_url.must_equal new
+        _(validator.html5_validator_service_url).must_equal new
         validator.html5_validator_service_url = original
       end
     end
@@ -45,7 +45,8 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         v = ValidateWebsite::Crawl.new(site: TEST_DOMAIN, cookies: cookies)
         v.crawl
-        v.crawler.cookies.cookies_for_host(v.host).must_equal v.default_cookies
+        _(v.crawler.cookies.cookies_for_host(v.host))
+          .must_equal v.default_cookies
       end
     end
   end
@@ -61,7 +62,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         @validate_website.crawl
       end
-      @validate_website.history_count.must_equal 5
+      _(@validate_website.history_count).must_equal 5
     end
 
     it 'extract link' do
@@ -74,7 +75,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         @validate_website.crawl
       end
-      @validate_website.history_count.must_equal 98
+      _(@validate_website.history_count).must_equal 98
     end
 
     it 'can change validator' do
@@ -90,7 +91,7 @@ describe ValidateWebsite::Crawl do
       _out, _err = capture_io do
         @validate_website.crawl(html5_validator: :nu, ignore: /Warning/)
       end
-      @validate_website.errors_count.must_equal 1
+      _(@validate_website.errors_count).must_equal 1
     end
 
     it 'crawl when URLs are not ascii only' do
@@ -137,7 +138,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.history_count.must_equal 5
+        _(@validate_website.history_count).must_equal 5
       end
 
       it 'should extract url with single quote' do
@@ -148,7 +149,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.history_count.must_equal 2
+        _(@validate_website.history_count).must_equal 2
       end
 
       it 'should extract url with double quote' do
@@ -159,7 +160,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.history_count.must_equal 2
+        _(@validate_website.history_count).must_equal 2
       end
 
       it 'should extract url with params' do
@@ -170,7 +171,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.history_count.must_equal 2
+        _(@validate_website.history_count).must_equal 2
       end
 
       it 'should not extract invalid urls' do
@@ -181,7 +182,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.history_count.must_equal 1
+        _(@validate_website.history_count).must_equal 1
       end
     end
 
@@ -200,7 +201,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.errors_count.must_equal 1
+        _(@validate_website.errors_count).must_equal 1
       end
 
       it 'should be invalid with syntax error' do
@@ -211,7 +212,7 @@ describe ValidateWebsite::Crawl do
         _out, _err = capture_io do
           @validate_website.crawl
         end
-        @validate_website.errors_count.must_equal 1
+        _(@validate_website.errors_count).must_equal 1
       end
     end
   end

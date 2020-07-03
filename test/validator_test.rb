@@ -23,8 +23,8 @@ describe ValidateWebsite::Validator do
       validator = subject.new(@xhtml1_page.doc,
                               @xhtml1_page.body,
                               ignore: ignore)
-      validator.valid?.must_equal true
-      validator.errors.must_equal []
+      _(validator.valid?).must_equal true
+      _(validator.errors).must_equal []
     end
 
     it 'xhtml1-strict should be valid' do
@@ -39,10 +39,10 @@ describe ValidateWebsite::Validator do
       validator = subject.new(@xhtml1_page.doc,
                               @xhtml1_page.body,
                               ignore: ignore)
-      validator.dtd.system_id.must_equal dtd_uri
-      validator.namespace.must_equal name
-      validator.valid?.must_equal true
-      validator.errors.must_equal []
+      _(validator.dtd.system_id).must_equal dtd_uri
+      _(validator.namespace).must_equal name
+      _(validator.valid?).must_equal true
+      _(validator.errors).must_equal []
     end
   end
 
@@ -62,7 +62,7 @@ describe ValidateWebsite::Validator do
         @html5_page = @http.get_page(page.url)
         validator = subject.new(@html5_page.doc,
                                 @html5_page.body)
-        validator.valid?.must_equal true
+        _(validator.valid?).must_equal true
       end
     end
 
@@ -84,8 +84,8 @@ describe ValidateWebsite::Validator do
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
                                   html5_validator: :nu)
-          validator.valid?.must_equal false
-          validator.errors.size.must_equal 3
+          _(validator.valid?).must_equal false
+          _(validator.errors.size).must_equal 3
         end
 
         it 'should exclude errors ignored by :ignore option' do
@@ -94,8 +94,8 @@ describe ValidateWebsite::Validator do
                                   @html5_page.body,
                                   ignore: ignore,
                                   html5_validator: :nu)
-          validator.valid?.must_equal false
-          validator.errors.size.must_equal 1
+          _(validator.valid?).must_equal false
+          _(validator.errors.size).must_equal 1
         end
       end
 
@@ -103,8 +103,8 @@ describe ValidateWebsite::Validator do
         it 'should have an array of errors' do
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body)
-          validator.valid?.must_equal false
-          validator.errors.size.must_equal 3
+          _(validator.valid?).must_equal false
+          _(validator.errors.size).must_equal 3
         end
 
         it 'should exclude errors ignored by :ignore option' do
@@ -112,8 +112,8 @@ describe ValidateWebsite::Validator do
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
                                   ignore: ignore)
-          validator.valid?.must_equal false
-          validator.errors.size.must_equal 2
+          _(validator.valid?).must_equal false
+          _(validator.errors.size).must_equal 2
         end
       end
     end
@@ -130,7 +130,7 @@ describe ValidateWebsite::Validator do
       validator = subject.new(@html4_strict_page.doc,
                               @html4_strict_page.body)
       validator.valid?
-      validator.errors.must_equal []
+      _(validator.errors).must_equal []
     end
   end
 end

@@ -19,7 +19,7 @@ describe ValidateWebsite::Static do
                               not_found: false,
                               exclude: /data|example/)
     end
-    @validate_website.history_count.must_equal 0
+    _(@validate_website.history_count).must_equal 0
   end
 
   it 'no space in directory name' do
@@ -30,7 +30,7 @@ describe ValidateWebsite::Static do
                               markup: false,
                               not_found: false)
     end
-    @validate_website.not_founds_count.must_equal 0
+    _(@validate_website.not_founds_count).must_equal 0
   end
 
   it 'not found' do
@@ -42,7 +42,7 @@ describe ValidateWebsite::Static do
                                 markup: false,
                                 not_found: true)
       end
-      @validate_website.not_founds_count.must_equal 213
+      _(@validate_website.not_founds_count).must_equal 213
     end
   end
 
@@ -60,7 +60,7 @@ describe ValidateWebsite::Static do
                                 ignore: /Warning/,
                                 html5_validator: :nu)
       end
-      @validate_website.errors_count.must_equal 1
+      _(@validate_website.errors_count).must_equal 1
     end
   end
 
@@ -73,7 +73,7 @@ describe ValidateWebsite::Static do
                                 site: 'http://w3.org/',
                                 ignore: /height|width|Length/)
       end
-      @validate_website.errors_count.must_equal 0
+      _(@validate_website.errors_count).must_equal 0
     end
   end
 
@@ -87,7 +87,7 @@ describe ValidateWebsite::Static do
                                   markup: false,
                                   css_syntax: true)
         end
-        @validate_website.errors_count.must_equal 1
+        _(@validate_website.errors_count).must_equal 1
       end
     end
   end
