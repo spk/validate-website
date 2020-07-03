@@ -77,6 +77,22 @@ describe ValidateWebsite::Crawl do
       @validate_website.history_count.must_equal 98
     end
 
+    it 'can change validator' do
+      name = 'html5-fail'
+      file = File.join('test', 'data', "#{name}.html")
+      page = FakePage.new(name,
+                          body: File.open(file).read,
+                          content_type: 'text/html')
+      validator_res = File.join('test', 'data', 'validator.nu-failure.json')
+      stub_request(:any, /#{validator.html5_validator_service_url}/)
+        .to_return(body: File.open(validator_res).read)
+      @validate_website.site = page.url
+      _out, _err = capture_io do
+        @validate_website.crawl(html5_validator: :nu, ignore: /Warning/)
+      end
+      @validate_website.errors_count.must_equal 1
+    end
+
     it 'crawl when URLs are not ascii only' do
       name = 'cozy-community'
       file = File.join('test', 'data', "#{name}.html")

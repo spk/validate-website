@@ -114,10 +114,10 @@ module ValidateWebsite
     # @param [Nokogiri::HTML::Document] original_doc
     # @param [String] The raw HTTP response body of the page
     # @param [String] url
-    # @param [Regexp] Errors to ignore
+    # @param [Hash] Validator options
     #
-    def validate(doc, body, url, ignore = nil)
-      validator = Validator.new(doc, body, ignore: ignore)
+    def validate(doc, body, url, options)
+      validator = Validator.new(doc, body, options)
       if validator.valid?
         print color(:success, '.', options[:color]) # rspec style
       else

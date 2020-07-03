@@ -60,7 +60,8 @@ module ValidateWebsite
 
     def check_page(file, page)
       if page.html? && options[:markup]
-        validate(page.doc, page.body, file, options[:ignore])
+        validate(page.doc, page.body, file,
+                 options.slice(:ignore, :html5_validator))
       end
       check_static_not_found(page.links) if options[:not_found]
     end

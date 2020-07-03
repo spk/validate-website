@@ -80,7 +80,8 @@ module ValidateWebsite
         end
 
         if validate?(page)
-          validate(page.doc, page.body, page.url, options[:ignore])
+          validate(page.doc, page.body, page.url,
+                   options.slice(:ignore, :html5_validator))
         end
       end
     end

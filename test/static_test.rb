@@ -46,6 +46,24 @@ describe ValidateWebsite::Static do
     end
   end
 
+  it 'can change validator' do
+    validator_res = File.join('test', 'data', 'validator.nu-failure.json')
+    stub_request(:any,
+                 /#{ValidateWebsite::Validator.html5_validator_service_url}/)
+      .to_return(body: File.open(validator_res).read)
+    pattern = File.join(File.dirname(__FILE__), 'data',
+                        'html5-fail.html')
+    Dir.chdir('test/data') do
+      _out, _err = capture_io do
+        @validate_website.crawl(pattern: pattern,
+                                site: 'http://w3.org/',
+                                ignore: /Warning/,
+                                html5_validator: :nu)
+      end
+      @validate_website.errors_count.must_equal 1
+    end
+  end
+
   it 'ignore' do
     pattern = File.join(File.dirname(__FILE__), 'data',
                         'w3.org-xhtml1-strict-errors.html')

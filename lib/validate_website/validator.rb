@@ -12,7 +12,7 @@ module ValidateWebsite
   class Validator
     extend ValidatorClassMethods
 
-    @html5_validator_service_url = 'https://checker.html5.org/'
+    @html5_validator_service_url = 'https://validator.nu/'
     XHTML_SCHEMA_PATH = File.expand_path('../../data/schemas', __dir__)
     @mutex = Mutex.new
 
