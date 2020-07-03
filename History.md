@@ -1,4 +1,15 @@
 
+1.10.0 / 2020-07-03
+==================
+
+  * Fix build for Ruby 2.3 and 2.4
+  * Remove rbx-3 from build
+  * Remove minitest-focus and fix minitest 6 warnings
+  * Fix html5_validator option and change html5_validator_service_url
+  * Add Ruby 2.7 to CI and update jruby
+  * Update rubocop and fix offences
+  * Remove Ruby 2.2 support and update rubocop
+
 1.9.3 / 2019-04-11
 ==================
 
