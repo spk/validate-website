@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest', '~> 5.0'
   s.add_development_dependency('racc') if RUBY_ENGINE == 'rbx'
   s.add_development_dependency 'rake', '~> 12'
-  s.add_development_dependency 'rubocop', '~> 0.72.0'
+  s.add_development_dependency 'rubocop', '~> 0.76.0'
   s.add_development_dependency 'webmock', '~> 3.4'
   s.require_path = 'lib'
   s.bindir = 'bin'
