@@ -34,6 +34,7 @@ module ValidateWebsite
     # @example
     #   new({ site: "https://example.com/" }, :crawl)
     # @param [Hash] options
+    # @param [Symbol] validation_type `crawl` for web or `static` for local
     # @return [NilClass]
     def initialize(options, validation_type)
       @not_founds_count = 0
