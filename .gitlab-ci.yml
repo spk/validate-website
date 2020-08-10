@@ -1,0 +1,47 @@
+---
+stages:
+  - test
+  - coverage
+
+default:
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y libtidy-dev
+    - ruby -v
+    - which ruby
+    - gem install bundler --no-document
+    - bundle install --jobs $(nproc)  "${FLAGS[@]}"
+
+.tests:
+  script:
+    - bundle exec rake
+  stage: test
+
+test:2.5:
+  extends: .tests
+  image: 'ruby:2.5'
+  script:
+    - bundle exec rake
+
+test:2.6:
+  extends: .tests
+  image: 'ruby:2.6'
+  script:
+    - bundle exec rake
+
+test:2.7:
+  extends: .tests
+  image: 'ruby:2.7'
+
+test:jruby:
+  extends: .tests
+  image: 'jruby:9.2.12-jre'
+
+coverage:
+  image: 'ruby:2.7'
+  script:
+    - bundle exec rake test
+  artifacts:
+    paths:
+      - coverage/
+  stage: coverage

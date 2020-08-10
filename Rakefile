@@ -4,8 +4,7 @@ require 'rake/testtask'
 require 'rubocop/rake_task'
 require 'asciidoctor'
 
-default = %i[test]
-default << :rubocop unless RUBY_ENGINE == 'rbx'
+default = %i[test rubocop]
 task default: default
 
 desc 'Update manpage from asciidoc file'

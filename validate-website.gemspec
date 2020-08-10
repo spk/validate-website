@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.name = 'validate-website'
   s.version = ValidateWebsite::VERSION
   s.license = 'MIT'
-  s.required_ruby_version = '>= 2.3.0'
+  s.required_ruby_version = '>= 2.5'
   s.add_dependency 'crass', '~> 1'
   s.add_dependency 'paint', '~> 2'
   s.add_dependency 'slop', '~> 4.6'
@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'w3c_validators', '~> 1.3'
   s.add_development_dependency 'asciidoctor', '~> 1.5'
   s.add_development_dependency 'minitest', '~> 5.0'
-  s.add_development_dependency('racc') if RUBY_ENGINE == 'rbx'
   s.add_development_dependency 'rake', '~> 12'
   s.add_development_dependency 'rubocop', '~> 0.76.0'
   s.add_development_dependency 'webmock', '~> 3.4'

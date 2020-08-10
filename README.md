@@ -148,9 +148,9 @@ The MIT License
 Copyright (c) 2009-2020 Laurent Arnoud <laurent@spkdev.net>
 
 ---
-[![Build](https://img.shields.io/travis/spk/validate-website.svg)](https://travis-ci.org/spk/validate-website)
+[![Build](https://img.shields.io/gitlab/pipeline/spkdev/validate-website/master)](https://gitlab.com/spkdev/validate-website/-/commits/master)
+[![Coverage](https://gitlab.com/spkdev/validate-website/badges/master/coverage.svg)](https://gitlab.com/spkdev/validate-website/-/commits/master)
 [![Version](https://img.shields.io/gem/v/validate-website.svg)](https://rubygems.org/gems/validate-website)
 [![Documentation](https://img.shields.io/badge/doc-rubydoc-blue.svg)](http://www.rubydoc.info/gems/validate-website)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT "MIT")
-[![Coverage Status](https://img.shields.io/coveralls/github/spk/validate-website.svg)](https://coveralls.io/github/spk/validate-website?branch=master)
 [![Inline docs](https://inch-ci.org/github/spk/validate-website.svg?branch=master)](http://inch-ci.org/github/spk/validate-website)
