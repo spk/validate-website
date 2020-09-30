@@ -2,7 +2,8 @@
 
 ## Description
 
-Web crawler for checking the validity of your documents
+The Website is used as a Web Crawler for checking the validity of all your documents provided to it.
+
 
 ![validate website](https://raw.github.com/spk/validate-website/master/validate-website.png)
 
