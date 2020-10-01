@@ -91,8 +91,8 @@ end
 
 #### Tidy5
 
-If the libtidy5 is found on your system this will be the default to validate
-your html5 document. This does not depend on a tier service everything is done
+If the libtidy5 is found on your system, this will be the default to validate
+your html5 documents. This does not depend on a tier service everything is done
 locally.
 
 #### Validator.nu web service
