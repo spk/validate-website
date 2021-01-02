@@ -79,7 +79,7 @@ describe ValidateWebsite::Validator do
         @html5_page = @http.get_page(page.url)
       end
 
-      describe('without tidy') do
+      describe('with nu') do
         it 'should have an array of errors' do
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
@@ -96,6 +96,26 @@ describe ValidateWebsite::Validator do
                                   html5_validator: :nu)
           _(validator.valid?).must_equal false
           _(validator.errors.size).must_equal 1
+        end
+      end
+
+      describe('with nokogumbo') do
+        it 'have an array of errors' do
+          validator = subject.new(@html5_page.doc,
+                                  @html5_page.body,
+                                  html5_validator: :nokogumbo)
+          _(validator.valid?).must_equal false
+          _(validator.errors.size).must_equal 1
+        end
+
+        it 'exclude errors ignored by :ignore option' do
+          ignore = /That tag isn't allowed here/
+          validator = subject.new(@html5_page.doc,
+                                  @html5_page.body,
+                                  ignore: ignore,
+                                  html5_validator: :nokogumbo)
+          _(validator.valid?).must_equal true
+          _(validator.errors.size).must_equal 0
         end
       end
 

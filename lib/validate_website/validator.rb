@@ -2,7 +2,7 @@
 
 require 'uri'
 
-require 'nokogiri'
+require 'nokogumbo'
 require 'w3c_validators'
 
 require 'validate_website/validator_class_methods'
@@ -112,8 +112,10 @@ module ValidateWebsite
     def html5_validate
       if html5_validator.to_sym == :tidy && self.class.tidy
         tidy_validate
-      else
+      elsif html5_validator.to_sym == :nu
         nu_validate
+      else
+        Nokogiri::HTML5(document, max_errors: -1).errors
       end
     end
 

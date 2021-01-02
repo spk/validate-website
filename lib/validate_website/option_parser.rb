@@ -56,7 +56,7 @@ module ValidateWebsite
       opt.regexp('-i', '--ignore',
                  'Validation errors to ignore (ex: "valign|autocorrect")')
       opt.string('-x', '--html5-validator',
-                 'Change default html5 validator engine (ex: tidy or nu)',
+                 'Change default html5 validator engine (tidy/nu/nokogumbo)',
                  default: DEFAULT_OPTIONS[:html5_validator])
       opt.string('-5', '--html5-validator-service-url',
                  'Change default html5 validator service URL for "nu" engine')
