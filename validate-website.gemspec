@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spidr', '~> 0.6'
   s.add_dependency 'tidy_ffi', '~> 1.0'
   s.add_dependency 'w3c_validators', '~> 1.3'
+  s.add_dependency 'webrick', '~> 1'
   s.add_development_dependency 'asciidoctor', '~> 1.5'
   s.add_development_dependency 'minitest', '~> 5.0'
   s.add_development_dependency 'rake', '~> 12'

@@ -46,7 +46,7 @@ module ValidateWebsite
 
       page.doc.search('//img[@src]').reduce(Set[]) do |result, elem|
         u = elem.attributes['src'].content
-        result << page.to_absolute(URI.parse(URI.encode(u)))
+        result << page.to_absolute(URI.parse(URI.encode_www_form_component(u)))
       end
     end
 

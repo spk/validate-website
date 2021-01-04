@@ -8,7 +8,7 @@ require 'spidr'
 # rubocop:disable Metrics/BlockLength
 StaticLink = Struct.new(:link, :site) do
   def link_uri
-    @link_uri = URI.parse(URI.encode(link))
+    @link_uri = URI.parse(URI.encode_www_form_component(link))
     @link_uri = URI.join(site, @link_uri) if @link_uri.host.nil?
     @link_uri
   end
