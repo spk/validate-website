@@ -33,6 +33,10 @@ test:2.7:
   extends: .tests
   image: 'ruby:2.7'
 
+test:3.0:
+  extends: .tests
+  image: 'ruby:3.0'
+
 test:jruby:
   extends: .tests
   image: 'jruby:9.2.12-jre'

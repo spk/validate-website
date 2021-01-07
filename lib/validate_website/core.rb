@@ -118,7 +118,7 @@ module ValidateWebsite
     # @param [Hash] Validator options
     #
     def validate(doc, body, url, options)
-      validator = Validator.new(doc, body, options)
+      validator = Validator.new(doc, body, **options)
       if validator.valid?
         print color(:success, '.', options[:color]) # rspec style
       else
