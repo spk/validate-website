@@ -1,4 +1,14 @@
 
+1.11.0 / 2021-01-08
+===================
+
+  * Merge pull request #23 from @marocchino / ruby-3-support
+    * Use webrick's escape instead of encode_www_form_component
+    * Support ruby 3
+  * Fix doc for ValidateWebsite::Core initialize
+  * Switch to gitlab ci and remove 2.{3,4} support
+  * Update rubocop to 0.76.0
+
 1.10.0 / 2020-07-03
 ==================
 
