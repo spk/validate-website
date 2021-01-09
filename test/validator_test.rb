@@ -101,6 +101,7 @@ describe ValidateWebsite::Validator do
 
       describe('with tidy') do
         it 'should have an array of errors' do
+          skip('tidy is not installed') unless ValidateWebsite::Validator.tidy
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body)
           _(validator.valid?).must_equal false
@@ -108,6 +109,7 @@ describe ValidateWebsite::Validator do
         end
 
         it 'should exclude errors ignored by :ignore option' do
+          skip('tidy is not installed') unless ValidateWebsite::Validator.tidy
           ignore = /letter not allowed here|trimming empty/
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
