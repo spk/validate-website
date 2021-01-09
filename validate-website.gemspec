@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.required_ruby_version = '>= 2.5'
   s.add_dependency 'crass', '~> 1'
-  s.add_dependency 'nokogumbo', '~> 2.0'
+  s.add_dependency 'nokogumbo', '~> 2.0' unless ValidateWebsite.jruby?
   s.add_dependency 'paint', '~> 2'
   s.add_dependency 'slop', '~> 4.6'
   s.add_dependency 'spidr', '~> 0.6'

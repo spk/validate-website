@@ -101,6 +101,7 @@ describe ValidateWebsite::Validator do
 
       describe('with nokogumbo') do
         it 'have an array of errors' do
+          skip('nokogumbo dont support jruby') if ValidateWebsite.jruby?
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
                                   html5_validator: :nokogumbo)
@@ -109,6 +110,7 @@ describe ValidateWebsite::Validator do
         end
 
         it 'exclude errors ignored by :ignore option' do
+          skip('nokogumbo dont support jruby') if ValidateWebsite.jruby?
           ignore = /That tag isn't allowed here/
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
