@@ -1,4 +1,16 @@
 
+1.11.1 / 2021-01-10
+===================
+
+  * Add nokogumbo doc
+  * nokogumbo support for ruby engine
+  * Add support for nokogumbo
+  * Add jruby to github actions
+  * Merge pull request #24 from @marocchino / patch-1
+    * Some minor improvements
+  * Remove travis ci
+  * Init github actions ci
+
 1.11.0 / 2021-01-08
 ===================
 
