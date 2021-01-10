@@ -95,6 +95,11 @@ If the libtidy5 is found on your system this will be the default to validate
 your html5 document. This does not depend on a tier service everything is done
 locally.
 
+#### Nokogumbo
+
+Nokogumbo can validate html5 document without tier service but reports less
+errors than tidy.
+
 #### Validator.nu web service
 
 When `--html5-validator nu` option is used HTML5 support is done by using the
