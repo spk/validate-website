@@ -2,7 +2,7 @@
 
 require 'uri'
 
-require 'nokogumbo' unless ValidateWebsite.jruby?
+require 'nokogiri' unless ValidateWebsite.jruby?
 require 'w3c_validators'
 
 require 'validate_website/validator_class_methods'

@@ -34,7 +34,7 @@ OPTIONS
 *--[no-]color*::
   Show colored output (Default: true)
 *-x*, *--html5-validator* 'VALIDATOR'::
-  Change default html5 validator engine (tidy/nu/nokogumbo)
+  Change default html5 validator engine (tidy/nu/nokogiri)
 *-5*, *--html5-validator-service-url* 'URL'::
   Change default html5 validator service URL for "nu" engine
 *-v*, *--verbose*::

@@ -99,23 +99,23 @@ describe ValidateWebsite::Validator do
         end
       end
 
-      describe('with nokogumbo') do
+      describe('with nokogiri') do
         it 'have an array of errors' do
-          skip('nokogumbo dont support jruby') if ValidateWebsite.jruby?
+          skip('nokogiri dont support jruby') if ValidateWebsite.jruby?
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
-                                  html5_validator: :nokogumbo)
+                                  html5_validator: :nokogiri)
           _(validator.valid?).must_equal false
           _(validator.errors.size).must_equal 1
         end
 
         it 'exclude errors ignored by :ignore option' do
-          skip('nokogumbo dont support jruby') if ValidateWebsite.jruby?
+          skip('nokogiri dont support jruby') if ValidateWebsite.jruby?
           ignore = /That tag isn't allowed here/
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
                                   ignore: ignore,
-                                  html5_validator: :nokogumbo)
+                                  html5_validator: :nokogiri)
           _(validator.valid?).must_equal true
           _(validator.errors.size).must_equal 0
         end
