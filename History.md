@@ -1,4 +1,15 @@
 
+1.12.0 / 2022-11-15
+===================
+
+  * Regen manpages
+  * Bump year
+  * Fix lint Metrics/AbcSize on check_page
+  * Fix test/static_test.rb with relative path
+  * Add relative link test fail
+  * Fix test/static_test.rb with relative path
+  * Nokigumbo is merged into nokogiri 1.12~
+
 1.11.1 / 2021-01-10
 ===================
 
