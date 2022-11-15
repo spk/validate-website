@@ -34,15 +34,14 @@ describe ValidateWebsite::Static do
   end
 
   it 'not found' do
-    pattern = File.join(File.dirname(__FILE__), '**/*.html')
     Dir.chdir('test/data') do
       _out, _err = capture_io do
-        @validate_website.crawl(pattern: pattern,
+        @validate_website.crawl(pattern: '**/*.html',
                                 site: 'https://linuxfr.org/',
                                 markup: false,
                                 not_found: true)
       end
-      _(@validate_website.not_founds_count).must_equal 213
+      _(@validate_website.not_founds_count).must_equal 210
     end
   end
 
