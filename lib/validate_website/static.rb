@@ -61,8 +61,7 @@ module ValidateWebsite
     def check_page(file, page)
       if page.html? && options[:markup]
         keys = %i[ignore html5_validator]
-        # slice does not exists on Ruby <= 2.4
-        slice = Hash[[keys, options.values_at(*keys)].transpose]
+        slice = options.slice(*keys)
         validate(page.doc, page.body, file, slice)
       end
       check_static_not_found(page.links, page.url.to_s) if options[:not_found]
