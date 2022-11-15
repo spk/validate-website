@@ -65,13 +65,13 @@ module ValidateWebsite
         slice = Hash[[keys, options.values_at(*keys)].transpose]
         validate(page.doc, page.body, file, slice)
       end
-      check_static_not_found(page.links) if options[:not_found]
+      check_static_not_found(page.links, page.url.to_s) if options[:not_found]
     end
 
     # check files linked on static document
     # see lib/validate_website/runner.rb
-    def check_static_not_found(links)
-      static_links = links.map { |l| StaticLink.new(l, @site) }
+    def check_static_not_found(links, site = @site)
+      static_links = links.map { |l| StaticLink.new(l, site) }
       static_links.each do |static_link|
         next unless static_link.check?
 
