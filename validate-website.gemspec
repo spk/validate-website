@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'nokogiri', '~> 1.12'
   s.add_dependency 'paint', '~> 2'
   s.add_dependency 'slop', '~> 4.6'
-  s.add_dependency 'spidr', '~> 0.6'
+  s.add_dependency 'spidr', '~> 0.6.1'
   s.add_dependency 'tidy_ffi', '~> 1.0'
   s.add_dependency 'w3c_validators', '~> 1.3'
   s.add_dependency 'webrick', '~> 1'
