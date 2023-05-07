@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.name = 'validate-website'
   s.version = ValidateWebsite::VERSION
   s.license = 'MIT'
-  s.required_ruby_version = '>= 2.5'
+  s.required_ruby_version = '>= 2.6'
   s.add_dependency 'crass', '~> 1'
   s.add_dependency 'nokogiri', '~> 1.12'
   s.add_dependency 'paint', '~> 2'
