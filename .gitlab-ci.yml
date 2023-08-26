@@ -17,12 +17,6 @@ default:
     - bundle exec rake
   stage: test
 
-test:2.6:
-  extends: .tests
-  image: 'ruby:2.6'
-  script:
-    - bundle exec rake
-
 test:2.7:
   extends: .tests
   image: 'ruby:2.7'
