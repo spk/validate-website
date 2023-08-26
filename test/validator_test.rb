@@ -111,7 +111,7 @@ describe ValidateWebsite::Validator do
 
         it 'exclude errors ignored by :ignore option' do
           skip('nokogiri dont support jruby') if ValidateWebsite.jruby?
-          ignore = /That tag isn't allowed here/
+          ignore = /End tag 'pre' isn't allowed here/
           validator = subject.new(@html5_page.doc,
                                   @html5_page.body,
                                   ignore: ignore,

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.required_ruby_version = '>= 2.6'
   s.add_dependency 'crass', '~> 1'
-  s.add_dependency 'nokogiri', '~> 1.12'
+  s.add_dependency 'nokogiri', '~> 1.15'
   s.add_dependency 'paint', '~> 2'
   s.add_dependency 'slop', '~> 4.6'
   s.add_dependency 'spidr', '~> 0.6.1'
