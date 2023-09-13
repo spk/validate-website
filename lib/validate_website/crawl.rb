@@ -52,7 +52,7 @@ module ValidateWebsite
 
     def spidr_crawler(site, options)
       @host = URI(site).host
-      Spidr.site(site, options) do |crawler|
+      Spidr.site(site, **options.slice(:user_agent, :ignore_links)) do |crawler|
         crawler.cookies[@host] = default_cookies if options[:cookies]
         on_every_css_page(crawler)
         on_every_html_page(crawler)
@@ -81,9 +81,7 @@ module ValidateWebsite
 
         if validate?(page)
           keys = %i[ignore html5_validator]
-          # slice does not exists on Ruby <= 2.4
-          slice = Hash[[keys, options.values_at(*keys)].transpose]
-          validate(page.doc, page.body, page.url, slice)
+          validate(page.doc, page.body, page.url, options.slice(keys))
         end
       end
     end
